@@ -1,3 +1,11 @@
+.react-horizontal-scrolling-menu--scroll-wrapper  {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+  }
 
+  ::-webkit-scrollbar {
+    width: 0px;
+  }
 
 
