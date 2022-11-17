@@ -9,7 +9,6 @@
     "core-js": "^3.23.0",
     "regenerator-runtime": "^0.13.9",
     "react-horizontal-scrolling-menu": "^2.7.1",
-    
     "webpack": "^5.74.0",
     "webpack-cli": "^4.10.0",
     "webpack-notifier": "^1.15.0"
@@ -25,9 +24,12 @@
   "dependencies": {
     "axios": "^0.18.0",
     "flat-icons": "^1.0.0",
+    "framer-motion": "^7.6.4",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
     "react-icons": "^4.6.0",
-    "react-router-dom": "^5.0.0"
+    "react-intersection-observer": "^9.4.0",
+    "react-router-dom": "^5.0.0",
+    "react-scroll-motion": "^0.3.0"
   }
 }
