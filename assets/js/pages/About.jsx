@@ -3,6 +3,7 @@ import image from "../../img/about.jpg"
 
 const About = () => {
   return (
+    
     <div className="container py-5">
       <div className="row align-items-center">
         <div className="col-lg-6">
