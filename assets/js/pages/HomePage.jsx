@@ -38,9 +38,12 @@ const HomePage = (props) => {
                 fonction de votre coach préféré, vous pouvez également
                 télécharger l'application pour faire votre séance.
               </p>
-              <a href="" className="btn btn-lg btn-outline-light mt-4 px-4">
+              <Link
+                to="/inscriptionMember"
+                className="btn btn-lg btn-outline-light mt-4 px-4"
+              >
                 Nous rejoindre
-              </a>
+              </Link>
             </div>
           </div>
         </div>

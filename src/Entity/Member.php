@@ -2,12 +2,15 @@
 
 namespace App\Entity;
 
-use App\Repository\MemberRepository;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use App\Repository\MemberRepository;
 use Symfony\Component\Security\Core\User\UserInterface;
+use ApiPlatform\Metadata\ApiResource;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 
 #[ORM\Entity(repositoryClass: MemberRepository::class)]
+#[ApiResource]
+
 class Member implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]

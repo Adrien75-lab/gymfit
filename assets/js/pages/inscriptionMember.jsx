@@ -1,8 +1,11 @@
 import Axios from "axios";
-import React, { useState } from "react";
+import React, { useState, Component } from "react";
+import { render } from "react-dom";
+import { Route } from "react-router-dom";
 import { toast } from "react-toastify";
+import LoginPage from "./LoginPage";
 
-const inscriptionCoach = () => {
+const inscriptionMember = () => {
   //   const data = {
   //     pseudo: "",
   //     email: "",
@@ -34,7 +37,7 @@ const inscriptionCoach = () => {
 
     try {
       const response = await Axios.post(
-        "http://localhost:8000/api/coaches",
+        "http://localhost:8000/api/members",
         user
       );
       console.log(response);
@@ -49,7 +52,7 @@ const inscriptionCoach = () => {
       }
     }
   };
-  
+
   return (
     <>
       <div className="container w-50">
@@ -132,4 +135,4 @@ const inscriptionCoach = () => {
   );
 };
 
-export default inscriptionCoach;
+export default inscriptionMember;

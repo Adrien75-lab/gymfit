@@ -8,4 +8,13 @@
     width: 0px;
   }
 
+  span {
+    display: block;
+    color: var(--red-color);
+    text-align: center;
+    border: 1px solid var(--red-color);
+    padding: 10px;
+    margin: 15px 0;
+  }
+
 

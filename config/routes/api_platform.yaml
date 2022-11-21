@@ -1,0 +1,6 @@
+api_platform:
+     # The list of your resources class directories. Defaults to the directories of the mapping paths but might differ.
+    resource:
+        - '%kernel.project_dir%/src/Entity'
+    type: api_platform
+    prefix: /api
