@@ -1,18 +1,50 @@
-version: '3.8'
+version: '3'
+
 services:
-  db:
-    image: mysql:8.0
-    cap_add:
-      - SYS_NICE
-    restart: always
-    environment:
-      - MYSQL_DATABASE=gymfit
-      - MYSQL_ROOT_PASSWORD=''
+  web:
+    image: php7.4-apache:projet
+    container_name: projet-php-apache
     ports:
-      - '3306:3306'
+      # local:container
+      - "1337:80"
+    environment: 
+      - APACHE_DOCUMENT_ROOT=/var/www/html
+      - COMPOSER_ALLOW_SUPERUSER=1
     volumes:
-      - db:/var/lib/mysql
-      - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
-volumes:
+      # Volume stockant les fichiers web du projet
+      - ./:/var/www/html
+    build:
+      context: .
+      dockerfile: Dockerfile
+    depends_on:
+      - db
+    links:
+      # Lien vers le conteneur "db" (déclaré ci-après)
+      - db:db
+
+  pma:
+    image: phpmyadmin
+    container_name: projet-phpmyadmin
+    environment:
+      # https://docs.phpmyadmin.net/en/latest/setup.html#docker-environment-variables
+      PMA_HOST: db
+      PMA_PORT: 3306
+      UPLOAD_LIMIT: 1024M
+    ports:
+      - "8080:80"
+    links:
+      - db:db
+
   db:
-    driver: local
+    image: mariadb:latest
+    container_name: projet-mysql
+    ports:
+      - "3306:3306"
+    volumes:
+      # Volume de la base de données
+      - ./db-data:/var/lib/mysql
+    environment:
+      MYSQL_DATABASE: gymfit
+      # MYSQL_ROOT_PASSWORD: XXXXXXXXX
+      MYSQL_RANDOM_ROOT_PASSWORD: ""
+      # MARIADB_RANDOM_ROOT_PASSWORD: "yes"
