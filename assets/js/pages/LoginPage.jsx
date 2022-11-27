@@ -6,10 +6,7 @@ const LoginPage = ({ onLogin, history }) => {
   const [credentials, setCredentials] = useState({
     username: "",
     password: "",
-    firstName:""
   });
-  
- 
 
   const [error, setError] = useState("");
 
@@ -55,18 +52,6 @@ const LoginPage = ({ onLogin, history }) => {
             />
           </div>
           <div className="form-group mt-2">
-            <label htmlFor="firstName">Nom</label>
-            <input
-              value={credentials.firstName}
-              onChange={handleChange}
-              type="text"
-              placeholder="Nom"
-              name="firstName"
-              id="firstName"
-              className="form-control mt-2"
-            />
-          </div>
-          <div className="form-group mt-2">
             <label htmlFor="password">Mot de passe</label>
             <input
               value={credentials.password}
@@ -86,7 +71,7 @@ const LoginPage = ({ onLogin, history }) => {
           </div>
         </div>
       </form>
-      </>
+    </>
   );
 };
 

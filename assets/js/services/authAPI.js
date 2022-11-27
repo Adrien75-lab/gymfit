@@ -1,5 +1,6 @@
 import Axios from "axios";
 import jwtDecode from "jwt-decode";
+import jwt from "jwt-decode"; // import dependency
 
 function logout() {
   window.localStorage.removeItem("authToken");
@@ -20,13 +21,16 @@ function authenticate(credentials) {
     });
 }
 
-function setAxiosToken(token) {
+function setAxiosToken(token,) {
   Axios.defaults.headers["Authorization"] = "Bearer " + token;
 }
 
 function setup() {
   // 1 voir si on a un token ?
+
   const token = window.localStorage.getItem("authToken");
+  console.log(token);
+
   // 2 Si le token est encore valide
   if (token) {
     const { exp: expiration } = jwtDecode(token);
@@ -34,6 +38,8 @@ function setup() {
     if (expiration * 1000 > new Date().getTime()) {
       setAxiosToken(token);
       console.log("Connexion établie avec axios");
+      const tokenPayload = jwtDecode(token);
+      console.log(tokenPayload);
     }
   }
 }
