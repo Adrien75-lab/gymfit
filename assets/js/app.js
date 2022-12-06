@@ -9,6 +9,8 @@ import { HashRouter, Switch, Route } from "react-router-dom";
 import CustomersPage from "./pages/CustomersPage";
 import FeaturesPage from "./pages/FeaturesPage";
 import inscriptionCoach from "./pages/inscriptionCoach";
+import inscriptionMember from "./pages/inscriptionMember";
+import LoginPage from "./components/LoginPage";
 
 // any CSS you import will output into a single css file (app.css in this case)
 require("../styles/app.css");
@@ -24,6 +26,8 @@ const App = () => {
         <Switch>
           <Route path="/features" component={FeaturesPage} />
           <Route path="/about" component={About} />
+          <Route path="/loginPage" component={LoginPage} />
+          <Route path="/inscriptionMember" component={inscriptionMember} />
           <Route path="/inscriptionCoach" component={inscriptionCoach} />
           <Route path="/customers" component={CustomersPage} />
           <Route path="/" component={HomePage} />

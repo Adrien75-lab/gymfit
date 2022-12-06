@@ -2,12 +2,15 @@
 
 namespace App\Entity;
 
-use App\Repository\MemberRepository;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use App\Repository\MemberRepository;
 use Symfony\Component\Security\Core\User\UserInterface;
+use ApiPlatform\Metadata\ApiResource;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 
 #[ORM\Entity(repositoryClass: MemberRepository::class)]
+#[ApiResource]
+
 class Member implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
@@ -28,7 +31,7 @@ class Member implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $password = null;
 
     #[ORM\ManyToOne(inversedBy: 'members')]
-    private ?Coach $coach = null;
+    private ? Coach $coach = null;
 
     #[ORM\Column(length: 255)]
     private ?string $firstName = null;
@@ -106,12 +109,12 @@ class Member implements UserInterface, PasswordAuthenticatedUserInterface
         // $this->plainPassword = null;
     }
 
-    public function getCoach(): ?Coach
+    public function getCoach(): ? Coach
     {
         return $this->coach;
     }
 
-    public function setCoach(?Coach $coach): self
+    public function setCoach(? Coach $coach): self
     {
         $this->coach = $coach;
 

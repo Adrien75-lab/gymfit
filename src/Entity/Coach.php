@@ -8,8 +8,10 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use ApiPlatform\Metadata\ApiResource;
 
 #[ORM\Entity(repositoryClass: CoachRepository::class)]
+#[ApiResource]
 class Coach implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
@@ -21,7 +23,7 @@ class Coach implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $email = null;
 
     #[ORM\Column]
-    private array $roles = [];
+    private array $roles = ['ROLE_COACH'];
 
     /**
      * @var string The hashed password
@@ -34,6 +36,10 @@ class Coach implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(length: 255)]
     private ?string $lastName = null;
+
+    
+
+
 
     #[ORM\OneToMany(mappedBy: 'coach', targetEntity: Member::class)]
     private Collection $members;
@@ -76,8 +82,8 @@ class Coach implements UserInterface, PasswordAuthenticatedUserInterface
     public function getRoles(): array
     {
         $roles = $this->roles;
-        // guarantee every user at least has ROLE_USER
-        $roles[] = 'ROLE_USER';
+        // guarantee every user at least has ROLE_COACH
+        $roles[] = 'ROLE_COACH';
 
         return array_unique($roles);
     }
