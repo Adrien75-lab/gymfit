@@ -10,6 +10,7 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use ApiPlatform\Metadata\ApiResource;
 
+
 #[ORM\Entity(repositoryClass: CoachRepository::class)]
 #[ApiResource]
 class Coach implements UserInterface, PasswordAuthenticatedUserInterface
@@ -37,7 +38,7 @@ class Coach implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 255)]
     private ?string $lastName = null;
 
-    
+
 
 
 
