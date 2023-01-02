@@ -1,6 +1,10 @@
 import React from "react";
 import { ScrollMenu } from "react-horizontal-scrolling-menu";
 import { MdFitnessCenter } from "react-icons/md";
+import { IoFitnessSharp } from "react-icons/md";
+
+
+
 
 const Features = () => {
   const style = { color: "white", fontSize: "3em" };

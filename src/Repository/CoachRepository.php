@@ -55,6 +55,7 @@ class CoachRepository extends ServiceEntityRepository implements PasswordUpgrade
 
         $this->save($user, true);
     }
+    
 
 //    /**
 //     * @return Coach[] Returns an array of Coach objects
@@ -80,4 +81,5 @@ class CoachRepository extends ServiceEntityRepository implements PasswordUpgrade
 //            ->getOneOrNullResult()
 //        ;
 //    }
+
 }

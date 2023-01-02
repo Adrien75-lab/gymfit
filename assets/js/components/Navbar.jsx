@@ -28,7 +28,7 @@ const Navbar = ({ isAuthenticated, onLogout, history }) => {
         <div className="collapse navbar-collapse" id="navbarColor01">
           <ul className="navbar-nav me-auto">
             <li className="nav-item">
-              <NavLink className="nav-link" to="/exercises">
+              <NavLink className="nav-link" to="/exercise">
                 Exercises
               </NavLink>
             </li>
@@ -42,12 +42,12 @@ const Navbar = ({ isAuthenticated, onLogout, history }) => {
           <ul className="navbar-nav ml-auto">
             {(!isAuthenticated && (
               <>
-                <li className="nav-item btn btn-secondary">
+                <li className="nav-item btn btn-secondary first-button">
                   <NavLink className="nav-link" to="/inscriptionMember">
                     Inscription
                   </NavLink>
                 </li>
-                <li className="nav-item btn btn-success">
+                <li className="nav-item btn btn-success second-button">
                   <NavLink className="nav-link" to="/login">
                     Connexion
                   </NavLink>

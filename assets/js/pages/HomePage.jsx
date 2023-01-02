@@ -34,8 +34,7 @@ const HomePage = (props) => {
                 Pour les abonnés
               </h3>
               <p>
-                Prise de rendez-vous avec un coach, évolution de vos séances en
-                fonction de votre coach préféré, vous pouvez également
+                Prise de rendez-vous avec un coach, vous pouvez également
                 télécharger l'application pour faire votre séance.
               </p>
               <Link

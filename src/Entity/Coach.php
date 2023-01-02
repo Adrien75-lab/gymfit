@@ -13,6 +13,7 @@ use ApiPlatform\Metadata\ApiResource;
 
 #[ORM\Entity(repositoryClass: CoachRepository::class)]
 #[ApiResource]
+
 class Coach implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]

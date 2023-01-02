@@ -9,3 +9,7 @@ kernel:
 api_login_check:
     path: /api/login_check
 
+# config/routes.yaml
+customers:
+  path: /customers/{id}
+  controller: App\Controller\CustomersController::show

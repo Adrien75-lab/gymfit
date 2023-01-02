@@ -7,9 +7,15 @@ use App\Repository\MemberRepository;
 use Symfony\Component\Security\Core\User\UserInterface;
 use ApiPlatform\Metadata\ApiResource;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use ApiPlatform\Core\Annotation\ApiFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
+
 
 #[ORM\Entity(repositoryClass: MemberRepository::class)]
 #[ApiResource]
+#[ApiFilter(SearchFilter::class, properties: ['coach' => 'exact'])]
+
+
 
 class Member implements UserInterface, PasswordAuthenticatedUserInterface
 {
@@ -22,7 +28,7 @@ class Member implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $email = null;
 
     #[ORM\Column]
-    private array $roles = [];
+    private array $roles = ['ROLE_USER'];
 
     /**
      * @var string The hashed password

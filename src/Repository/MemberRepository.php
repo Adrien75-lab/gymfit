@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\Coach;
 use App\Entity\Member;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -56,7 +57,7 @@ class MemberRepository extends ServiceEntityRepository implements PasswordUpgrad
         $this->save($user, true);
     }
 
-//    /**
+    //    /**
 //     * @return Member[] Returns an array of Member objects
 //     */
 //    public function findByExampleField($value): array
@@ -71,7 +72,7 @@ class MemberRepository extends ServiceEntityRepository implements PasswordUpgrad
 //        ;
 //    }
 
-//    public function findOneBySomeField($value): ?Member
+    //    public function findOneBySomeField($value): ?Member
 //    {
 //        return $this->createQueryBuilder('m')
 //            ->andWhere('m.exampleField = :val')
@@ -80,4 +81,8 @@ class MemberRepository extends ServiceEntityRepository implements PasswordUpgrad
 //            ->getOneOrNullResult()
 //        ;
 //    }
+    public function findByCoach(int $coachId): array
+    {
+        return $this->findBy(['coach' => $coachId]);
+    }
 }
