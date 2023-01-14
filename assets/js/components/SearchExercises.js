@@ -12,11 +12,12 @@ const SearchExercises = ({ setExercises, bodyPart, setBodyPart }) => {
   useEffect(() => {
     const fetchExercisesData = async () => {
       const bodyPartsData = await fetchData(
-        "https://exercisedb.p.rapidapi.com/exercises/bodyPartList",
-        exerciseOptions
+        "http://localhost:8000/bodypart",
+        
       );
-      console.log(bodyPartsData);
-      setBodyParts(["all", ...bodyPartsData]);
+      const data = bodyPartsData.map(part => part.partie);
+      
+      setBodyParts(["Tous", ...data]);
     };
 
     fetchExercisesData();

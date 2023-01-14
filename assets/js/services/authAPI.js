@@ -7,7 +7,12 @@ function logout() {
 }
 
 function authenticate(credentials) {
-  return Axios.post("http://localhost:8000/api/login_check", credentials)
+  return Axios.post("http://localhost:8000/api/login_check", credentials,{
+    headers: {
+      Accept: "application/json",
+"Content-Type": "application/json",
+    },
+  })
     .then((response) => response.data.token)
     .then((token) => {
       // Je stock le token dans mon localStorage
@@ -24,7 +29,8 @@ function authenticate(credentials) {
 const updateUser = (id, credentials) => {
   return Axios.put(`http://localhost:8000/api/coaches/${id}`, credentials, {
     headers: {
-      "Content-Type": "application/json",
+      Accept: "application/json",
+"Content-Type": "application/json",
     },
   })
     .then((response) => {

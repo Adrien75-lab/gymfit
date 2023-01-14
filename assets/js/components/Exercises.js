@@ -27,6 +27,7 @@ const Exercises = ({ exercises, setExercises, bodyPart }) => {
           `https://exercisedb.p.rapidapi.com/exercises/bodyPart/${bodyPart}`,
           exerciseOptions
         );
+        console.log(exercisesData);
       }
 
       setExercises(exercisesData);
