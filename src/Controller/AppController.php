@@ -28,7 +28,7 @@ class AppController extends AbstractController
         $bodyParts = $this->exercisesRepository->findByParties();
         $partieCorps = $this->partieCorpsRepository->findAll();
 
-        dump($partieCorps);
+        dump($exercises);
         
         return $this->render('app/index.html.twig', []);
     }
