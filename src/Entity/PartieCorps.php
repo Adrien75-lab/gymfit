@@ -11,6 +11,7 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 #[ORM\Entity(repositoryClass: PartieCorpsRepository::class)]
 #[ApiResource]
 #[ApiFilter(SearchFilter::class, properties: ['nom' => 'exact'])]
+#[ApiResource(paginationEnabled: false)]
 class PartieCorps
 {
     #[ORM\Id]
@@ -22,15 +23,13 @@ class PartieCorps
     #[ORM\Column(length: 255)]
     private ?string $nom = null;
 
-    #[ORM\Column(type: "bigint")]
+    #[ORM\Column]
     private ?int $id_exercise = null;
 
     #[ORM\ManyToOne(targetEntity: Exercises::class, inversedBy: "partie_corps")]
+    
     #[ORM\JoinColumn(name: "id_exercise")]
     private ?Exercises $exercises = null;
-
-    
-
 
     public function getId(): ?int
     {

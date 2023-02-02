@@ -1,5 +1,7 @@
 import Axios from "axios";
 import jwtDecode from "jwt-decode";
+import React, { useEffect, useRef, useState,useContext } from "react";
+import { exerciseOptions, fetchData } from "../utils/fetchData";
 
 function logout() {
   window.localStorage.removeItem("authToken");
@@ -27,7 +29,7 @@ function authenticate(credentials) {
 }
 
 const updateUser = (id, credentials) => {
-  return Axios.put(`http://localhost:8000/api/coaches/${id}`, credentials, {
+  return Axios.put(`http://localhost:8000/api/users/${id}`, credentials, {
     headers: {
       Accept: "application/json",
 "Content-Type": "application/json",
@@ -50,6 +52,21 @@ function setAxiosToken(token) {
   Axios.defaults.headers["Authorization"] = "Bearer " + token;
   setInterval(token, 600000);
 }
+function getBodyPart(){
+  const [bodyParts, setBodyParts] = useState([]);
+  useEffect(() => {
+      const fetchExercisesData = async () => {
+        const bodyPartsData = await fetchData("http://localhost:8000/bodypart");
+  
+        const data = bodyPartsData.map((part) => part.partie);
+  
+        setBodyParts(["tous", ...data]);
+      };
+  
+      fetchExercisesData();
+    }, []);
+    return bodyParts;
+}
 
 function setup() {
   // 1 voir si on a un token ?
@@ -70,4 +87,5 @@ export default {
   logout,
   setup,
   updateUser,
+  getBodyPart
 };

@@ -4,3 +4,5 @@ api_platform:
         - '%kernel.project_dir%/src/Entity'
     type: api_platform
     prefix: /api
+    defaults:
+        pagination_enabled: false

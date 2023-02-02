@@ -13,11 +13,8 @@ use Symfony\Component\Validator\Constraints as Assert; // Symfony's built-in con
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 
 #[ORM\Entity(repositoryClass: ExercisesRepository::class)]
-#[ApiResource]
+#[ApiResource(paginationEnabled: false)]
 #[ApiFilter(SearchFilter::class, properties: ['partie' => 'exact'])]
-
-
-
 
 class Exercises
 {
@@ -29,47 +26,36 @@ class Exercises
     #[ORM\Column(length: 171)]
     private ?string $nom = null;
 
-
-    #[ORM\Column]
-    #[Assert\NotBlank]
-    private ?string $cible = '';
-
     #[ORM\Column(length: 255)]
     private ?string $equipement = null;
 
     #[ORM\Column(type: Types::TEXT)]
     private ?string $description = null;
 
+    
     #[ORM\Column]
     private ?\DateTimeImmutable $createdAt = null;
 
     #[ORM\Column]
     private ?\DateTimeImmutable $updatedAt = null;
 
-    #[ORM\Column]
-    private ?string $partie = null;
+
 
     #[ORM\OneToMany(mappedBy: 'exercises', targetEntity: PartieCorps::class)]
-    
+
     private Collection $partie_corps;
+
+    #[ORM\Column(length: 255)]
+    private ?string $partie = null;
+
+    #[ORM\ManyToOne(targetEntity: Workout::class, inversedBy: "exercises")]
+    private  Workout $workout;
 
     public function __construct()
     {
         $this->partie_corps = new ArrayCollection();
+        // $this->workout = null;
     }
-
-    // /**
-    //  * @ORM\Column(type="datetime")
-    //  */
-    // private ?\DateTimeInterface $createdAt;
-    // /**
-    //  * @ORM\Column(type="datetime")
-    //  */
-    // private ?\DateTimeInterface $updatedAt;
-
-
-
-
 
     /**
      * @ORM\PrePersist
@@ -91,22 +77,6 @@ class Exercises
     public function getNom(): ?string
     {
         return $this->nom;
-    }
-
-
-
-
-    public function getCible(array $cible): array
-    {
-        $this->cible = $cible;
-        return array_unique($cible);
-    }
-
-    public function setCible(array $cible): self
-    {
-        $this->cible = $cible;
-
-        return $this;
     }
 
     public function getEquipement(): ?string
@@ -183,6 +153,30 @@ class Exercises
                 $partieCorps->setExercises(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getPartie(): ?string
+    {
+        return $this->partie;
+    }
+
+    public function setPartie(string $partie): self
+    {
+        $this->partie = $partie;
+
+        return $this;
+    }
+
+    public function getWorkout(): ?Workout
+    {
+        return $this->workout;
+    }
+
+    public function setWorkout(?Workout $workout): self
+    {
+        $this->workout = $workout;
 
         return $this;
     }

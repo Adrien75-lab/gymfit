@@ -34,7 +34,7 @@ const Welcome = (props) => {
   const fetchCoach = async (id) => {
     try {
       const data = await Axios.get(
-        "http://localhost:8000/api/coaches/" + id
+        "http://localhost:8000/api/users/" + id
       ).then((response) => response.data);
       const { firstName, lastName } = data;
       setCoach({ firstName, lastName });
@@ -254,7 +254,7 @@ const Welcome = (props) => {
           <button type="button" onClick={() => setIsOpen(true)} class="btn btn-success">Update your profile</button>
         </div>
         <div style={{ display: "flex", flexDirection: "row", justifyContent: "center" }}></div>
-        {isOpen && <ModalProfile id={tokenPayload.id} firstName={coach.firstName} lastName={coach.lastName} updateCoach={updateCoach} setIsOpen={setIsOpen} />}
+        {isOpen && <ModalProfile id={tokenPayload.id} firstName={tokenPayload.firstName} lastName={tokenPayload.lastName} updateCoach={updateCoach} setIsOpen={setIsOpen} />}
       </div>
       {/* Affichez un message d'erreur s'il y en a un */}
       {errorMessage && <p className="error">{errorMessage}</p>}

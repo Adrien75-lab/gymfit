@@ -20,9 +20,7 @@ body {
   outline: none;
   border: none;
   display: flex;
-  justify-content: center;
-  align-items: center;
-  color: #ff2625;
+  background-color: aqua;
   font-size: 25px;
   border-radius: 4px;
   position: absolute;
@@ -60,11 +58,73 @@ body {
   height: 900px;
   margin-top: -330px;
 }
+.fade-in {
+  opacity: 0;
+  animation: fade-in 1s ease-in;
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+.image-button {
+  position: absolute;
+  top: 50%;
+  left: 45%;
+  color: white;
+  padding: 12px 24px;
+}
+
+.img-title {
+  position: absolute;
+  top: 80%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: black;
+  padding: 0.5rem;
+  font-size: 4rem;
+  opacity: 0;
+  transition: opacity 0.5s ease-in-out;
+  text-align: center;
+}
+.text-container {
+  /* margin-right: 180px; */
+  /* text-align: right; */
+  margin-top: 200px;
+  font-size: 1rem;
+}
+.image-button:hover {
+  opacity: 1;
+}
+
+.img-container:hover .img-title {
+  opacity: 1;
+}
+.img-title1 {
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+  padding: 0.5rem;
+  font-size: 3rem;
+  opacity: 0;
+  transition: opacity 0.5s ease-in-out;
+  text-align: center;
+}
+
+.img-container:hover .img-title1 {
+  opacity: 1;
+}
 
 .exercise-card {
   width: 400px;
   height: 445px;
-  background: #fff;
+  background: lightgrey;
   border-top: 4px solid #ff2625;
   border-bottom-left-radius: 20px;
   text-decoration: none;
@@ -263,6 +323,42 @@ body {
 
 .second-button {
   margin-left: 8px;
+}
+
+.menu {
+  background-color: #2c3e50;
+}
+.sub-menu {
+  width: 100%;
+}
+.sub-menu1 {
+  width: 100%;
+}
+.sub-menu2 {
+  background-color: #190ee8;
+  width: 100%;
+}
+.dropdown-custom-1 {
+  background-color: #2c3e50;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  margin-left: 10px;
+  width: auto;
+}
+.dropdownButton {
+  background-color: #185adb;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  margin-left: 10px;
+  width: auto;
 }
 
 @media screen and (max-width: 400px) {

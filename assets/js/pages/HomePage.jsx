@@ -28,7 +28,7 @@ const HomePage = (props) => {
             </div>
           </div>
           <div className="col-md-6 p-0">
-            <div className="card mb-3 d-flex flex-column align-items-end justify-content-center bg-dark text-right text-white py-5 px-5">
+            <div className="card mb-3 d-flex flex-column align-items-end justify-content-center bg-secondary text-right text-white py-5 px-5">
               <i className="flaticon-six-pack"></i>
               <h3 className="display-4 mb-2 text-white font-weight-bold">
                 Pour les abonnés

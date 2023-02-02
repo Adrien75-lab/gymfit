@@ -11,19 +11,20 @@ import Axios from "axios";
 const ModalProfile = ({ setIsOpen, id, lastName, firstName, updateCoach }) => {
 
   console.log(id);
-
+console.log(lastName);
+console.log(firstName);
 
   const [profile, setProfile] = useState({
-    firstName: "",
-    lastName: "",
+    firstName: firstName,
+    lastName: lastName,
   });
   const fetchCoach = async (id) => {
     try {
       const data = await Axios.get(
-        "http://localhost:8000/api/coaches/" + id
+        "http://localhost:8000/api/users/" + id
       ).then((response) => response.data);
       const { lastName, firstName } = data;
-      console.log(data);
+      
       setProfile({ firstName, lastName });
     } catch (error) {
       console.log(error.response);
@@ -34,7 +35,7 @@ const ModalProfile = ({ setIsOpen, id, lastName, firstName, updateCoach }) => {
     event.preventDefault();
     try {
       const response = await Axios.put(
-        "http://localhost:8000/api/coaches/" + id,
+        "http://localhost:8000/api/users/" + id,
         profile
       );
       // Mettre à jour la variable coach avec les nouvelles valeurs de firstName et lastName

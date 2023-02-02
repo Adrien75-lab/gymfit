@@ -14,13 +14,12 @@ const About = () => {
             10 Years Experience
           </h2>
           <p>
-            Labore vero lorem eos sed aliquy ipsum aliquy sed. Vero dolore
-            dolore takima ipsum lorem rebum
+            Ce projet rentre pour le moment dans le cadre de mon cursus.
           </p>
           <div className="row py-2">
             <div className="col-sm-6">
               <i className="flaticon-barbell display-2 text-primary"></i>
-              <h4 className="font-weight-bold">Certified GYM Center</h4>
+              <h4 className="font-weight-bold">Certified GYM A.C</h4>
               <p>Ipsum sanctu dolor ipsum dolore sit et kasd duo</p>
             </div>
             <div className="col-sm-6">

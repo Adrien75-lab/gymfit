@@ -28,7 +28,7 @@ class AppFixtures extends Fixture
         // $manager->persist($product);
         $faker = Factory::create('fr_FR');
         for ($c = 0; $c < 10; $c++) {
-            $coach = new Coach();
+            $coach = new User();
             $password = $this->hasher->hashPassword($coach, 'password');
             $coach->setFirstName($faker->firstName())
                 ->setLastName(
@@ -40,11 +40,12 @@ class AppFixtures extends Fixture
                 ->setPassword(
                     $password
                 )
-                ;
-
+                ->setRoles(
+                    ['ROLE_COACH']
+                );
             $manager->persist($coach);
             for ($m = 0; $m < mt_rand(5, 20); $m++) {
-                $member = new Member();
+                $member = new User();
                 $passwordMember = $this->hasher->hashPassword($member, 'password');
                 $member->setFirstName($faker->firstName())
                     ->setLastName(
@@ -56,12 +57,10 @@ class AppFixtures extends Fixture
                     ->setPassword(
                         $passwordMember
                     )
-                    ->setCoach(
-                        $coach
+                    ->setRoles(
+                        ['ROLE_USER']
                     );
-                ;
                 $manager->persist($member);
-                # code...
             }
         }
 

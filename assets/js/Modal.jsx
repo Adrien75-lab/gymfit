@@ -22,9 +22,13 @@ const Modal = ({ setIsOpen, id }) => {
           </button>
           <div className="modalContent">
             <Typography variant="h6">
-              Exercises keep you strong. {id} {` `}
-              is one of the best exercises to target your {id}. It will help you
-              improve your mood and gain energy.
+              Ici, vous pouvez sauvegarder cet exercice pour votre future séance . <br />
+              Des séances aléatoires vous sont également proposées.
+              
+              <div className="form-actions mt-2">
+                <button  type="submit" className="btn btn-primary first-button">Sauvegarder</button>
+                <button  type="button" onClick={() => setIsOpen(false)} className="btn btn-danger second-button">Revenir aux exercises</button>
+              </div>
             </Typography>
           </div>
         </div>
