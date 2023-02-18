@@ -1,6 +1,5 @@
 // Firebase 9
 import Axios from "axios";
-import axios from "axios";
 import React, { useState, useEffect } from "react";
 import { Link, useHistory, useParams } from "react-router-dom";
 import jwtDecode from "jwt-decode";

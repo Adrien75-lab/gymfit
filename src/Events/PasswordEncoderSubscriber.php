@@ -3,6 +3,7 @@
 namespace App\Events;
 
 use ApiPlatform\Core\EventListener\EventPriorities;
+use ApiPlatform\Symfony\EventListener\EventPriorities as EventPrioritiesAlias;
 use App\Entity\Coach;
 use App\Entity\Member;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
