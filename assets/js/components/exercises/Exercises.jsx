@@ -88,7 +88,7 @@ const Exercises = ({ exercises, setExercises, bodyPart }) => {
       className={`search-exercises ${isMounted ? "fade-in" : ""}`}
     >
 
-    <Box id="exercises" sx={{ mt: { lg: "110px" } }} mt="50px" p="20px">
+    <Box id="exercises" sx={{ mt: { lg: "110px" } ,xs: 4, md: 4 }}   mt="50px" p="20px">
       <Typography variant="h3" mb="46px">
         Afficher les résultats
       </Typography>
@@ -102,7 +102,7 @@ const Exercises = ({ exercises, setExercises, bodyPart }) => {
           <ExerciseCard key={index} exercise={exercise} />
         ))}
       </Stack>
-      <Stack mt="100px" alignItems="center">
+      <Stack mt="100px" alignItems="center" >
         {exercises.length > 9 && (
           <Pagination
             color="primary"
@@ -112,6 +112,7 @@ const Exercises = ({ exercises, setExercises, bodyPart }) => {
             page={currentPage}
             onChange={paginate}
             size="large"
+            
           />
         )}
       </Stack>

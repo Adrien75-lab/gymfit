@@ -1,6 +1,6 @@
 import Axios from "axios";
 import jwtDecode from "jwt-decode";
-import React, { useEffect, useRef, useState,useContext } from "react";
+import React, { useEffect, useRef, useState, useContext } from "react";
 import { exerciseOptions, fetchData } from "../utils/fetchData";
 
 function logout() {
@@ -9,10 +9,10 @@ function logout() {
 }
 
 function authenticate(credentials) {
-  return Axios.post("http://localhost:8000/api/login_check", credentials,{
+  return Axios.post("http://localhost:8000/api/login_check", credentials, {
     headers: {
       Accept: "application/json",
-"Content-Type": "application/json",
+      "Content-Type": "application/json",
     },
   })
     .then((response) => response.data.token)
@@ -32,7 +32,7 @@ const updateUser = (id, credentials) => {
   return Axios.put(`http://localhost:8000/api/users/${id}`, credentials, {
     headers: {
       Accept: "application/json",
-"Content-Type": "application/json",
+      "Content-Type": "application/json",
     },
   })
     .then((response) => {
@@ -52,20 +52,20 @@ function setAxiosToken(token) {
   Axios.defaults.headers["Authorization"] = "Bearer " + token;
   setInterval(token, 600000);
 }
-function getBodyPart(){
+function getBodyPart() {
   const [bodyParts, setBodyParts] = useState([]);
   useEffect(() => {
-      const fetchExercisesData = async () => {
-        const bodyPartsData = await fetchData("http://localhost:8000/bodypart");
-  
-        const data = bodyPartsData.map((part) => part.partie);
-  
-        setBodyParts(["tous", ...data]);
-      };
-  
-      fetchExercisesData();
-    }, []);
-    return bodyParts;
+    const fetchExercisesData = async () => {
+      const bodyPartsData = await fetchData("http://localhost:8000/bodypart");
+
+      const data = bodyPartsData.map((part) => part.partie);
+
+      setBodyParts(["tous", ...data]);
+    };
+
+    fetchExercisesData();
+  }, []);
+  return bodyParts;
 }
 
 function setup() {
@@ -81,11 +81,25 @@ function setup() {
     }
   }
 }
+function isAuthenticated() {
+  const token = window.localStorage.getItem("authToken");
+  if (token) {
+    const { exp: expiration } = jwtDecode(token);
+
+    if ((expiration * 1000, new Date().getTime())) {
+      return true;
+    }
+    return false;
+  }
+  return false;
+}
 
 export default {
   authenticate,
+  isAuthenticated,
   logout,
   setup,
   updateUser,
-  getBodyPart
+  getBodyPart,
+  
 };

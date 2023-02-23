@@ -7,11 +7,18 @@ import jwtDecode from "jwt-decode";
 import authAPI from "../services/authAPI";
 import ModalProfile from "../ModalProfile";
 import TextField from '@mui/material/TextField';
+import { Button, Slider } from "@mui/material";
+
 
 // // let token = window.localStorage.getItem("authToken");
 // let tokenPayload = jwtDecode(token);
 
-const Welcome = (props) => {
+const Welcome = () => {
+  const [isVisible, setIsVisible] = useState(false);
+  // console.log(tokenPayload);
+
+
+
   const [isOpen, setIsOpen] = useState(false);
   const { id = "new" } = useParams();
   if (id !== "new") {
@@ -21,10 +28,10 @@ const Welcome = (props) => {
     firstName: "",
     lastName: "",
   });
-  console.log(coach);
+  // console.log(coach);
 
   const updateCoach = (newCoach) => {
-    console.log(newCoach);
+    // console.log(newCoach);
     setCoach(newCoach);
     localStorage.setItem('coach', JSON.stringify(newCoach));
   };
@@ -36,8 +43,9 @@ const Welcome = (props) => {
       const data = await Axios.get(
         "http://localhost:8000/api/users/" + id
       ).then((response) => response.data);
-      const { firstName, lastName } = data;
-      setCoach({ firstName, lastName });
+      const { firstName, lastName, age, weight, calories } = data;
+      console.log(data);
+      setCoach({ firstName, lastName, age, weight, calories });
     } catch (error) {
       console.log(error.response);
     }
@@ -47,15 +55,19 @@ const Welcome = (props) => {
     if (id !== "new") {
       setEditing(true);
       fetchCoach(id);
-      const { firstName, lastName } = data; // Destructure the firstName and lastName variables from the data object
-      setCoach({ firstName, lastName }); // Update the coach state variable with the new values
+      const { firstName, lastName, age, weight, calories } = data;
+     // console.log(data); // Destructure the firstName and lastName variables from the data object
+      setCoach({ firstName, lastName, age, weight, calories }); // Update the coach state variable with the new values
     } else {
       const coachData = localStorage.getItem('coach');
+
       if (coachData) {
         setCoach(JSON.parse(coachData));
+        //console.log(coachData)
       }
     }
   }, [id]);
+  
 
 
 
@@ -93,22 +105,22 @@ const Welcome = (props) => {
     }
   }, []);
   // useEffect(() => {
-  //   console.log("selectedImageDataUrl:", selectedImageDataUrl);
+  //   // console.log("selectedImageDataUrl:", selectedImageDataUrl);
   // }, [selectedImageDataUrl]);
 
-  // function authenticateProfile() {
-  //   // Check if the authToken item is present in the local storage
-  //   let authToken = window.localStorage.getItem("authToken");
-  //   let tokenPayload = jwtDecode(authToken);
-  //   console.log(tokenPayload);
+  function authenticateProfile() {
+    // Check if the authToken item is present in the local storage
+    let authToken = window.localStorage.getItem("authToken");
+    let tokenPayload = jwtDecode(authToken);
+    console.log(tokenPayload.age);
 
-  //   if (!authToken) {
-  //     // If the authToken is not present, redirect the user to the login page
-  //     window.localStorage.setItem("authToken", token);
-  //     return;
-  //   }
-  // }
-  // window.addEventListener("load", authenticateProfile);
+    if (!authToken) {
+      // If the authToken is not present, redirect the user to the login page
+      window.localStorage.setItem("authToken", token);
+      return;
+    }
+  }
+  window.addEventListener("load", authenticateProfile);
   let authToken = window.localStorage.getItem("authToken");
   let tokenPayload = jwtDecode(authToken);
   const handleSave = () => {
@@ -153,60 +165,176 @@ const Welcome = (props) => {
     };
     reader.readAsDataURL(file);
   };
+  const [age, setAge] = useState(18);
+  const [weight, setWeight] = useState(0);
+  const [objectifs, setObjectifs] = useState(0);
+  const [calories, setCalories] = useState(0);
+
+  const handleChangeAge = (event, newValue) => {
+    setAge(newValue);
+
+  };
+  
+  
+  
+  const handleChangeWeight = (event, newValue) => {
+    setWeight(newValue);
+  };
+  const handleChangeObjectifs = (event, newValue) => {
+    setObjectifs(newValue);
+  };
+  const handleChangeCalories = (event, newValue) => {
+    setCalories(newValue);
+  };
 
 
   return (
     <>
-      <div className="container w-50">
-        <nav>
-          <form className="container-fluid justify-content-center">
-            <Link style={{ marginRight: "1rem" }}
-              to="/programmerSeance"
-              className="btn btn-primary active"
-              role="button"
-              data-bs-toggle="button"
-              aria-current="page"
-            >
-              Programmer une séance
-            </Link>
 
-            <Link style={{ marginRight: "1rem" }}
-              to="/VoirSonPlanning"
-              className="btn btn-primary "
-              role="button"
-              data-bs-toggle="button"
-              aria-pressed="true"
-            >
-              Voir son planning
-            </Link>
-            <Link style={{ marginRight: "1rem" }}
-              to="/customers"
-              class="btn btn-primary"
-              aria-disabled="true"
-              role="button"
-              data-bs-toggle="button"
-            >
-              Voir ses abonnés
-            </Link>
-          </form>
+      <div className="container w-50" style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
+
+        <nav class="container-fluid">
+          <div class="row">
+            <div class="col-md-4">
+              <Link
+                to="/programmerSeance"
+                className="btn btn-primary active"
+                role="button"
+                data-bs-toggle="button"
+                aria-pressed="true"
+              >
+                Créer une séance
+              </Link>
+            </div>
+            <div class="col-md-4">
+              <Link
+                to="/VoirSonPlanning"
+                className="btn btn-primary"
+                role="button"
+                data-bs-toggle="button"
+                aria-pressed="true"
+              >
+                Voir son planning
+              </Link>
+            </div>
+            <div class="col-md-4">
+              <Link
+                to="/customers"
+                class="btn btn-primary"
+                aria-disabled="true"
+                role="button"
+                data-bs-toggle="button"
+              >
+                Voir ses abonnés
+              </Link>
+            </div>
+          </div>
         </nav>
       </div>
-      <div className="container w-50"></div>
-      {(!editing && <h2 className="text-center my-3">Your profile</h2>) || (
-        <h2 className="text-center my-3">Editing your profile</h2>
-      )}
 
-      <div className="container w-50">
+      {/* {(!editing && <h2 className="text-center my-3">Tableau de bord</h2>) || (
+        <h2 className="text-center my-3">Editez votre profil</h2>
+      )} */}
 
-        <div className="mt-5" style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
-          <div class="form-group" >
-            <label for="formFile" class="form-label">Choose your picture profile :</label>
-            <input class="form-control" onChange={handleFileChange} type="file" id="formFile" accept="image/*" />
+      {/* <div className="mt-5" style={{ display: "flex", alignItems: "center", justifyContent: "center", paddingLeft: "50px" }}>
+        <h1>Tableau de bord</h1>
+      </div> */}
+      <div className="mt-5" style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
+        <h1 className="my-component-title">Bienvenue {tokenPayload.firstName}, ici tu peux configurer ton profil pour tes prochaines séances. </h1>
+      </div>
+
+      <div className="container mt-5">
+        <div className="row">
+          <div className="col-md-3">
+            <div className="tile-container">
+
+              <div className="image-container">
+                <img src="https://res.cloudinary.com/glide/image/fetch/f_auto,w_150,h_150,c_lfill/https%3A%2F%2Fstorage.googleapis.com%2Fglide-prod.appspot.com%2Fuploads-v2%2FrKHwzU5y7IDSLkW4XHwB%2Fpub%2Ftk2uAzm2Ma1ThpdaaB6e.png" className="sc-bqyKva XCdxT sc-dWrNqi kURnQM" draggable="false" />
+              </div>
+              <div className="tile-overlay">
+                <div className="tile-corner-container"></div>
+                <div className="tile-corner-container"></div>
+              </div>
+
+              <div className="tile-text-container">
+                <div className="tile-title" data-test="tile-item-title">Age</div>
+                <Slider value={age} onChange={handleChangeAge} aria-labelledby="continuous-slider" />
+                <div className="tile-subtitle" data-test="tile-item-title">{age} ans</div>
+                <Button variant="contained" color="primary" onClick={handleChangeAge}>
+                  Enregistrer
+                </Button>
+              </div>
+            </div>
+          </div>
+          <div className="col-md-3">
+            <div className="tile-container">
+              <div className="image-container">
+                <img src="https://res.cloudinary.com/glide/image/fetch/f_auto,w_150,h_150,c_lfill/https%3A%2F%2Fstorage.googleapis.com%2Fglide-prod.appspot.com%2Fuploads-v2%2FrKHwzU5y7IDSLkW4XHwB%2Fpub%2FuZ4LV1XDHWKKXQ7kriGT.png" className="sc-bqyKva XCdxT sc-dWrNqi kURnQM" />
+                <div className="tile-overlay">
+                  <div className="tile-corner-container"></div>
+                  <div className="tile-corner-container"></div>
+                </div>
+              </div>
+              <div className="tile-text-container">
+                <div className="tile-title" data-test="tile-item-title">Poids</div>
+                <Slider value={weight} onChange={handleChangeWeight} aria-labelledby="continuous-slider" max={200} />
+                <div className="tile-subtitle" data-test="tile-item-title"> {weight}/kg</div>
+              </div>
+            </div>
+          </div>
+          <div className="col-md-3">
+            <div className="tile-container">
+              <div className="image-container">
+                <img src="https://res.cloudinary.com/glide/image/fetch/f_auto,w_150,h_150,c_lfill/https%3A%2F%2Fstorage.googleapis.com%2Fglide-prod.appspot.com%2Fuploads-v2%2FrKHwzU5y7IDSLkW4XHwB%2Fpub%2F5gJBFJd5uMnQkTJ1Rll7.png" />
+                <div className="tile-overlay">
+                  <div className="tile-corner-container"></div>
+                  <div className="tile-corner-container"></div>
+                </div>
+              </div>
+              <div className="tile-text-container">
+                <div className="tile-title" data-test="tile-item-title">Objectifs</div>
+                <Slider value={objectifs} onChange={handleChangeObjectifs} aria-labelledby="continuous-slider" max={7} />
+                <div className="tile-subtitle" data-test="tile-item-title"> {objectifs}/7 jours</div>
+              </div>
+            </div>
+          </div>
+          <div className="col-md-3">
+            <div className="tile-container">
+              <div className="image-container">
+                <img src="https://res.cloudinary.com/glide/image/fetch/f_auto,w_150,h_150,c_lfill/https%3A%2F%2Fstorage.googleapis.com%2Fglide-prod.appspot.com%2Fuploads-v2%2FrKHwzU5y7IDSLkW4XHwB%2Fpub%2FLt0K4kXVF0TUtFUSjFFW.png" />
+                <div className="tile-overlay">
+                  <div className="tile-corner-container"></div>
+                  <div className="tile-corner-container"></div>
+                </div>
+              </div>
+              <div className="tile-text-container">
+                <div className="tile-title" data-test="tile-item-title">Calories</div>
+                <Slider value={calories} onChange={handleChangeCalories} aria-labelledby="continuous-slider" max={3000} />
+                <div className="tile-subtitle" data-test="tile-item-title"> {calories} /kcal</div>
+              </div>
+            </div>
           </div>
         </div>
-        <div>
-          {/* <label htmlFor="lastName">Choose your picture :</label>
-            <input type="file" onChange={handleFileChange} accept="image/*" /> */}
+      </div>
+
+
+
+
+
+      {/* <div className="container w-50"> */}
+
+
+      {/* 
+      <div className="mt-5" style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
+
+        <div class="form-group" >
+          <label for="formFile" class="form-label">Choisis ta photo de profil :</label>
+          <input class="form-control" onChange={handleFileChange} type="file" id="formFile" accept="image/*" />
+        </div>
+      </div> */}
+      {/* <div> */}
+      {/* <label htmlFor="lastName">Choose your picture :</label>
+            <input type="file" onChange={handleFileChange} accept="image/*" />
 
           <div style={{ position: "absolute", top: 150, left: 10 }}>
             {selectedImageDataUrl && (
@@ -231,14 +359,14 @@ const Welcome = (props) => {
               </div>
             )}
           </div>
-        </div>
-        <div>
+        {/* </div> */}
+      {/* <div>
 
         </div>
         {errorMessage && (
           <div className="alert alert-danger">{errorMessage}</div>
-        )}
-        <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
+        )} */}
+      {/* <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
           <div style={{ display: "flex", flexDirection: "row", justifyContent: "center" }}>
             <div style={{ marginRight: "1rem" }}>
               <h3>Prénom</h3>
@@ -249,17 +377,17 @@ const Welcome = (props) => {
               <p>{coach.lastName}</p>
             </div>
           </div>
-        </div>
-        <div className="mt-5" style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
+        </div> */}
+      {/* <div className="mt-5" style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
           <button type="button" onClick={() => setIsOpen(true)} class="btn btn-success">Update your profile</button>
-        </div>
-        <div style={{ display: "flex", flexDirection: "row", justifyContent: "center" }}></div>
-        {isOpen && <ModalProfile id={tokenPayload.id} firstName={tokenPayload.firstName} lastName={tokenPayload.lastName} updateCoach={updateCoach} setIsOpen={setIsOpen} />}
-      </div>
+        </div> */}
+      {/* <div style={{ display: "flex", flexDirection: "row", justifyContent: "center" }}></div>
+        {isOpen && <ModalProfile id={tokenPayload.id} firstName={tokenPayload.firstName} lastName={tokenPayload.lastName} updateCoach={updateCoach} setIsOpen={setIsOpen} />} */}
+      {/* </div> */}
       {/* Affichez un message d'erreur s'il y en a un */}
-      {errorMessage && <p className="error">{errorMessage}</p>}
+      {/* {errorMessage && <p className="error">{errorMessage}</p>} */}
       {/* Affichez un message de réussite s'il y en a un */}
-      {successMessage && <p className="success">{successMessage}</p>}
+      {/* {successMessage && <p className="success">{successMessage}</p>} */}
       {/* <div className="container w-50">
         <form onSubmit={handleSubmit}>
           <label htmlFor="firstName">Prénom :</label>
@@ -283,6 +411,7 @@ const Welcome = (props) => {
           <button type="submit">Mettre à jour</button>
         </form>
       </div> */}
+
     </>
   );
 };
@@ -297,3 +426,4 @@ const Welcome = (props) => {
 // };
 
 export default Welcome;
+

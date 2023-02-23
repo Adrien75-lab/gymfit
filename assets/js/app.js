@@ -31,7 +31,9 @@ authAPI.setup();
 console.log("Hello Adrien");
 
 const App = () => {
-  const [isAuthenticated, setIsAuthenticated] = useState(true);
+  const [isAuthenticated, setIsAuthenticated, history] = useState(
+    authAPI.isAuthenticated()
+  );
   const NavbarWithRouter = withRouter(Navbar);
   const [isOpen, setIsOpen] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
@@ -85,7 +87,11 @@ const App = () => {
             <Route
               path="/profil"
               render={(props) => (
-                <ProfilPage onLogin={setIsAuthenticated} {...props} />
+                <ProfilPage
+                  isAuthenticated={isAuthenticated}
+                  onLogin={setIsAuthenticated}
+                  {...props}
+                />
               )}
             />
 

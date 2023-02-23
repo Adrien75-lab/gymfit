@@ -1,0 +1,13 @@
+DROP INDEX `primary` ON workout_exercises;
+ALTER TABLE workout_exercises DROP repetition, DROP serie, CHANGE workout_id workout_id INT NOT NULL, CHANGE exercise_id exercise_id INT DEFAULT NULL;
+ALTER TABLE workout_exercises ADD PRIMARY KEY (workout_id);
+ALTER TABLE workout_exercises RENAME INDEX workout_exercise_ibfk_2 TO IDX_2D7B2EC5E934951A;
+ALTER TABLE exercises DROP cible, CHANGE id id INT AUTO_INCREMENT NOT NULL, CHANGE partie partie VARCHAR(255) NOT NULL, CHANGE description description LONGTEXT NOT NULL, CHANGE created_at created_at DATETIME NOT NULL COMMENT '(DC2Type:datetime_immutable)', CHANGE updated_at updated_at DATETIME NOT NULL COMMENT '(DC2Type:datetime_immutable)';
+ALTER TABLE exercises ADD CONSTRAINT FK_FA14991A6CCCFC9 FOREIGN KEY (workout_id) REFERENCES workout (id);
+CREATE INDEX IDX_FA14991A6CCCFC9 ON exercises (workout_id);
+ALTER TABLE partie_corps CHANGE id id INT AUTO_INCREMENT NOT NULL, CHANGE id_exercise id_exercise INT NOT NULL, CHANGE nom nom VARCHAR(255) NOT NULL;
+ALTER TABLE partie_corps RENAME INDEX id_exercise TO IDX_7655A469FE013989;
+ALTER TABLE user DROP FOREIGN KEY FK_8D93D6493C105691;
+DROP INDEX IDX_8D93D6493C105691 ON user;
+ALTER TABLE user DROP coach_id;
+ALTER TABLE workout DROP cible, DROP created_at, DROP updated_at, CHANGE id id INT AUTO_INCREMENT NOT NULL, CHANGE nom nom VARCHAR(255) DEFAULT NULL;

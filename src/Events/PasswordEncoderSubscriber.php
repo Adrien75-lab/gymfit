@@ -5,6 +5,7 @@ namespace App\Events;
 use ApiPlatform\Core\EventListener\EventPriorities;
 use App\Entity\Coach;
 use App\Entity\Member;
+use App\Entity\User;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\ViewEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
@@ -26,20 +27,17 @@ class PasswordEncoderSubscriber implements EventSubscriberInterface
 
 
     }
-    public function encodePassword(ViewEvent $event)
-    {
-        $coach = $event->getControllerResult();
+    public function encodePassword(ViewEvent $event):void {
+        $user = $event->getControllerResult();
+        
         $method = $event->getRequest()->getMethod();
+        if($user instanceof User && $method === "POST"){
+            $hash = $this->encoder->hashPassword($user, $user->getPassword());
+            $user->setPassword($hash);
+           
 
-        $member = $event->getControllerResult();
-        $method = $event->getRequest()->getMethod();
 
-        if ($coach instanceof Coach && $method === "POST") {
-            $hash = $this->encoder->hashPassword($coach, $coach->getPassword());
-            $coach->setPassword($hash);
-        } elseif ($member instanceof Member && $method === "POST") {
-            $hash = $this->encoder->hashPassword($member, $member->getPassword());
-            $member->setPassword($hash);
+
         }
 
     }

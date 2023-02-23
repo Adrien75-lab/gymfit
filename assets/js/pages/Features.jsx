@@ -28,7 +28,7 @@ const Features = () => {
         </div>
       </div>
       <div
-        className="d-flex align-items-center bg-dark text-white px-5"
+        className="d-flex align-items-center bg-Secondary text-white px-5"
         style={{ minHeight: 300 }}
       >
         <div className="">

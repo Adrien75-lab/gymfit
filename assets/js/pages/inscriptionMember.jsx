@@ -3,9 +3,11 @@ import React, { useState, Component } from "react";
 import { render } from "react-dom";
 import { Route } from "react-router-dom";
 import { toast } from "react-toastify";
+import FacebookLogin from 'react-facebook-login';
 
 
-const inscriptionMember = () => {
+
+const inscriptionMember = ({ history }) => {
   //   const data = {
   //     pseudo: "",
   //     email: "",
@@ -20,6 +22,13 @@ const inscriptionMember = () => {
     password: "",
     confirmPassword: "",
   });
+  // Login Facebook
+  const [userData, setUserData] = useState({});
+  const responseFacebook = (response) => {
+    console.log(response);
+    setUserData(response);
+    toast.success("Bienvenue a toi " + userData.name);
+  };
 
   const [error, setError] = useState("");
 
@@ -35,13 +44,23 @@ const inscriptionMember = () => {
       return;
     }
 
+    if (user.password.length < 6) {
+      setError("Le mot est de passe est trop court ! Minimum 6 caractères");
+      return;
+    }
+
+
+
     try {
       const response = await Axios.post(
-        "http://localhost:8000/api/members",
+        "http://localhost:8000/api/users",
         user
       );
       console.log(response);
+
+      history.push("/");
       toast.success("Bienvenue a toi " + user.firstName);
+
     } catch (error) {
       const { violations } = error.response.data;
       if (violations) {
@@ -51,6 +70,7 @@ const inscriptionMember = () => {
         setErrors(apiErrors);
       }
     }
+    
   };
 
   return (
@@ -126,10 +146,20 @@ const inscriptionMember = () => {
             />
             {error && <p className="invalid-feedback">{error}</p>}
           </div>
+          <div className="d-flex justify-content-between mt-2"></div>
           <button type="submit" className="btn btn-primary mt-2">
             Inscription
           </button>
         </form>
+        <FacebookLogin
+          appId="1231627447751070"
+          fields="name,email,picture"
+          onClick={responseFacebook}
+          callback={responseFacebook}
+          cssClass="btn btn-secondary mt-2"
+          icon="fa-facebook"
+        />
+
       </div>
     </>
   );

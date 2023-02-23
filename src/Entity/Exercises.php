@@ -32,14 +32,11 @@ class Exercises
     #[ORM\Column(type: Types::TEXT)]
     private ?string $description = null;
 
-    
     #[ORM\Column]
     private ?\DateTimeImmutable $createdAt = null;
 
     #[ORM\Column]
     private ?\DateTimeImmutable $updatedAt = null;
-
-
 
     #[ORM\OneToMany(mappedBy: 'exercises', targetEntity: PartieCorps::class)]
 

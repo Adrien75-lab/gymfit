@@ -6,6 +6,7 @@ import Dropdown from 'react-bootstrap/Dropdown';
 import DropdownButton from 'react-bootstrap/DropdownButton';
 import SearchExercises from "./SearchExercises";
 import { exerciseOptions, fetchData } from "../utils/fetchData";
+import AccountMenu from "./ui/button/AccountMenu";
 
 function strUcFirst(a) { return (a + '').charAt(0).toUpperCase() + a.substr(1); }
 
@@ -36,7 +37,7 @@ const Navbar = ({ isAuthenticated, onLogout, history }) => {
     <nav className="navbar navbar-expand-lg navbar-dark bg-primary">
       <div className="container-fluid">
         <NavLink className="navbar-brand" to="/">
-          ACFit !
+          GymFit ! 
         </NavLink>
         <button
           className="navbar-toggler"
@@ -178,11 +179,12 @@ const Navbar = ({ isAuthenticated, onLogout, history }) => {
                 </li>
               </>
             )) || (
-                <li className="nav-item ">
-                  <button onClick={handleLogout} className="btn btn-danger">
-                    Déconnexion
-                  </button>
-                </li>
+                // <li className="nav-item ">
+                //   <button  className="btn btn-secondary">
+                //     Déconnexion
+                //   </button>
+                // </li>
+                <AccountMenu onLogout={handleLogout} />
               )}
             <></>
           </ul>

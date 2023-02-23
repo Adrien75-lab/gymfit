@@ -1,6 +1,53 @@
 body {
-  font-family: "Josefin Sans";
+  font-family: 'Lobster', cursive;
   background-color: #fffafb;
+}
+nav {
+  height: 83px;
+}
+button.btn,
+.btn-primary {
+  display: inline-block;
+  float: left;
+  margin-right: 10px;
+}
+
+.my-component-title {
+  font-size: 24px;
+  color: white;
+  margin-bottom: 10px;
+}
+.tile-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.image-container {
+  position: relative;
+  background: #ffffff;
+  border: 1px solid #cccccc;
+  border-radius: 20px;
+  padding: 20px;
+  width: 300px;
+  max-width: 100%;
+}
+
+.image-container:after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 0;
+  border-top: 20px solid #ffffff;
+  border-left: 20px solid transparent;
+  border-right: 20px solid transparent;
+}
+
+.sc-bqyKva {
+  display: block;
 }
 
 * {
