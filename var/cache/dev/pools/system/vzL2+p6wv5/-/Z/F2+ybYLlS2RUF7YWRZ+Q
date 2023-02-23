@@ -1,0 +1,671 @@
+<?php //resource_metadata_collection_8f028bc3f0e25ba33a9298a13f5bec09
+
+return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\Internal\Hydrator::hydrate(
+    $o = [
+        clone (($p = &\Symfony\Component\VarExporter\Internal\Registry::$prototypes)['ApiPlatform\\Metadata\\ApiResource'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('ApiPlatform\\Metadata\\ApiResource')),
+        clone ($p['ApiPlatform\\Metadata\\Operations'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('ApiPlatform\\Metadata\\Operations')),
+        clone ($p['ApiPlatform\\Metadata\\Get'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('ApiPlatform\\Metadata\\Get')),
+        clone ($p['ApiPlatform\\Metadata\\Link'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('ApiPlatform\\Metadata\\Link')),
+        clone ($p['ApiPlatform\\Metadata\\GetCollection'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('ApiPlatform\\Metadata\\GetCollection')),
+        clone ($p['ApiPlatform\\Metadata\\Post'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('ApiPlatform\\Metadata\\Post')),
+        clone ($p['ApiPlatform\\Metadata\\Put'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('ApiPlatform\\Metadata\\Put')),
+        clone $p['ApiPlatform\\Metadata\\Link'],
+        clone ($p['ApiPlatform\\Metadata\\Patch'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('ApiPlatform\\Metadata\\Patch')),
+        clone $p['ApiPlatform\\Metadata\\Link'],
+        clone ($p['ApiPlatform\\Metadata\\Delete'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('ApiPlatform\\Metadata\\Delete')),
+        clone $p['ApiPlatform\\Metadata\\Link'],
+        clone $p['ApiPlatform\\Metadata\\Link'],
+        clone $p['ApiPlatform\\Metadata\\ApiResource'],
+        clone $p['ApiPlatform\\Metadata\\Operations'],
+        clone $p['ApiPlatform\\Metadata\\Get'],
+        clone $p['ApiPlatform\\Metadata\\Link'],
+        clone $p['ApiPlatform\\Metadata\\GetCollection'],
+        clone $p['ApiPlatform\\Metadata\\Post'],
+        clone $p['ApiPlatform\\Metadata\\Put'],
+        clone $p['ApiPlatform\\Metadata\\Link'],
+        clone $p['ApiPlatform\\Metadata\\Patch'],
+        clone $p['ApiPlatform\\Metadata\\Link'],
+        clone $p['ApiPlatform\\Metadata\\Delete'],
+        clone $p['ApiPlatform\\Metadata\\Link'],
+        clone $p['ApiPlatform\\Metadata\\Link'],
+    ],
+    null,
+    [
+        'ApiPlatform\\Metadata\\ApiResource' => [
+            'operations' => [
+                $o[1],
+                13 => $o[14],
+            ],
+            'shortName' => [
+                'PartieCorps',
+                13 => 'PartieCorps',
+            ],
+            'uriVariables' => [
+                [
+                    'id' => $o[12],
+                ],
+                13 => [
+                    'id' => $o[25],
+                ],
+            ],
+            'class' => [
+                'App\\Entity\\PartieCorps',
+                13 => 'App\\Entity\\PartieCorps',
+            ],
+            'graphQlOperations' => [
+                [],
+                13 => [],
+            ],
+            'extraProperties' => [
+                [],
+                13 => [
+                    'is_alternate_resource_metadata' => true,
+                ],
+            ],
+            'paginationEnabled' => [
+                13 => false,
+            ],
+        ],
+        'ApiPlatform\\Metadata\\Operations' => [
+            'operations' => [
+                1 => [
+                    [
+                        '_api_/partie_corps/{id}.{_format}_get',
+                        $o[2],
+                    ],
+                    [
+                        '_api_/partie_corps.{_format}_get_collection',
+                        $o[4],
+                    ],
+                    [
+                        '_api_/partie_corps.{_format}_post',
+                        $o[5],
+                    ],
+                    [
+                        '_api_/partie_corps/{id}.{_format}_put',
+                        $o[6],
+                    ],
+                    [
+                        '_api_/partie_corps/{id}.{_format}_patch',
+                        $o[8],
+                    ],
+                    [
+                        '_api_/partie_corps/{id}.{_format}_delete',
+                        $o[10],
+                    ],
+                ],
+                14 => [
+                    [
+                        '_api_/partie_corps/{id}.{_format}_get',
+                        $o[15],
+                    ],
+                    [
+                        '_api_/partie_corps.{_format}_get_collection',
+                        $o[17],
+                    ],
+                    [
+                        '_api_/partie_corps.{_format}_post',
+                        $o[18],
+                    ],
+                    [
+                        '_api_/partie_corps/{id}.{_format}_put',
+                        $o[19],
+                    ],
+                    [
+                        '_api_/partie_corps/{id}.{_format}_patch',
+                        $o[21],
+                    ],
+                    [
+                        '_api_/partie_corps/{id}.{_format}_delete',
+                        $o[23],
+                    ],
+                ],
+            ],
+        ],
+        'ApiPlatform\\Metadata\\Operation' => [
+            'shortName' => [
+                2 => 'PartieCorps',
+                4 => 'PartieCorps',
+                'PartieCorps',
+                'PartieCorps',
+                8 => 'PartieCorps',
+                10 => 'PartieCorps',
+                15 => 'PartieCorps',
+                17 => 'PartieCorps',
+                'PartieCorps',
+                'PartieCorps',
+                21 => 'PartieCorps',
+                23 => 'PartieCorps',
+            ],
+            'class' => [
+                2 => 'App\\Entity\\PartieCorps',
+                4 => 'App\\Entity\\PartieCorps',
+                'App\\Entity\\PartieCorps',
+                'App\\Entity\\PartieCorps',
+                8 => 'App\\Entity\\PartieCorps',
+                10 => 'App\\Entity\\PartieCorps',
+                15 => 'App\\Entity\\PartieCorps',
+                17 => 'App\\Entity\\PartieCorps',
+                'App\\Entity\\PartieCorps',
+                'App\\Entity\\PartieCorps',
+                21 => 'App\\Entity\\PartieCorps',
+                23 => 'App\\Entity\\PartieCorps',
+            ],
+            'filters' => [
+                2 => [
+                    'annotated_app_entity_partie_corps_api_platform_core_bridge_doctrine_orm_filter_search_filter',
+                ],
+                4 => [
+                    'annotated_app_entity_partie_corps_api_platform_core_bridge_doctrine_orm_filter_search_filter',
+                ],
+                [
+                    'annotated_app_entity_partie_corps_api_platform_core_bridge_doctrine_orm_filter_search_filter',
+                ],
+                [
+                    'annotated_app_entity_partie_corps_api_platform_core_bridge_doctrine_orm_filter_search_filter',
+                ],
+                8 => [
+                    'annotated_app_entity_partie_corps_api_platform_core_bridge_doctrine_orm_filter_search_filter',
+                ],
+                10 => [
+                    'annotated_app_entity_partie_corps_api_platform_core_bridge_doctrine_orm_filter_search_filter',
+                ],
+                15 => [
+                    'annotated_app_entity_partie_corps_api_platform_core_bridge_doctrine_orm_filter_search_filter',
+                ],
+                17 => [
+                    'annotated_app_entity_partie_corps_api_platform_core_bridge_doctrine_orm_filter_search_filter',
+                ],
+                [
+                    'annotated_app_entity_partie_corps_api_platform_core_bridge_doctrine_orm_filter_search_filter',
+                ],
+                [
+                    'annotated_app_entity_partie_corps_api_platform_core_bridge_doctrine_orm_filter_search_filter',
+                ],
+                21 => [
+                    'annotated_app_entity_partie_corps_api_platform_core_bridge_doctrine_orm_filter_search_filter',
+                ],
+                23 => [
+                    'annotated_app_entity_partie_corps_api_platform_core_bridge_doctrine_orm_filter_search_filter',
+                ],
+            ],
+            'name' => [
+                2 => '_api_/partie_corps/{id}.{_format}_get',
+                4 => '_api_/partie_corps.{_format}_get_collection',
+                '_api_/partie_corps.{_format}_post',
+                '_api_/partie_corps/{id}.{_format}_put',
+                8 => '_api_/partie_corps/{id}.{_format}_patch',
+                10 => '_api_/partie_corps/{id}.{_format}_delete',
+                15 => '_api_/partie_corps/{id}.{_format}_get',
+                17 => '_api_/partie_corps.{_format}_get_collection',
+                '_api_/partie_corps.{_format}_post',
+                '_api_/partie_corps/{id}.{_format}_put',
+                21 => '_api_/partie_corps/{id}.{_format}_patch',
+                23 => '_api_/partie_corps/{id}.{_format}_delete',
+            ],
+            'provider' => [
+                2 => 'ApiPlatform\\Doctrine\\Orm\\State\\ItemProvider',
+                4 => 'ApiPlatform\\Doctrine\\Orm\\State\\CollectionProvider',
+                'ApiPlatform\\Doctrine\\Orm\\State\\ItemProvider',
+                'ApiPlatform\\Doctrine\\Orm\\State\\ItemProvider',
+                8 => 'ApiPlatform\\Doctrine\\Orm\\State\\ItemProvider',
+                10 => 'ApiPlatform\\Doctrine\\Orm\\State\\ItemProvider',
+                15 => 'ApiPlatform\\Doctrine\\Orm\\State\\ItemProvider',
+                17 => 'ApiPlatform\\Doctrine\\Orm\\State\\CollectionProvider',
+                'ApiPlatform\\Doctrine\\Orm\\State\\ItemProvider',
+                'ApiPlatform\\Doctrine\\Orm\\State\\ItemProvider',
+                21 => 'ApiPlatform\\Doctrine\\Orm\\State\\ItemProvider',
+                23 => 'ApiPlatform\\Doctrine\\Orm\\State\\ItemProvider',
+            ],
+            'processor' => [
+                2 => 'api_platform.doctrine.orm.state.persist_processor',
+                4 => 'api_platform.doctrine.orm.state.persist_processor',
+                'api_platform.doctrine.orm.state.persist_processor',
+                'api_platform.doctrine.orm.state.persist_processor',
+                8 => 'api_platform.doctrine.orm.state.persist_processor',
+                10 => 'api_platform.doctrine.orm.state.remove_processor',
+                15 => 'api_platform.doctrine.orm.state.persist_processor',
+                17 => 'api_platform.doctrine.orm.state.persist_processor',
+                'api_platform.doctrine.orm.state.persist_processor',
+                'api_platform.doctrine.orm.state.persist_processor',
+                21 => 'api_platform.doctrine.orm.state.persist_processor',
+                23 => 'api_platform.doctrine.orm.state.remove_processor',
+            ],
+            'extraProperties' => [
+                2 => [],
+                4 => [],
+                [],
+                [],
+                8 => [],
+                10 => [],
+                15 => [
+                    'is_alternate_resource_metadata' => true,
+                ],
+                17 => [
+                    'is_alternate_resource_metadata' => true,
+                ],
+                [
+                    'is_alternate_resource_metadata' => true,
+                ],
+                [
+                    'is_alternate_resource_metadata' => true,
+                ],
+                21 => [
+                    'is_alternate_resource_metadata' => true,
+                ],
+                23 => [
+                    'is_alternate_resource_metadata' => true,
+                ],
+            ],
+            'paginationEnabled' => [
+                15 => false,
+                17 => false,
+                false,
+                false,
+                21 => false,
+                23 => false,
+            ],
+        ],
+        'ApiPlatform\\Metadata\\HttpOperation' => [
+            'method' => [
+                2 => 'GET',
+                4 => 'GET',
+                'POST',
+                'PUT',
+                8 => 'PATCH',
+                10 => 'DELETE',
+                15 => 'GET',
+                17 => 'GET',
+                'POST',
+                'PUT',
+                21 => 'PATCH',
+                23 => 'DELETE',
+            ],
+            'uriTemplate' => [
+                2 => '/partie_corps/{id}.{_format}',
+                4 => '/partie_corps.{_format}',
+                '/partie_corps.{_format}',
+                '/partie_corps/{id}.{_format}',
+                8 => '/partie_corps/{id}.{_format}',
+                10 => '/partie_corps/{id}.{_format}',
+                15 => '/partie_corps/{id}.{_format}',
+                17 => '/partie_corps.{_format}',
+                '/partie_corps.{_format}',
+                '/partie_corps/{id}.{_format}',
+                21 => '/partie_corps/{id}.{_format}',
+                23 => '/partie_corps/{id}.{_format}',
+            ],
+            'inputFormats' => [
+                2 => [
+                    'jsonld' => [
+                        'application/ld+json',
+                    ],
+                    'json' => [
+                        'application/json',
+                    ],
+                    'html' => [
+                        'text/html',
+                    ],
+                ],
+                4 => [
+                    'jsonld' => [
+                        'application/ld+json',
+                    ],
+                    'json' => [
+                        'application/json',
+                    ],
+                    'html' => [
+                        'text/html',
+                    ],
+                ],
+                [
+                    'jsonld' => [
+                        'application/ld+json',
+                    ],
+                    'json' => [
+                        'application/json',
+                    ],
+                    'html' => [
+                        'text/html',
+                    ],
+                ],
+                [
+                    'jsonld' => [
+                        'application/ld+json',
+                    ],
+                    'json' => [
+                        'application/json',
+                    ],
+                    'html' => [
+                        'text/html',
+                    ],
+                ],
+                8 => [
+                    'jsonld' => [
+                        'application/ld+json',
+                    ],
+                    'json' => [
+                        'application/json',
+                    ],
+                    'html' => [
+                        'text/html',
+                    ],
+                ],
+                10 => [
+                    'jsonld' => [
+                        'application/ld+json',
+                    ],
+                    'json' => [
+                        'application/json',
+                    ],
+                    'html' => [
+                        'text/html',
+                    ],
+                ],
+                15 => [
+                    'jsonld' => [
+                        'application/ld+json',
+                    ],
+                    'json' => [
+                        'application/json',
+                    ],
+                    'html' => [
+                        'text/html',
+                    ],
+                ],
+                17 => [
+                    'jsonld' => [
+                        'application/ld+json',
+                    ],
+                    'json' => [
+                        'application/json',
+                    ],
+                    'html' => [
+                        'text/html',
+                    ],
+                ],
+                [
+                    'jsonld' => [
+                        'application/ld+json',
+                    ],
+                    'json' => [
+                        'application/json',
+                    ],
+                    'html' => [
+                        'text/html',
+                    ],
+                ],
+                [
+                    'jsonld' => [
+                        'application/ld+json',
+                    ],
+                    'json' => [
+                        'application/json',
+                    ],
+                    'html' => [
+                        'text/html',
+                    ],
+                ],
+                21 => [
+                    'jsonld' => [
+                        'application/ld+json',
+                    ],
+                    'json' => [
+                        'application/json',
+                    ],
+                    'html' => [
+                        'text/html',
+                    ],
+                ],
+                23 => [
+                    'jsonld' => [
+                        'application/ld+json',
+                    ],
+                    'json' => [
+                        'application/json',
+                    ],
+                    'html' => [
+                        'text/html',
+                    ],
+                ],
+            ],
+            'outputFormats' => [
+                2 => [
+                    'jsonld' => [
+                        'application/ld+json',
+                    ],
+                    'json' => [
+                        'application/json',
+                    ],
+                    'html' => [
+                        'text/html',
+                    ],
+                ],
+                4 => [
+                    'jsonld' => [
+                        'application/ld+json',
+                    ],
+                    'json' => [
+                        'application/json',
+                    ],
+                    'html' => [
+                        'text/html',
+                    ],
+                ],
+                [
+                    'jsonld' => [
+                        'application/ld+json',
+                    ],
+                    'json' => [
+                        'application/json',
+                    ],
+                    'html' => [
+                        'text/html',
+                    ],
+                ],
+                [
+                    'jsonld' => [
+                        'application/ld+json',
+                    ],
+                    'json' => [
+                        'application/json',
+                    ],
+                    'html' => [
+                        'text/html',
+                    ],
+                ],
+                8 => [
+                    'jsonld' => [
+                        'application/ld+json',
+                    ],
+                    'json' => [
+                        'application/json',
+                    ],
+                    'html' => [
+                        'text/html',
+                    ],
+                ],
+                10 => [
+                    'jsonld' => [
+                        'application/ld+json',
+                    ],
+                    'json' => [
+                        'application/json',
+                    ],
+                    'html' => [
+                        'text/html',
+                    ],
+                ],
+                15 => [
+                    'jsonld' => [
+                        'application/ld+json',
+                    ],
+                    'json' => [
+                        'application/json',
+                    ],
+                    'html' => [
+                        'text/html',
+                    ],
+                ],
+                17 => [
+                    'jsonld' => [
+                        'application/ld+json',
+                    ],
+                    'json' => [
+                        'application/json',
+                    ],
+                    'html' => [
+                        'text/html',
+                    ],
+                ],
+                [
+                    'jsonld' => [
+                        'application/ld+json',
+                    ],
+                    'json' => [
+                        'application/json',
+                    ],
+                    'html' => [
+                        'text/html',
+                    ],
+                ],
+                [
+                    'jsonld' => [
+                        'application/ld+json',
+                    ],
+                    'json' => [
+                        'application/json',
+                    ],
+                    'html' => [
+                        'text/html',
+                    ],
+                ],
+                21 => [
+                    'jsonld' => [
+                        'application/ld+json',
+                    ],
+                    'json' => [
+                        'application/json',
+                    ],
+                    'html' => [
+                        'text/html',
+                    ],
+                ],
+                23 => [
+                    'jsonld' => [
+                        'application/ld+json',
+                    ],
+                    'json' => [
+                        'application/json',
+                    ],
+                    'html' => [
+                        'text/html',
+                    ],
+                ],
+            ],
+            'uriVariables' => [
+                2 => [
+                    'id' => $o[3],
+                ],
+                5 => [],
+                [
+                    'id' => $o[7],
+                ],
+                8 => [
+                    'id' => $o[9],
+                ],
+                10 => [
+                    'id' => $o[11],
+                ],
+                15 => [
+                    'id' => $o[16],
+                ],
+                18 => [],
+                [
+                    'id' => $o[20],
+                ],
+                21 => [
+                    'id' => $o[22],
+                ],
+                23 => [
+                    'id' => $o[24],
+                ],
+            ],
+            'acceptPatch' => [
+                2 => 'application/ld+json, application/json, text/html',
+                5 => 'application/ld+json, application/json, text/html',
+                'application/ld+json, application/json, text/html',
+                8 => 'application/ld+json, application/json, text/html',
+                10 => 'application/ld+json, application/json, text/html',
+                15 => 'application/ld+json, application/json, text/html',
+                18 => 'application/ld+json, application/json, text/html',
+                'application/ld+json, application/json, text/html',
+                21 => 'application/ld+json, application/json, text/html',
+                23 => 'application/ld+json, application/json, text/html',
+            ],
+        ],
+        'ApiPlatform\\Metadata\\Link' => [
+            'parameterName' => [
+                3 => 'id',
+                7 => 'id',
+                9 => 'id',
+                11 => 'id',
+                'id',
+                16 => 'id',
+                20 => 'id',
+                22 => 'id',
+                24 => 'id',
+                'id',
+            ],
+            'fromClass' => [
+                3 => 'App\\Entity\\PartieCorps',
+                7 => 'App\\Entity\\PartieCorps',
+                9 => 'App\\Entity\\PartieCorps',
+                11 => 'App\\Entity\\PartieCorps',
+                'App\\Entity\\PartieCorps',
+                16 => 'App\\Entity\\PartieCorps',
+                20 => 'App\\Entity\\PartieCorps',
+                22 => 'App\\Entity\\PartieCorps',
+                24 => 'App\\Entity\\PartieCorps',
+                'App\\Entity\\PartieCorps',
+            ],
+            'identifiers' => [
+                3 => [
+                    'id',
+                ],
+                7 => [
+                    'id',
+                ],
+                9 => [
+                    'id',
+                ],
+                11 => [
+                    'id',
+                ],
+                [
+                    'id',
+                ],
+                16 => [
+                    'id',
+                ],
+                20 => [
+                    'id',
+                ],
+                22 => [
+                    'id',
+                ],
+                24 => [
+                    'id',
+                ],
+                [
+                    'id',
+                ],
+            ],
+        ],
+    ],
+    [
+        $o[0],
+        $o[13],
+    ],
+    []
+); }];

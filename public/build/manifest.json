@@ -1,0 +1,11 @@
+{
+  "build/app.css": "http://localhost:8081/build/app.css",
+  "build/app.js": "http://localhost:8081/build/app.js",
+  "build/runtime.js": "http://localhost:8081/build/runtime.js",
+  "build/vendors-node_modules_fullcalendar_interaction_main_js-node_modules_fullcalendar_react_dist_ma-5d0f75.css": "http://localhost:8081/build/vendors-node_modules_fullcalendar_interaction_main_js-node_modules_fullcalendar_react_dist_ma-5d0f75.css",
+  "build/vendors-node_modules_fullcalendar_interaction_main_js-node_modules_fullcalendar_react_dist_ma-5d0f75.js": "http://localhost:8081/build/vendors-node_modules_fullcalendar_interaction_main_js-node_modules_fullcalendar_react_dist_ma-5d0f75.js",
+  "build/images/about.jpg": "http://localhost:8081/build/images/about.2991dc8b.jpg",
+  "build/images/gym.png": "http://localhost:8081/build/images/gym.6e701417.png",
+  "build/images/left-arrow.png": "http://localhost:8081/build/images/left-arrow.fd13b0eb.png",
+  "build/images/right-arrow.png": "http://localhost:8081/build/images/right-arrow.2a2b0e2c.png"
+}
