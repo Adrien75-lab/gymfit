@@ -87,6 +87,7 @@ const DemoApp = ({ info }) => {
         }}
         plugins={[daygridPlugin, interactionPlugin]}
         views={["dayGridMonth", "dayGridWeek", "dayGridDay"]}
+        locales={["fr"]}
         locale="fr"
       />
     </div>

@@ -2,7 +2,9 @@
 
 namespace App\DataFixtures;
 
+use App\Entity\Coach;
 use App\Entity\Customer;
+use App\Entity\Member;
 use App\Entity\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
@@ -18,30 +20,47 @@ class AppFixtures extends Fixture
         $this->hasher = $hasher;
     }
 
+
     public function load(ObjectManager $manager): void
     {
+
+        // $product = new Product();
+        // $manager->persist($product);
         $faker = Factory::create('fr_FR');
-
-        // create 10 customers
-        for ($u = 0; $u < 10; $u++) {
-            $user = new User();
-            $user->setFirstName($faker->firstName())
-                ->setLastName($faker->lastName())
-                ->setEmail($faker->email())
-                ->setPassword($this->hasher->hashPassword($user, 'password'));
-
-
-
-            $manager->persist($user);
-            for ($c = 0; $c < mt_rand(5, 20); $c++) {
-                $customer = new Customer();
-                $customer->setFirstName($faker->firstName())
-                    ->setLastName($faker->lastName)
-                    ->setEmail($faker->email)
-                    ->setUser($user);
-                $user->addCustomer($customer);
-
-                $manager->persist($customer);
+        for ($c = 0; $c < 10; $c++) {
+            $coach = new User();
+            $password = $this->hasher->hashPassword($coach, 'password');
+            $coach->setFirstName($faker->firstName())
+                ->setLastName(
+                    $faker->lastName()
+                )
+                ->setEmail(
+                    $faker->email()
+                )
+                ->setPassword(
+                    $password
+                )
+                ->setRoles(
+                    ['ROLE_COACH']
+                );
+            $manager->persist($coach);
+            for ($m = 0; $m < mt_rand(5, 20); $m++) {
+                $member = new User();
+                $passwordMember = $this->hasher->hashPassword($member, 'password');
+                $member->setFirstName($faker->firstName())
+                    ->setLastName(
+                        $faker->lastName()
+                    )
+                    ->setEmail(
+                        $faker->email()
+                    )
+                    ->setPassword(
+                        $passwordMember
+                    )
+                    ->setRoles(
+                        ['ROLE_USER']
+                    );
+                $manager->persist($member);
             }
         }
 

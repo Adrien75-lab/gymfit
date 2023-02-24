@@ -5,6 +5,7 @@ import timeGridPlugin from "@fullcalendar/timegrid";
 import { Link } from "react-router-dom";
 import interactionPlugin from "@fullcalendar/interaction";
 import { INITIAL_EVENTS, createEventId } from "../components/event-utils";
+import frLocale from '@fullcalendar/core/locales/fr';
 
 export default class DemoApp extends React.Component {
   state = {
@@ -59,6 +60,15 @@ export default class DemoApp extends React.Component {
                 center: "title",
                 right: "dayGridMonth,timeGridWeek,timeGridDay",
               }}
+              buttonText={{
+                today: "Aujourd'hui",
+                month: "Mois",
+                week: "Semaine",
+                day: "Jour",
+                list: "Liste"
+              }}
+              dayNamesShort={["Dim", "Lun", "Mar", "Mer", "Jeu", "Ven", "Sam"]}
+              monthNamesShort={["Jan", "Fév", "Mar", "Avr", "Mai", "Juin", "Juil", "Août", "Sept", "Oct", "Nov", "Déc"]}
               initialView="dayGridMonth"
               editable={true}
               selectable={true}
@@ -70,11 +80,13 @@ export default class DemoApp extends React.Component {
               eventContent={renderEventContent} // custom render function
               eventClick={this.handleEventClick}
               eventsSet={this.handleEvents} // called after events are initialized/added/changed/removed
+              /* you can update a remote database when these fire: // called after events are initialized/added/changed/removed
               /* you can update a remote database when these fire:
             eventAdd={function(){}}
             eventChange={function(){}}
             eventRemove={function(){}}
             */
+              locale="fr"
             />
           </div>
         </div>
@@ -88,8 +100,8 @@ export default class DemoApp extends React.Component {
         <div className="demo-app-sidebar-section">
           <h2>Instructions</h2>
           <ul>
-            <li>Select dates and you will be prompted to create a new event</li>
-            <li>Click an event to delete it</li>
+            <li>Choisir une date pour créer un nouveau rendez-vous</li>
+            <li>Selectionner un évènement pour le supprimer</li>
           </ul>
         </div>
         <div className="demo-app-sidebar-section">
@@ -99,11 +111,11 @@ export default class DemoApp extends React.Component {
               checked={this.state.weekendsVisible}
               onChange={this.handleWeekendsToggle}
             ></input>
-            toggle weekends
+            Afficher les weekends
           </label>
         </div>
         <div className="demo-app-sidebar-section">
-          <h2>All Events ({this.state.currentEvents.length})</h2>
+          <h2>Tous les évènements ({this.state.currentEvents.length})</h2>
           <ul>{this.state.currentEvents.map(renderSidebarEvent)}</ul>
         </div>
       </div>
