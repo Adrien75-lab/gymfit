@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Metadata\ApiResource;
 use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -9,9 +10,16 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
+use Doctrine\ORM\Mapping\InheritanceType;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
-#[ApiResource]
+
+#[ApiResource(paginationEnabled: false)]
+#[ApiFilter(SearchFilter::class, properties: ['user' => 'exact'])]
+// #[InheritanceType("JOINED")]
+// #[ORM\DiscriminatorColumn(name: "discr", type: "string")]
+// #[ORM\DiscriminatorMap([ "coach" => Coach::class, "user" => User::class ])]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
@@ -37,13 +45,70 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 255)]
     private ?string $lastName = null;
 
+    #[ORM\ManyToOne(targetEntity: self::class, inversedBy: 'coaches')]
+    private ?self $user = null;
+
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: User::class)]
+    private Collection $coaches;
+
+    public function __construct()
+    {
+        $this->coaches = new ArrayCollection();
+    }
+    public function addCoach(User $coach): self
+    {
+        if (!$this->coaches->contains($coach)) {
+            $this->coaches[] = $coach;
+            $coach->setUser($this);
+        }
+
+        return $this;
+    }
+    public function setCoach(?User $coach): self
+    {
+        $this->user = $coach;
+
+        return $this;
+    }
+
+    public function removeCoach(User $coach): self
+    {
+        if ($this->coaches->removeElement($coach)) {
+            // set the owning side to null (unless already changed)
+            if ($coach->getUser() === $this) {
+                $coach->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+    /**
+     * @return Collection<int, Customer>
+     */
+    public function getCoaches(): Collection
+    {
+        return $this->coaches;
+    }
+
+    // public function getCoaches(): Collection
+    // {
+    //     $coaches = new ArrayCollection();
+    //     foreach ($this->coaches as $coach) {
+    //         if (in_array('ROLE_COACH', $coach->getRoles(), true)) {
+    //             $coaches->add($coach);
+    //         }
+    //     }
+    //     return $coaches;
+    // }
+
     public function getId(): ?int
     {
         return $this->id;
     }
-    public function setId(): ?int
+    public function setId(int $id): self
     {
-        return $this->id;
+        $this->id = $id;
+        return $this;
     }
 
     public function getEmail(): ?string
@@ -131,6 +196,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setLastName(string $lastName): self
     {
         $this->lastName = $lastName;
+
+        return $this;
+    }
+
+    public function getUser(): ?self
+    {
+        return $this->user;
+    }
+
+    public function setUser(?self $user): self
+    {
+        $this->user = $user;
 
         return $this;
     }

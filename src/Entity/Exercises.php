@@ -11,6 +11,7 @@ use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Core\Annotation\ApiFilter;
 use Symfony\Component\Validator\Constraints as Assert; // Symfony's built-in constraints
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
+use App\Entity\PartieCorps;
 
 #[ORM\Entity(repositoryClass: ExercisesRepository::class)]
 #[ApiResource(paginationEnabled: false)]

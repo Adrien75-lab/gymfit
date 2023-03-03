@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\Coach;
 use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -55,29 +56,61 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
 
         $this->save($user, true);
     }
+    /**
+     * Used to find user by role
+     */
+    public function findByRole(string $role)
+    {
+        $qb = $this->createQueryBuilder('u');
+        $qb->where($qb->expr()->like('u.roles', ':role'))
+            ->setParameter('role', '%"ROLE_COACH"%');
 
-//    /**
-//     * @return User[] Returns an array of User objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('u')
-//            ->andWhere('u.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('u.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+        $users = $qb->getQuery()->getResult();
 
-//    public function findOneBySomeField($value): ?User
-//    {
-//        return $this->createQueryBuilder('u')
-//            ->andWhere('u.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+        $entityManager = $this->getEntityManager();
+
+        foreach ($users as $user) {
+            $coach = $user->getCoach();
+
+            // Créez un objet Coach s'il n'existe pas déjà pour l'utilisateur
+            if (!$coach) {
+                $coach = new Coach();
+                $coach->setCoach($user);
+            }
+
+            $coach->setFirstName($user->getFirstName());
+            // Définissez les autres propriétés de l'objet Coach si nécessaire
+
+            // Ajoutez l'objet Coach à la liste des objets gérés par Doctrine
+            $entityManager->persist($coach);
+        }
+
+        // Synchronisez les objets gérés par Doctrine avec la base de données
+        $entityManager->flush();
+    }
+
+    //    /**
+    //     * @return User[] Returns an array of User objects
+    //     */
+    //    public function findByExampleField($value): array
+    //    {
+    //        return $this->createQueryBuilder('u')
+    //            ->andWhere('u.exampleField = :val')
+    //            ->setParameter('val', $value)
+    //            ->orderBy('u.id', 'ASC')
+    //            ->setMaxResults(10)
+    //            ->getQuery()
+    //            ->getResult()
+    //        ;
+    //    }
+
+    //    public function findOneBySomeField($value): ?User
+    //    {
+    //        return $this->createQueryBuilder('u')
+    //            ->andWhere('u.exampleField = :val')
+    //            ->setParameter('val', $value)
+    //            ->getQuery()
+    //            ->getOneOrNullResult()
+    //        ;
+    //    }
 }

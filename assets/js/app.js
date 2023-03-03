@@ -5,7 +5,13 @@ import Navbar from "./components/Navbar";
 import About from "./pages/About";
 import Features from "./pages/Features";
 import HomePage from "./pages/HomePage";
-import { HashRouter, Switch, Route, withRouter } from "react-router-dom";
+import {
+  HashRouter,
+  Switch,
+  Route,
+  withRouter,
+  Redirect,
+} from "react-router-dom";
 import CustomersPage from "./pages/CustomersPage";
 import FeaturesPage from "./pages/FeaturesPage";
 import inscriptionCoach from "./pages/inscriptionCoach";
@@ -22,6 +28,12 @@ import ExercicePage from "./pages/ExercicePage";
 import Modal from "./Modal";
 import ExerciseDetail from "./pages/ExerciseDetail";
 import { createRoot } from "react-dom/client";
+import planningWorkout from "./pages/PlanningWorkout";
+import PlanningWorkout from "./pages/PlanningWorkout";
+import ModalMembers from "./ModalMembers";
+import jwtDecode from "jwt-decode";
+import Booking from "./pages/BookingPage";
+import PlanningCoach from "./components/PlanningCoach";
 
 // any CSS you import will output into a single css file (app.css in this case)
 require("../styles/app.css");
@@ -29,6 +41,26 @@ require("../styles/app.css");
 authAPI.setup();
 
 console.log("Hello Adrien");
+const getUser = () => {
+  const token = window.localStorage.getItem("authToken");
+  if (token) {
+    const decodedToken = jwtDecode(token);
+    return decodedToken.roles;
+  }
+  return null;
+};
+console.log(getUser());
+if (getUser() && getUser().includes("ROLE_COACH")) {
+  console.log("je suis un coach");
+} else {
+  console.log("je suis un utilisateur");
+}
+const PrivateRoute = ({ path, isAuthenticated, component }) =>
+  getUser() && getUser().includes("ROLE_COACH") ? (
+    <Route path={path} component={component} />
+  ) : (
+    <Redirect to="/login" />
+  );
 
 const App = () => {
   const [isAuthenticated, setIsAuthenticated, history] = useState(
@@ -76,20 +108,45 @@ const App = () => {
                 <LoginPage onLogin={setIsAuthenticated} {...props} />
               )}
             />
-            <Route exact path="/customers/:id" component={CustomersPage} />
+
+            <Route
+              exact
+              path="/booking"
+              component={Booking}
+            />
+            <Route
+              exact
+              path="/planningCoach"
+              component={PlanningCoach}
+            />
+            
+            <Route
+              exact
+              path="/PlanningWorkout/:id"
+              component={PlanningWorkout}
+            />
+            <Route
+              path="/PlanningWorkout"
+              render={(props) => (
+                <PlanningWorkout onLogin={setIsAuthenticated} {...props} />
+              )}
+            />
+
+            <PrivateRoute exact path="/customers/" component={CustomersPage} />
             <Route
               path="/customers"
               render={(props) => (
                 <CustomersPage onLogin={setIsAuthenticated} {...props} />
               )}
             />
-            <Route path="/profil/:id" component={ProfilPage} />
+            {/* <Route path="/profil/:id" component={ProfilPage} /> */}
             <Route
               path="/profil"
               render={(props) => (
                 <ProfilPage
                   isAuthenticated={isAuthenticated}
                   onLogin={setIsAuthenticated}
+                  getUser={getUser}
                   {...props}
                 />
               )}

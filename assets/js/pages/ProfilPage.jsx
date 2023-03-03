@@ -13,11 +13,16 @@ import { Button, Slider } from "@mui/material";
 // // let token = window.localStorage.getItem("authToken");
 // let tokenPayload = jwtDecode(token);
 
-const Welcome = () => {
+const Welcome = ({ getUser }) => {
   const [isVisible, setIsVisible] = useState(false);
-  // console.log(tokenPayload);
+  console.log(getUser());
+  const user = getUser().includes("ROLE_USER");
+  const isCoach = getUser().includes("ROLE_COACH");
+  const linkToCustomers = isCoach ? '/customers' : '/booking';
+  console.log(isCoach);
+  const linkText = isCoach ? 'Voir ses abonnés' : 'Prendre un rdv';
 
-
+  
 
   const [isOpen, setIsOpen] = useState(false);
   const { id = "new" } = useParams();
@@ -28,13 +33,14 @@ const Welcome = () => {
     firstName: "",
     lastName: "",
   });
-  // console.log(coach);
+
 
   const updateCoach = (newCoach) => {
     // console.log(newCoach);
     setCoach(newCoach);
     localStorage.setItem('coach', JSON.stringify(newCoach));
   };
+
 
   const [editing, setEditing] = useState(false);
 
@@ -56,7 +62,7 @@ const Welcome = () => {
       setEditing(true);
       fetchCoach(id);
       const { firstName, lastName, age, weight, calories } = data;
-     // console.log(data); // Destructure the firstName and lastName variables from the data object
+      // console.log(data); // Destructure the firstName and lastName variables from the data object
       setCoach({ firstName, lastName, age, weight, calories }); // Update the coach state variable with the new values
     } else {
       const coachData = localStorage.getItem('coach');
@@ -67,7 +73,8 @@ const Welcome = () => {
       }
     }
   }, [id]);
-  
+
+
 
 
 
@@ -174,9 +181,9 @@ const Welcome = () => {
     setAge(newValue);
 
   };
-  
-  
-  
+
+
+
   const handleChangeWeight = (event, newValue) => {
     setWeight(newValue);
   };
@@ -219,13 +226,13 @@ const Welcome = () => {
             </div>
             <div class="col-md-4">
               <Link
-                to="/customers"
+                to={linkToCustomers}
                 class="btn btn-primary"
                 aria-disabled="true"
                 role="button"
                 data-bs-toggle="button"
               >
-                Voir ses abonnés
+                {linkText}
               </Link>
             </div>
           </div>

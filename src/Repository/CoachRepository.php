@@ -5,9 +5,8 @@ namespace App\Repository;
 use App\Entity\Coach;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
-use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
-use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
-use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
+use App\Entity\User;
+
 
 /**
  * @extends ServiceEntityRepository<Coach>
@@ -17,7 +16,7 @@ use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
  * @method Coach[]    findAll()
  * @method Coach[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class CoachRepository extends ServiceEntityRepository implements PasswordUpgraderInterface
+class CoachRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
@@ -42,44 +41,53 @@ class CoachRepository extends ServiceEntityRepository implements PasswordUpgrade
         }
     }
 
-    /**
-     * Used to upgrade (rehash) the user's password automatically over time.
-     */
-    public function upgradePassword(PasswordAuthenticatedUserInterface $user, string $newHashedPassword): void
+    public function findByUserRole(string $role)
     {
-        if (!$user instanceof Coach) {
-            throw new UnsupportedUserException(sprintf('Instances of "%s" are not supported.', \get_class($user)));
+        $qb = $this->getEntityManager()
+            ->createQueryBuilder()
+            ->select('u')
+            ->from('App\Entity\User', 'u')
+            ->where('u.roles LIKE :role')
+            ->setParameter('role', "%\"$role\"%");
+
+        $users = $qb->getQuery()->getResult();
+        $entityManager = $this->getEntityManager();
+        foreach ($users as $user) {
+            $coach = new Coach();
+            $coach->setFirstName($user->getFirstName());
+            
+            
+            // set other properties if necessary
+
+            // Add the new coach object to the list of managed entities
+            $entityManager->persist($coach);
         }
 
-        $user->setPassword($newHashedPassword);
-
-        $this->save($user, true);
+        $entityManager->flush();
     }
-    
 
-//    /**
-//     * @return Coach[] Returns an array of Coach objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('c')
-//            ->andWhere('c.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('c.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+    //    /**
+    //     * @return Coach[] Returns an array of Coach objects
+    //     */
+    //    public function findByExampleField($value): array
+    //    {
+    //        return $this->createQueryBuilder('c')
+    //            ->andWhere('c.exampleField = :val')
+    //            ->setParameter('val', $value)
+    //            ->orderBy('c.id', 'ASC')
+    //            ->setMaxResults(10)
+    //            ->getQuery()
+    //            ->getResult()
+    //        ;
+    //    }
 
-//    public function findOneBySomeField($value): ?Coach
-//    {
-//        return $this->createQueryBuilder('c')
-//            ->andWhere('c.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
-
+    //    public function findOneBySomeField($value): ?Coach
+    //    {
+    //        return $this->createQueryBuilder('c')
+    //            ->andWhere('c.exampleField = :val')
+    //            ->setParameter('val', $value)
+    //            ->getQuery()
+    //            ->getOneOrNullResult()
+    //        ;
+    //    }
 }

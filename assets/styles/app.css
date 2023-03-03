@@ -1,5 +1,5 @@
 body {
-  font-family: 'Lobster', cursive;
+  font-family: "Lobster", cursive;
   background-color: #fffafb;
 }
 nav {
@@ -11,6 +11,19 @@ button.btn,
   float: left;
   margin-right: 10px;
 }
+.appointmentSummary {
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  padding: 20px;
+  margin-top: 20px;
+}
+.appointmentSummary p {
+  color: #888;
+  font-size: 1em;
+  margin-bottom: 5px;
+}
+
 
 .my-component-title {
   font-size: 24px;
@@ -124,6 +137,10 @@ button.btn,
   left: 45%;
   color: white;
   padding: 12px 24px;
+}
+.rounded-circle {
+  width: 50px;
+  height: 50px;
 }
 
 .img-title {
@@ -266,11 +283,27 @@ button.btn,
   box-shadow: 0 5px 20px 0 rgba(0, 0, 0, 0.04);
 }
 
+.modalBooking {
+  width: 1200px;
+  height: 600px;
+  background: rgb(127, 96, 237);
+  color: white;
+  z-index: 10;
+  border-radius: 16px;
+  box-shadow: 0 5px 20px 0 rgba(0, 0, 0, 0.04);
+}
+
 .modalContent {
   padding: 10px;
   font-size: 14px;
   color: red;
   text-align: center;
+}
+
+.buttonContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .modalActions {

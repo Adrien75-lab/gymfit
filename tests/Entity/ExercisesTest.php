@@ -1,7 +1,7 @@
 <?php
 
 use App\Entity\Exercises;
-use App\Entity\PartieCorps;
+use App\Entity\BodyPart;
 use PHPUnit\Framework\TestCase;
 
 class ExercisesTest extends TestCase
