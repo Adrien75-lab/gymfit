@@ -69,21 +69,21 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
 
         $entityManager = $this->getEntityManager();
 
-        foreach ($users as $user) {
-            $coach = $user->getCoach();
+        // foreach ($users as $user) {
+        //     $coach = $user->getCoach();
 
-            // Créez un objet Coach s'il n'existe pas déjà pour l'utilisateur
-            if (!$coach) {
-                $coach = new Coach();
-                $coach->setCoach($user);
-            }
+        //     // Créez un objet Coach s'il n'existe pas déjà pour l'utilisateur
+        //     if (!$coach) {
+        //         $coach = new Coach();
+        //         $coach->setCoach($user);
+        //     }
 
-            $coach->setFirstName($user->getFirstName());
-            // Définissez les autres propriétés de l'objet Coach si nécessaire
+        //     $coach->setFirstName($user->getFirstName());
+        //     // Définissez les autres propriétés de l'objet Coach si nécessaire
 
-            // Ajoutez l'objet Coach à la liste des objets gérés par Doctrine
-            $entityManager->persist($coach);
-        }
+        //     // Ajoutez l'objet Coach à la liste des objets gérés par Doctrine
+        //     $entityManager->persist($coach);
+        // }
 
         // Synchronisez les objets gérés par Doctrine avec la base de données
         $entityManager->flush();

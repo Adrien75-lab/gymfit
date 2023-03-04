@@ -23,9 +23,9 @@ class AppController extends AbstractController
     private $workoutExercisesRepository;
     private $userRepository;
     private $coachRepository;
-    
 
-    public function __construct(ExercisesRepository $exercisesRepository, PartieCorpsRepository $partieCorpsRepository, WorkoutRepository $workoutRepository, WorkoutExercisesRepository $workoutExercisesRepository,UserRepository $userRepository, CoachRepository $coachRepository)
+
+    public function __construct(ExercisesRepository $exercisesRepository, PartieCorpsRepository $partieCorpsRepository, WorkoutRepository $workoutRepository, WorkoutExercisesRepository $workoutExercisesRepository, UserRepository $userRepository, CoachRepository $coachRepository)
     {
         $this->exercisesRepository = $exercisesRepository;
         $this->partieCorpsRepository = $partieCorpsRepository;
@@ -33,7 +33,6 @@ class AppController extends AbstractController
         $this->workoutExercisesRepository = $workoutExercisesRepository;
         $this->userRepository = $userRepository;
         $this->coachRepository = $coachRepository;
-        
     }
 
     #[Route('/', name: 'app')]
@@ -46,6 +45,7 @@ class AppController extends AbstractController
         $workout = $this->workoutRepository->findAll();
         $user = $this->userRepository->findAll();
         $coach = $this->coachRepository->findByUserRole('ROLE_COACH');
+       
 
         dump($coach);
         dump($user);

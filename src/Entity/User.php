@@ -51,6 +51,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: User::class)]
     private Collection $coaches;
 
+    #[ORM\OneToOne(targetEntity: Coach::class, mappedBy: "user", cascade: ['persist', 'remove'])]
+    private ?Coach $coach = null;
+
+
     public function __construct()
     {
         $this->coaches = new ArrayCollection();
@@ -64,9 +68,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
-    public function setCoach(?User $coach): self
+    public function setCoach(?Coach $coach): self
     {
-        $this->user = $coach;
+        // set the owning side of the relation if necessary
+        if ($coach !== null && $coach->getUser() !== $this) {
+            $coach->setUser($this);
+        }
+
+        $this->coach = $coach;
 
         return $this;
     }
@@ -178,7 +187,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function getFirstName(): ?string
     {
+        
         return $this->firstName;
+
     }
 
     public function setFirstName(string $firstName): self
@@ -210,5 +221,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->user = $user;
 
         return $this;
+    }
+
+    public function getCoach(): ?coach
+    {
+        return $this->coach;
     }
 }

@@ -51,19 +51,26 @@ class CoachRepository extends ServiceEntityRepository
             ->setParameter('role', "%\"$role\"%");
 
         $users = $qb->getQuery()->getResult();
-        $entityManager = $this->getEntityManager();
-        foreach ($users as $user) {
-            $coach = new Coach();
-            $coach->setFirstName($user->getFirstName());
-            
-            
-            // set other properties if necessary
 
-            // Add the new coach object to the list of managed entities
-            $entityManager->persist($coach);
+        $entityManager = $this->getEntityManager();
+        $coaches = [];
+        foreach ($users as $user) {
+            $coach = $this->findOneBy(['user' => $user]);
+            if (!$coach) {
+                $coach = new Coach();
+                $coach->hydrate($user);
+                // set other properties if necessary
+                $entityManager->persist($coach);
+            } else {
+                // The coach already exists, so update the last name
+                $coach->setLastName($user->getLastName());
+            }
+            $coaches[] = $coach;
         }
 
         $entityManager->flush();
+
+        return $coaches;
     }
 
     //    /**

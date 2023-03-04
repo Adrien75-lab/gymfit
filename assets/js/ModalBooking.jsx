@@ -24,13 +24,13 @@ const ModalBooking = ({ modalIsOpen, setIsOpen, coachFirstName, coachId }) => {
     const handleSave = () => {
         if (selectedSlot) {
             console.log(selectedSlot);
-            fetch('/api/appointments', {
+            fetch('/api/bookings', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                    coach: coachId,
+                    id: coachId,
                     start: selectedSlot.start,
                     end: selectedSlot.end,
                     notes: appointmentNotes

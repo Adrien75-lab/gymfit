@@ -17,75 +17,87 @@ class Coach
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column]
+    #[ORM\Column(type: 'integer')]
     private ?int $id = null;
 
-    #[ORM\ManyToOne(targetEntity: Coach::class)]
-    private ?Coach $coach = null;
+
+    #[ORM\OneToOne(targetEntity: User::class, inversedBy: "coach")]
+    #[ORM\JoinColumn(name: "id", referencedColumnName: "id", nullable: false)]
+    private ?User $user = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    private ?string $speciality = null;
-
-
-    #[ORM\Column(length: 255)]
     private ?string $firstName = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $lastName = null;
+
+
+
+
+    // #[ORM\ManyToOne(targetEntity: Coach::class, inversedBy: 'coaches')]
+    // #[ORM\JoinColumn(nullable: true)]
+    // private ?Coach $coach = null;
+
+
+    public function hydrate(User $user)
+    {
+        
+        $this->setUser($user);
+        $this->setFirstName($user->getFirstName()); // initialisation de la propriété firstName
+        $this->setLastName($user->getLastName()); // initialisation de la propriété firstName
+        // hydratation des autres propriétés de l'entité Coach
+    }
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getCoach(): ?Coach
+    public function getUser(): ?User
     {
-        return $this->coach;
+        return $this->user;
     }
 
-    public function setCoach(?Coach $coach): self
+    public function setUser(?User $user): self
     {
-        // unset the owning side of the relation if necessary
-        if ($coach === null && $this->coach !== null) {
-            $this->coach->setCoach(null);
-        }
-
-        // set the owning side of the relation if necessary
-        if ($coach !== null && $coach->getCoach() !== $this) {
-            $coach->setCoach($this);
-        }
-
-        $this->coach = $coach;
+        $this->user = $user;
 
         return $this;
     }
 
-    public function getSpeciality(): ?string
-    {
-        return $this->speciality;
-    }
+    // public function getCoach(): ?Coach
+    // {
+    //     return $this->coach;
+    // }
 
-    public function setSpeciality(?string $speciality): self
-    {
-        $this->speciality = $speciality;
+    // public function setCoach(?Coach $coach): self
+    // {
+    //     $this->coach = $coach;
 
-        return $this;
-    }
+    //     return $this;
+    // }
 
     public function getFirstName(): ?string
     {
         return $this->firstName;
     }
 
-    public function setFirstName(string $firstName): self
+    public function setFirstName(?string $firstName): self
     {
         $this->firstName = $firstName;
 
         return $this;
     }
-    public function getRoles(): array
-    {
-        if ($this->getCoach() instanceof UserInterface) {
-            return $this->getCoach()->getRoles();
-        }
 
-        return [];
+    public function getLastName(): ?string
+    {
+        return $this->lastName;
+    }
+
+    public function setLastName(?string $lastName): self
+    {
+        $this->lastName = $lastName;
+
+        return $this;
     }
 }
