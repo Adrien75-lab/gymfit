@@ -21,7 +21,7 @@ class Coach
     private ?int $id = null;
 
 
-    #[ORM\OneToOne(targetEntity: User::class, inversedBy: "coach")]
+    #[ORM\OneToOne(targetEntity: User::class, inversedBy: "coach",cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(name: "id", referencedColumnName: "id", nullable: false)]
     private ?User $user = null;
 
@@ -31,6 +31,17 @@ class Coach
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $lastName = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $speciality = null;
+
+    #[ORM\OneToMany(mappedBy: 'coach', targetEntity: Booking::class,cascade: ['persist', 'remove'])]
+    private Collection $bookings;
+
+    public function __construct()
+    {
+        $this->bookings = new ArrayCollection();
+    }
+
 
 
 
@@ -39,6 +50,9 @@ class Coach
     // private ?Coach $coach = null;
 
 
+    // La fonction hydrate est utilisée pour copier les données de 
+    //l'objet User vers l'objet Coach, afin d'éviter la duplication de données.
+    
     public function hydrate(User $user)
     {
         
@@ -100,4 +114,47 @@ class Coach
 
         return $this;
     }
+
+    public function getSpeciality(): ?string
+    {
+        return $this->speciality;
+    }
+
+    public function setSpeciality(?string $speciality): self
+    {
+        $this->speciality = $speciality;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Booking>
+     */
+    public function getBookings(): Collection
+    {
+        return $this->bookings;
+    }
+
+    public function addBooking(Booking $booking): self
+    {
+        if (!$this->bookings->contains($booking)) {
+            $this->bookings->add($booking);
+            $booking->setCoach(null);
+        }
+
+        return $this;
+    }
+
+    public function removeBooking(Booking $booking): self
+    {
+        if ($this->bookings->removeElement($booking)) {
+            // set the owning side to null (unless already changed)
+            if ($booking->getCoach() === $this) {
+                $booking->setCoach(null);
+            }
+        }
+
+        return $this;
+    }
+    
 }

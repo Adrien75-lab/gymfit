@@ -50,15 +50,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: User::class)]
     private Collection $coaches;
-
     #[ORM\OneToOne(targetEntity: Coach::class, mappedBy: "user", cascade: ['persist', 'remove'])]
     private ?Coach $coach = null;
-
 
     public function __construct()
     {
         $this->coaches = new ArrayCollection();
     }
+
     public function addCoach(User $coach): self
     {
         if (!$this->coaches->contains($coach)) {
@@ -68,19 +67,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
-    public function setCoach(?Coach $coach): self
+    public function setCoach(User $coach): self
     {
-        // set the owning side of the relation if necessary
-        if ($coach !== null && $coach->getUser() !== $this) {
-            $coach->setUser($this);
-        }
-
-        $this->coach = $coach;
+        $this->user = $coach;
 
         return $this;
     }
-
-    public function removeCoach(User $coach): self
+    public function removeCoach(Coach $coach): self
     {
         if ($this->coaches->removeElement($coach)) {
             // set the owning side to null (unless already changed)
@@ -91,6 +84,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
+    public function getCoach(): ?coach
+    {
+        return $this->coach;
+    }
+
     /**
      * @return Collection<int, Customer>
      */
@@ -187,9 +185,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function getFirstName(): ?string
     {
-        
         return $this->firstName;
-
     }
 
     public function setFirstName(string $firstName): self
@@ -221,10 +217,5 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->user = $user;
 
         return $this;
-    }
-
-    public function getCoach(): ?coach
-    {
-        return $this->coach;
     }
 }

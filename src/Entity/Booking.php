@@ -18,6 +18,11 @@ class Booking
     #[ORM\Column(length: 255)]
     private ?string $stateRDV = null;
 
+    #[ORM\ManyToOne(inversedBy: 'bookings',targetEntity: Coach::class, cascade: ['persist', 'remove'])]
+    private ?Coach $coach = null;
+
+    
+
     public function getId(): ?int
     {
         return $this->id;
@@ -34,4 +39,17 @@ class Booking
 
         return $this;
     }
+
+    public function getCoach(): ?Coach
+    {
+        return $this->coach;
+    }
+
+    public function setCoach(?Coach $coach): self
+    {
+        $this->coach = $coach;
+
+        return $this;
+    }
+    
 }
