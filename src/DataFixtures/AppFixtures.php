@@ -2,6 +2,7 @@
 
 namespace App\DataFixtures;
 
+use App\Entity\Availabilities;
 use App\Entity\Booking;
 use App\Entity\Coach;
 use App\Entity\Customer;
@@ -109,6 +110,33 @@ class AppFixtures extends Fixture
         }
 
         // Create members
+        // Create availabilities
+        foreach ($coachList as $coachAvailability) {
+            for ($j = 0; $j < 5; $j++) {
+                $availability = new Availabilities();
+
+                // Generate a random start time between now and 7 days from now
+                $minStartTime = new \DateTimeImmutable();
+                $maxStartTime = $minStartTime->modify('+7 days');
+                $randomStartTime = \DateTimeImmutable::createFromFormat('U', mt_rand($minStartTime->format('U'), $maxStartTime->format('U')));
+
+                // Generate a random number of minutes to add to the start time (between 0 and 7 hours and 30 minutes)
+                $randomMinutes = mt_rand(0, 450);
+                $startTime = $randomStartTime->setTime(9, 30)->add(new \DateInterval('PT' . $randomMinutes . 'M'));
+
+                // Set the coach and the start and end times for the availability
+                $availability->setCoach($coachAvailability);
+                $availability->setStartRDV($startTime);
+                $availability->setEndRDV($availability->getStartRDV()->add(new \DateInterval('PT1H')));
+
+                // Generate a random boolean value for isBooked
+                $isBooked = (bool) rand(0, 1);
+                $availability->setIsBooked($isBooked);
+
+                // Set other properties for the availability entity
+                $manager->persist($availability);
+            }
+        }
 
 
 

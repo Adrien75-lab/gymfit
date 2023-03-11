@@ -14,18 +14,31 @@ import frLocale from '@fullcalendar/core/locales/fr'; // import de la bibliothè
 import { INITIAL_EVENTS } from "./components/event-utils";
 import axios from "axios";
 
-const ModalBooking = ({ modalIsOpen, setIsOpen, coachFirstName, coachId,memberId }) => {
+const ModalBooking = ({ modalIsOpen, setIsOpen, coachFirstName, coachId, memberId }) => {
     const [selectedSlot, setSelectedSlot] = useState(null);
     const [step, setStep] = useState(1);
 
-    const handleSlotSelect = (slot) => {
-        setSelectedSlot(slot);
+    const handleSlotSelect = (availability) => {
+        setSelectedSlot(availability);
     };
-    console.log(coachId);
-    
-    
+    const [availableSlotsCoach, setAvailableSlotsCoach] = useState([]);
+    useEffect(() => {
+        const fetchAvailableSlots = async () => {
+            try {
+                const response = await Axios.get(`http://localhost:8000/api/availabilities?coach=${coachId}`);
+                setAvailableSlotsCoach(response.data['hydra:member']);
+            } catch (error) {
+                console.error(error);
+            }
+        };
+        fetchAvailableSlots();
+    }, [coachId]);
 
-    
+
+
+
+
+
 
     const handleSave = () => {
         if (selectedSlot) {
@@ -35,21 +48,23 @@ const ModalBooking = ({ modalIsOpen, setIsOpen, coachFirstName, coachId,memberId
                 stateRDV: "En attente",
                 startRDV: selectedSlot.start,
                 endRDV: selectedSlot.end,
-                duration : "1 hours",
+                duration: "1 hours",
                 createdAt: new Date(),
             };
-//             Axios.post("http://localhost:8000/api/login_check", credentials, {
-//     headers: {
-//       Accept: "application/json",
-//       "Content-Type": "application/json",
-//     },
-//   })
+            //             Axios.post("http://localhost:8000/api/login_check", credentials, {
+            //     headers: {
+            //       Accept: "application/json",
+            //       "Content-Type": "application/json",
+            //     },
+            //   })
 
-            axios.post(`http://localhost:8000/api/bookings/${coachId}/booking`,data,{headers: {
-                Accept: "application/json",
-                "Content-Type": "application/json",
-              },})
-           
+            axios.post(`http://localhost:8000/api/bookings/${coachId}/booking`, data, {
+                headers: {
+                    Accept: "application/json",
+                    "Content-Type": "application/json",
+                },
+            })
+
                 .then(response => {
                     console.log(response)
                     // handle success response
@@ -91,48 +106,48 @@ const ModalBooking = ({ modalIsOpen, setIsOpen, coachFirstName, coachId,memberId
                             <>
                                 <h2>Choisissez un créneau horaire avec {coachFirstName}</h2>
                                 <Grid container spacing={2}>
-                                    {availableSlots.map((slot) => (
-                                        <Grid item xs={12} md={6} lg={4} key={slot.start}>
+                                    {availableSlotsCoach.map((availability) => (
+                                        <Grid item xs={12} md={6} lg={4} key={availability.id}>
                                             <Card
                                                 sx={{
                                                     backgroundColor:
-                                                        selectedSlot === slot
+                                                        selectedSlot === availability
                                                             ? "#4caf50"
-                                                            : slot.booked
+                                                            : availability.isBooked
                                                                 ? "#f44336"
                                                                 : "#fff",
-                                                    color: selectedSlot === slot ? "#fff" : "#000",
-                                                    cursor: slot.booked ? "default" : "pointer",
+                                                    color: selectedSlot === availability ? "#fff" : "#000",
+                                                    cursor: availability.isBooked ? "default" : "pointer",
                                                 }}
-                                                onClick={() => !slot.booked && handleSlotSelect(slot)}
+                                                onClick={() => !availability.isBooked && handleSlotSelect(availability)}
                                             >
                                                 <CardHeader
-                                                    title={`${formatDate(slot.start, {
+                                                    title={`${formatDate(availability.startRDV, {
                                                         locale: frLocale,
                                                         timeZone: "UTC",
                                                         hour: "numeric",
                                                         minute: "numeric",
-                                                    })} - ${formatDate(slot.end, {
+                                                    })} - ${formatDate(availability.endRDV, {
                                                         locale: frLocale,
                                                         timeZone: "UTC",
                                                         hour: "numeric",
                                                         minute: "numeric",
                                                     })}`}
-                                                    subheader={slot.booked ? "Réservé" : "Disponible"}
+                                                    subheader={availability.isBooked ? "Réservé" : "Disponible"}
                                                 />
                                                 <CardContent>
                                                     <Typography variant="body2" color="text.secondary">
-                                                        {slot.booked
+                                                        {availability.isBooked
                                                             ? "Ce créneau horaire a déjà été réservé"
                                                             : "Choisissez ce créneau horaire pour votre rendez-vous"}
                                                     </Typography>
                                                 </CardContent>
                                                 <CardActions>
                                                     <Button
-                                                        disabled={slot.booked}
+                                                        disabled={availability.isBooked}
                                                         size="small"
                                                     >
-                                                        {slot.booked ? "Réservé" : "Sélectionner"}
+                                                        {availability.isBooked ? "Réservé" : "Sélectionner"}
                                                     </Button>
                                                 </CardActions>
                                             </Card>
@@ -163,7 +178,11 @@ const ModalBooking = ({ modalIsOpen, setIsOpen, coachFirstName, coachId,memberId
 
                                 <div className="appointmentSummary">
                                     <p>Coach : {coachFirstName} </p>
-                                    <p>Date : {formatDate(selectedSlot.start, {
+                                    {/* <div>
+                                        <Typography variant="h6">Récapitulatif:</Typography>
+                                        <Typography>Date et heure: {selectedSlot && `${selectedSlot.startRDV.toLocaleString()} - ${selectedSlot.endRDV.toLocaleString()}`}</Typography>
+                                    </div> */}
+                                    <p>Date : {formatDate(selectedSlot.startRDV, {
                                         locale: frLocale,
                                         timeZone: "UTC",
                                         weekday: 'long',
@@ -171,12 +190,12 @@ const ModalBooking = ({ modalIsOpen, setIsOpen, coachFirstName, coachId,memberId
                                         month: 'long',
                                         day: 'numeric'
                                     })}</p>
-                                    <p>Heure : {formatDate(selectedSlot.start, {
+                                    <p>Heure : {formatDate(selectedSlot.startRDV, {
                                         locale: frLocale,
                                         timeZone: "UTC",
                                         hour: "numeric",
                                         minute: "numeric",
-                                    })} - {formatDate(selectedSlot.end, {
+                                    })} - {formatDate(selectedSlot.endRDV, {
                                         locale: frLocale,
                                         timeZone: "UTC",
                                         hour: "numeric",

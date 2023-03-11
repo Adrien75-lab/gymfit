@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use App\Repository\CoachRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -12,6 +13,7 @@ use Doctrine\Common\Collections\Collection;
 
 #[ORM\Entity(repositoryClass: CoachRepository::class)]
 #[ApiResource(paginationEnabled: false)]
+#[ApiFilter(SearchFilter::class, properties: ['availabilities' => 'exact'])]
 
 class Coach 
 {
@@ -37,9 +39,13 @@ class Coach
     #[ORM\OneToMany(mappedBy: 'coach', targetEntity: Booking::class)]
     private Collection $bookings;
 
+    #[ORM\OneToMany(mappedBy: 'coach', targetEntity: Availabilities::class)]
+    private Collection $availabilities;
+
     public function __construct()
     {
         $this->bookings = new ArrayCollection();
+        $this->availabilities = new ArrayCollection();
     }
 
 
@@ -151,6 +157,36 @@ class Coach
             // set the owning side to null (unless already changed)
             if ($booking->getCoach() === $this) {
                 $booking->setCoach(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Availabilities>
+     */
+    public function getAvailabilities(): Collection
+    {
+        return $this->availabilities;
+    }
+
+    public function addAvailability(Availabilities $availability): self
+    {
+        if (!$this->availabilities->contains($availability)) {
+            $this->availabilities->add($availability);
+            $availability->setCoach($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAvailability(Availabilities $availability): self
+    {
+        if ($this->availabilities->removeElement($availability)) {
+            // set the owning side to null (unless already changed)
+            if ($availability->getCoach() === $this) {
+                $availability->setCoach(null);
             }
         }
 
