@@ -11,6 +11,7 @@ import interactionPlugin from "@fullcalendar/interaction";
 import { INITIAL_EVENTS, createEventId } from "../components/event-utils";
 import ModalBooking from '../ModalBooking';
 import moment from "moment-timezone";
+import jwtDecode from "jwt-decode";
 import "moment/locale/fr"; // pour la localisation en français
 
 const PlanningWorkout = () => {
@@ -19,6 +20,12 @@ const PlanningWorkout = () => {
     firstName: "",
     lastName: "",
   });
+
+  let token = window.localStorage.getItem("authToken");
+ let tokenPayload = jwtDecode(token);
+ 
+
+  
 
 
 
@@ -33,11 +40,13 @@ const PlanningWorkout = () => {
       console.log(error.response);
     }
   };
+  
 
 
   useEffect(() => {
     fetchCoach(id);
   }, [id]);
+  
 
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [newEvent, setNewEvent] = useState({
@@ -125,7 +134,8 @@ const PlanningWorkout = () => {
         newEvent={newEvent}
         setNewEvent={setNewEvent}
         coachFirstName={coach.firstName}
-        coachId={coach.Id}
+        coachId={id}
+        memberId={tokenPayload}
 
       />}
 

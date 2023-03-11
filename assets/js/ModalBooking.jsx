@@ -12,40 +12,52 @@ import FullCalendar, { formatDate, formatRange } from "@fullcalendar/react";
 import { Card, CardHeader, CardContent, CardActions, Button, Grid } from "@mui/material";
 import frLocale from '@fullcalendar/core/locales/fr'; // import de la bibliothèque pour les dates en français
 import { INITIAL_EVENTS } from "./components/event-utils";
+import axios from "axios";
 
-const ModalBooking = ({ modalIsOpen, setIsOpen, coachFirstName, coachId }) => {
+const ModalBooking = ({ modalIsOpen, setIsOpen, coachFirstName, coachId,memberId }) => {
     const [selectedSlot, setSelectedSlot] = useState(null);
     const [step, setStep] = useState(1);
 
     const handleSlotSelect = (slot) => {
         setSelectedSlot(slot);
     };
+    console.log(coachId);
+    
+    
+
+    
 
     const handleSave = () => {
         if (selectedSlot) {
-            console.log(selectedSlot);
-            fetch('/api/bookings', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    id: coachId,
-                    start: selectedSlot.start,
-                    end: selectedSlot.end,
-                    notes: appointmentNotes
-                })
-            })
+            const data = {
+                coach: `/api/coaches/${coachId}`,
+                user: `/api/members/${memberId.Id}`,
+                stateRDV: "En attente",
+                startRDV: selectedSlot.start,
+                endRDV: selectedSlot.end,
+                duration : "1 hours",
+                createdAt: new Date(),
+            };
+//             Axios.post("http://localhost:8000/api/login_check", credentials, {
+//     headers: {
+//       Accept: "application/json",
+//       "Content-Type": "application/json",
+//     },
+//   })
+
+            axios.post(`http://localhost:8000/api/bookings/${coachId}/booking`,data,{headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json",
+              },})
+           
                 .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Failed to save appointment')
-                    }
-                    // Gérer la réponse en cas de succès
+                    console.log(response)
+                    // handle success response
                 })
                 .catch(error => {
-                    // Gérer l'erreur
-                })
-            // TODO :  Sauvegarde du créneau horaire sélectionné dans la base de données
+                    // handle error
+                    console.error(error);
+                });
             setSelectedSlot(selectedSlot);
             setIsOpen(false);
         }

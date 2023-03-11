@@ -72,6 +72,14 @@ class CoachRepository extends ServiceEntityRepository
 
         return $coaches;
     }
+   
+    public function getBookings(Coach $coach): array
+    {
+        return $this->getEntityManager()
+            ->getRepository(Booking::class)
+            ->findBy(['coach' => $coach]);
+    }
+    
 
     //    /**
     //     * @return Coach[] Returns an array of Coach objects

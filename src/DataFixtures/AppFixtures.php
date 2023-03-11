@@ -34,8 +34,16 @@ class AppFixtures extends Fixture
                 ->setEmail($faker->email())
                 ->setPassword($password)
                 ->setRoles(['ROLE_COACH']);
+            $coachSpeciality = new Coach();
+            // Lie la spécialité au coach existant
+
+            $coachSpeciality->setSpeciality('squat');
+
+
+            $coachSpeciality->hydrate($coach);
 
             $manager->persist($coach);
+            $manager->persist($coachSpeciality);
             for ($m = 0; $m < mt_rand(5, 50); $m++) {
                 $member = new User();
                 $passwordMember = $this->hasher->hashPassword($member, 'password');
@@ -44,9 +52,18 @@ class AppFixtures extends Fixture
                     ->setEmail($faker->email())
                     ->setPassword($passwordMember)
                     ->setRoles(['ROLE_USER'])
-                    ->setCoach($coach);;
+                    ->setCoach($coach);
+
+                $memberNewProperties = new Member();
+                $memberNewProperties->setPhoneNumber($faker->phoneNumber());
+                $memberNewProperties->setUserAge($faker->numberBetween(18, 60)); // génère un nombre aléatoire entre 18 et 60 pour userAge
+                $memberNewProperties->setSizeUser($faker->numberBetween(150, 200)); // génère un nombre aléatoire entre 150 et 200 pour sizeUser
+                $memberNewProperties->setWeightUser($faker->numberBetween(50, 100)); // génère un nombre aléatoire entre 50 et 100 pour weightUser
+                $memberNewProperties->hydrate($member);
+
 
                 $manager->persist($member);
+                $manager->persist($memberNewProperties);
             }
         }
 
@@ -54,6 +71,7 @@ class AppFixtures extends Fixture
 
         // Get coaches
         $coachList = $manager->getRepository(Coach::class)->findByUserRole('ROLE_COACH');
+        $memberList = $manager->getRepository(Member::class)->findByUserRole('ROLE_USER');
 
         // Create bookings
         foreach ($coachList as $coachBooking) {
@@ -61,7 +79,30 @@ class AppFixtures extends Fixture
                 $booking = new Booking();
 
                 $booking->setCoach($coachBooking)
-                    ->setStateRDV('en attente');
+                    ->setUser($faker->randomElement($memberList))
+                    ->setStateRDV($faker->randomElement(['CONFIRMED', 'PENDING', 'CANCELLED']));
+
+
+                // Generate a random creation date between now and 7 days from now
+                $startTime = new \DateTimeImmutable();
+                $endTime = $startTime->add(new \DateInterval('P7D'));
+                $interval = $endTime->getTimestamp() - $startTime->getTimestamp();
+                $randomSeconds = mt_rand(0, $interval);
+                $booking->setCreatedAt($startTime->add(new \DateInterval('PT' . $randomSeconds . 'S')));
+
+                $booking->setDuration('1 hour');
+
+
+                // Generate a random start time between now and 7 days from now
+                $startTime = new \DateTimeImmutable();
+                $endTime = $startTime->add(new \DateInterval('P7D'));
+                $interval = $endTime->getTimestamp() - $startTime->getTimestamp();
+                $randomSeconds = mt_rand(0, $interval);
+                $booking->setStartRDV($startTime->add(new \DateInterval('PT' . $randomSeconds . 'S')));
+
+                // Set the end time to be 1 hour after the start time
+                $booking->setEndRDV($booking->getStartRDV()->add(new \DateInterval('PT1H')));
+
                 // Set other properties for the booking entity
                 $manager->persist($booking);
             }

@@ -34,6 +34,7 @@ import ModalMembers from "./ModalMembers";
 import jwtDecode from "jwt-decode";
 import Booking from "./pages/BookingPage";
 import PlanningCoach from "./components/PlanningCoach";
+import BookingComponent from "./components/coach/BookingComponent";
 
 // any CSS you import will output into a single css file (app.css in this case)
 require("../styles/app.css");
@@ -107,6 +108,12 @@ const App = () => {
               render={(props) => (
                 <LoginPage onLogin={setIsAuthenticated} {...props} />
               )}
+            />
+
+            <Route
+              exact
+              path="/listbooking/:id"
+              component={BookingComponent}
             />
 
             <Route

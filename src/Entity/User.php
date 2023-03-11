@@ -31,7 +31,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $email = null;
 
     #[ORM\Column]
-    private array $roles = [];
+    private array $roles = ['ROLE_USER'];
 
     /**
      * @var string The hashed password
@@ -53,9 +53,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToOne(targetEntity: Coach::class, mappedBy: "user", cascade: ['persist', 'remove'])]
     private ?Coach $coach = null;
 
+    #[ORM\OneToOne(targetEntity: Member::class, mappedBy: "user", cascade: ['persist', 'remove'])]
+    private ?Member $member = null;
+
+   
+
     public function __construct()
     {
         $this->coaches = new ArrayCollection();
+        
     }
 
     public function addCoach(User $coach): self
@@ -79,6 +85,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             // set the owning side to null (unless already changed)
             if ($coach->getUser() === $this) {
                 $coach->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+    public function getMember(): ?Member
+    {
+        return $this->member;
+    }
+    public function addMember(User $member): self
+    {
+        if (!$this->coaches->contains($member)) {
+            $this->coaches[] = $member;
+            $member->setUser($this);
+        }
+
+        return $this;
+    }
+    public function setMember(User $coach): self
+    {
+        $this->user = $coach;
+
+        return $this;
+    }
+    public function removeMember(Member $member): self
+    {
+        if ($this->coaches->removeElement($member)) {
+            // set the owning side to null (unless already changed)
+            if ($member->getUser() === $this) {
+                $member->setUser(null);
             }
         }
 
@@ -218,4 +254,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
+
+   
+    
 }

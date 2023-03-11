@@ -13,7 +13,7 @@ use Doctrine\Common\Collections\Collection;
 #[ORM\Entity(repositoryClass: CoachRepository::class)]
 #[ApiResource(paginationEnabled: false)]
 
-class Coach
+class Coach 
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -34,7 +34,7 @@ class Coach
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $speciality = null;
 
-    #[ORM\OneToMany(mappedBy: 'coach', targetEntity: Booking::class,cascade: ['persist', 'remove'])]
+    #[ORM\OneToMany(mappedBy: 'coach', targetEntity: Booking::class)]
     private Collection $bookings;
 
     public function __construct()
