@@ -8,26 +8,105 @@ import authAPI from "../services/authAPI";
 import ModalProfile from "../ModalProfile";
 import TextField from '@mui/material/TextField';
 import { Button, Slider } from "@mui/material";
+import { OverlayTrigger, Tooltip } from "react-bootstrap";
+import WelcomeMessageProfil from "../components/members/WelcomeMessageProfil";
+import SaveButtonProfil from "../components/members/saveButtonProfil";
+import NavbarMembers from "../components/members/NavbarMembers";
+import ProfilSliderMembers from "../components/members/ProfileSliderMembers";
 
 
 // // let token = window.localStorage.getItem("authToken");
 // let tokenPayload = jwtDecode(token);
 
-const Welcome = ({ getUser }) => {
+const Welcome = ({ getUser, props }) => {
   const [isVisible, setIsVisible] = useState(false);
-  console.log(getUser());
+
   const user = getUser().includes("ROLE_USER");
+  let authTokenMember = window.localStorage.getItem("authToken");
+  let tokenPayloadMember = jwtDecode(authTokenMember);
+  console.log(tokenPayloadMember);
+
   const isCoach = getUser().includes("ROLE_COACH");
   const linkToCustomers = isCoach ? '/customers' : '/booking';
-  console.log(isCoach);
   const linkText = isCoach ? 'Voir ses abonnés' : 'Prendre un rdv';
+  const [member, setMember] = useState(null);
+  const [memberId, setMemberId] = useState("");
+  const [age, setAge] = useState(tokenPayloadMember.userAge);
+  const [sizeUser, setSizeUser] = useState(0);
+  const [weightUser, setWeightUser] = useState(0);
+  const [imc, setIMC] = useState(0);
+  const tooltip = (
+    <Tooltip id="button-tooltip">
+      L'Indice de Masse Corporelle (IMC) est un indicateur de la corpulence d'une personne. Il est calculé en divisant le poids en kilogrammes par la taille en mètres carrés. Un IMC de 18,5 à 24,9 est considéré comme normal.
+    </Tooltip>
+  );
 
-  
+  const calculateIMC = (weightUser, sizeUser) => {
+    const imc = weightUser / Math.pow(sizeUser / 100, 2);
+    return imc.toFixed(2);
+  }
+  useEffect(() => {
+    const newIMC = calculateIMC(weightUser, sizeUser);
+    setIMC(newIMC);
+  }, [weightUser, sizeUser]);
+
+
+  useEffect(() => {
+    if (member && member.Id) {
+      const memberId = member.Id;
+      console.log("ID du membre :", memberId);
+      setMemberId(memberId);
+    }
+  }, [member]);
+  useEffect(() => {
+
+    if (memberId) {
+      const fetchMember = async () => {
+        const response = await axios.get(
+          `http://localhost:8000/api/members/${memberId}`
+        );
+        console.log(response.data);
+        setSizeUser(response.data.sizeUser);
+        setWeightUser(response.data.weightUser);
+
+
+      };
+      fetchMember();
+
+
+    }
+  }, [memberId]);
+  console.log(age);
+  const handleChangeAge = (event, newValue) => {
+    setAge(newValue);
+  };
+  const handleChangeSizeUser = (event, newValue) => {
+    setSizeUser(newValue);
+    // const heightMeters = newValue / 100;
+    // const imc = calculateIMC(weightUser, heightMeters);
+    //setImcUser(imc);
+  };
+
+  const handleChangeWeightUser = (event, newValue) => {
+    setWeightUser(newValue);
+    // const heightMeters = sizeUser / 100;
+    // const imc = calculateIMC(newValue, heightMeters);
+    // setImcUser(imc);
+  };
+
+  const handleChangeImcUser = () => {
+    const heightMeters = sizeUser / 100;
+    const imc = calculateIMC(weightUser, sizeUser);
+    setImcUser(imc);
+  };
+
+
 
   const [isOpen, setIsOpen] = useState(false);
   const { id = "new" } = useParams();
   if (id !== "new") {
   }
+
 
   const [coach, setCoach] = useState({
     firstName: "",
@@ -50,34 +129,32 @@ const Welcome = ({ getUser }) => {
         "http://localhost:8000/api/users/" + id
       ).then((response) => response.data);
       const { firstName, lastName, age, weight, calories } = data;
-      console.log(data);
-      setCoach({ firstName, lastName, age, weight, calories });
+
+      setCoach({ firstName, lastName });
     } catch (error) {
       console.log(error.response);
     }
   };
+  console.log(coach);
+
 
   useEffect(() => {
     if (id !== "new") {
       setEditing(true);
       fetchCoach(id);
       const { firstName, lastName, age, weight, calories } = data;
-      // console.log(data); // Destructure the firstName and lastName variables from the data object
+
+      console.log(data); // Destructure the firstName and lastName variables from the data object
       setCoach({ firstName, lastName, age, weight, calories }); // Update the coach state variable with the new values
     } else {
       const coachData = localStorage.getItem('coach');
 
       if (coachData) {
         setCoach(JSON.parse(coachData));
-        //console.log(coachData)
+
       }
     }
   }, [id]);
-
-
-
-
-
   // Declare a new state variable called "selectedImageDataUrl" and initialize it to an empty string
   const [selectedImageDataUrl, setSelectedImageDataUrl] = useState("");
   // Declare a new state variable called "errorMessage" and initialize it to an empty string
@@ -86,24 +163,8 @@ const Welcome = ({ getUser }) => {
   const [successMessage, setSuccessMessage] = useState("");
   // Use the useHistory hook to get access to the history object
   const history = useHistory();
-  // Créez une fonction pour gérer la soumission du formulaire de mise à jour des informations de l'utilisateur
-  // const handleSubmit = async (event) => {
-  //   event.preventDefault();
 
-  //   try {
-  //     const response = await Axios.put(
-  //       "http://localhost:8000/api/coaches/" + id,
-  //       coach
-  //     );
-  //     // Todo : Flasl de notification de succés
-  //     console.log(response.data);
 
-  //   } catch (error) {
-  //     console.error(error);
-  //   }
-  //   // TODO : Flash de notification de succés
-  //   // history.replace("/profil");
-  // };
   useEffect(() => {
     const imageData = localStorage.getItem("selectedImage");
 
@@ -111,15 +172,15 @@ const Welcome = ({ getUser }) => {
       setSelectedImageDataUrl(imageData);
     }
   }, []);
-  // useEffect(() => {
-  //   // console.log("selectedImageDataUrl:", selectedImageDataUrl);
-  // }, [selectedImageDataUrl]);
+
 
   function authenticateProfile() {
     // Check if the authToken item is present in the local storage
     let authToken = window.localStorage.getItem("authToken");
     let tokenPayload = jwtDecode(authToken);
-    console.log(tokenPayload.age);
+    console.log(tokenPayload);
+    setMember(tokenPayload);
+
 
     if (!authToken) {
       // If the authToken is not present, redirect the user to the login page
@@ -172,276 +233,67 @@ const Welcome = ({ getUser }) => {
     };
     reader.readAsDataURL(file);
   };
-  const [age, setAge] = useState(18);
-  const [weight, setWeight] = useState(0);
-  const [objectifs, setObjectifs] = useState(0);
-  const [calories, setCalories] = useState(0);
-
-  const handleChangeAge = (event, newValue) => {
-    setAge(newValue);
-
-  };
-
-
-
-  const handleChangeWeight = (event, newValue) => {
-    setWeight(newValue);
-  };
-  const handleChangeObjectifs = (event, newValue) => {
-    setObjectifs(newValue);
-  };
-  const handleChangeCalories = (event, newValue) => {
-    setCalories(newValue);
-  };
-
 
   return (
     <>
+      <NavbarMembers linkToCustomers={linkToCustomers} linkText={linkText} tokenPayload={tokenPayload} />
 
-      <div className="container w-50" style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
-
-        <nav class="container-fluid">
-          <div class="row">
-            <div class="col-md-3">
-              <Link
-                to="/programmerSeance"
-                className="btn btn-primary active"
-                role="button"
-                data-bs-toggle="button"
-                aria-pressed="true"
-              >
-                Créer une séance
-              </Link>
-            </div>
-            <div class="col-md-3">
-              <Link
-                to="/VoirSonPlanning"
-                className="btn btn-primary"
-                role="button"
-                data-bs-toggle="button"
-                aria-pressed="true"
-              >
-                Voir son planning
-              </Link>
-            </div>
-            <div class="col-md-3">
-              <Link
-                to={linkToCustomers}
-                class="btn btn-primary"
-                aria-disabled="true"
-                role="button"
-                data-bs-toggle="button"
-              >
-                {linkText}
-              </Link>
-            </div>
-            <div class="col-md-3">
-              <Link
-                to={`/listbooking/${tokenPayload.Id}`}
-                class="btn btn-primary"
-                aria-disabled="true"
-                role="button"
-                data-bs-toggle="button"
-              >
-                Voir ses réservations
-              </Link>
-            </div>
-          </div>
-        </nav>
-      </div>
-
-      {/* {(!editing && <h2 className="text-center my-3">Tableau de bord</h2>) || (
-        <h2 className="text-center my-3">Editez votre profil</h2>
-      )} */}
-
-      {/* <div className="mt-5" style={{ display: "flex", alignItems: "center", justifyContent: "center", paddingLeft: "50px" }}>
-        <h1>Tableau de bord</h1>
-      </div> */}
       <div className="mt-5" style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
-        <h1 className="my-component-title">Bienvenue {tokenPayload.firstName}, ici tu peux configurer ton profil pour tes prochaines séances. </h1>
+        <WelcomeMessageProfil firstName={tokenPayload.firstName} />
       </div>
 
       <div className="container mt-5">
         <div className="row">
           <div className="col-md-3">
-            <div className="tile-container">
-
-              <div className="image-container">
-                <img src="https://res.cloudinary.com/glide/image/fetch/f_auto,w_150,h_150,c_lfill/https%3A%2F%2Fstorage.googleapis.com%2Fglide-prod.appspot.com%2Fuploads-v2%2FrKHwzU5y7IDSLkW4XHwB%2Fpub%2Ftk2uAzm2Ma1ThpdaaB6e.png" className="sc-bqyKva XCdxT sc-dWrNqi kURnQM" draggable="false" />
-              </div>
-              <div className="tile-overlay">
-                <div className="tile-corner-container"></div>
-                <div className="tile-corner-container"></div>
-              </div>
-
-              <div className="tile-text-container">
-                <div className="tile-title" data-test="tile-item-title">Age</div>
-                <Slider value={age} onChange={handleChangeAge} aria-labelledby="continuous-slider" />
-                <div className="tile-subtitle" data-test="tile-item-title">{age} ans</div>
-                <Button variant="contained" color="primary" onClick={handleChangeAge}>
-                  Enregistrer
-                </Button>
-              </div>
-            </div>
+            <ProfilSliderMembers title="Age"
+              value={age}
+              onChange={handleChangeAge}
+              imageUrl="https://res.cloudinary.com/glide/image/fetch/f_auto,w_150,h_150,c_lfill/https%3A%2F%2Fstorage.googleapis.com%2Fglide-prod.appspot.com%2Fuploads-v2%2FrKHwzU5y7IDSLkW4XHwB%2Fpub%2Ftk2uAzm2Ma1ThpdaaB6e.png"
+              unit="ans" />
           </div>
           <div className="col-md-3">
             <div className="tile-container">
               <div className="image-container">
-                <img src="https://res.cloudinary.com/glide/image/fetch/f_auto,w_150,h_150,c_lfill/https%3A%2F%2Fstorage.googleapis.com%2Fglide-prod.appspot.com%2Fuploads-v2%2FrKHwzU5y7IDSLkW4XHwB%2Fpub%2FuZ4LV1XDHWKKXQ7kriGT.png" className="sc-bqyKva XCdxT sc-dWrNqi kURnQM" />
+                <img src="https://png.pngtree.com/png-clipart/20190925/original/pngtree-height-measure-icon-vector-isolated-png-image_4972689.jpg" className="sc-bqyKva XCdxT sc-dWrNqi kURnQM" width="150" height="150" />
                 <div className="tile-overlay">
                   <div className="tile-corner-container"></div>
                   <div className="tile-corner-container"></div>
                 </div>
               </div>
               <div className="tile-text-container">
-                <div className="tile-title" data-test="tile-item-title">Poids</div>
-                <Slider value={weight} onChange={handleChangeWeight} aria-labelledby="continuous-slider" max={200} />
-                <div className="tile-subtitle" data-test="tile-item-title"> {weight}/kg</div>
+                <div className="tile-title" data-test="tile-item-title">Taille</div>
+                <Slider value={sizeUser} onChange={handleChangeSizeUser} aria-labelledby="continuous-slider" max={200} />
+                <div className="tile-subtitle" data-test="tile-item-title"> {sizeUser}  cm</div>
               </div>
             </div>
           </div>
           <div className="col-md-3">
-            <div className="tile-container">
-              <div className="image-container">
-                <img src="https://res.cloudinary.com/glide/image/fetch/f_auto,w_150,h_150,c_lfill/https%3A%2F%2Fstorage.googleapis.com%2Fglide-prod.appspot.com%2Fuploads-v2%2FrKHwzU5y7IDSLkW4XHwB%2Fpub%2F5gJBFJd5uMnQkTJ1Rll7.png" />
-                <div className="tile-overlay">
-                  <div className="tile-corner-container"></div>
-                  <div className="tile-corner-container"></div>
-                </div>
-              </div>
-              <div className="tile-text-container">
-                <div className="tile-title" data-test="tile-item-title">Objectifs</div>
-                <Slider value={objectifs} onChange={handleChangeObjectifs} aria-labelledby="continuous-slider" max={7} />
-                <div className="tile-subtitle" data-test="tile-item-title"> {objectifs}/7 jours</div>
-              </div>
-            </div>
+            <ProfilSliderMembers
+              title="Poids"
+              value={weightUser}
+              onChange={handleChangeWeightUser}
+              imageUrl="https://res.cloudinary.com/glide/image/fetch/f_auto,w_150,h_150,c_lfill/https%3A%2F%2Fstorage.googleapis.com%2Fglide-prod.appspot.com%2Fuploads-v2%2FrKHwzU5y7IDSLkW4XHwB%2Fpub%2FuZ4LV1XDHWKKXQ7kriGT.png"
+              max={200}
+              unit="kg"
+            />
           </div>
           <div className="col-md-3">
-            <div className="tile-container">
-              <div className="image-container">
-                <img src="https://res.cloudinary.com/glide/image/fetch/f_auto,w_150,h_150,c_lfill/https%3A%2F%2Fstorage.googleapis.com%2Fglide-prod.appspot.com%2Fuploads-v2%2FrKHwzU5y7IDSLkW4XHwB%2Fpub%2FLt0K4kXVF0TUtFUSjFFW.png" />
-                <div className="tile-overlay">
-                  <div className="tile-corner-container"></div>
-                  <div className="tile-corner-container"></div>
-                </div>
-              </div>
-              <div className="tile-text-container">
-                <div className="tile-title" data-test="tile-item-title">Calories</div>
-                <Slider value={calories} onChange={handleChangeCalories} aria-labelledby="continuous-slider" max={3000} />
-                <div className="tile-subtitle" data-test="tile-item-title"> {calories} /kcal</div>
-              </div>
-            </div>
+            <ProfilSliderMembers
+              title="IMC"
+              value={imc}
+              onChange={handleChangeImcUser}
+              imageUrl="https://res.cloudinary.com/glide/image/fetch/f_auto,w_150,h_150,c_lfill/https%3A%2F%2Fstorage.googleapis.com%2Fglide-prod.appspot.com%2Fuploads-v2%2FrKHwzU5y7IDSLkW4XHwB%2Fpub%2FLt0K4kXVF0TUtFUSjFFW.png"
+              min={0}
+              max={50}
+              step={0.1}
+              unit=""
+            />
           </div>
         </div>
       </div>
-
-
-
-
-
-      {/* <div className="container w-50"> */}
-
-
-      {/* 
-      <div className="mt-5" style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
-
-        <div class="form-group" >
-          <label for="formFile" class="form-label">Choisis ta photo de profil :</label>
-          <input class="form-control" onChange={handleFileChange} type="file" id="formFile" accept="image/*" />
-        </div>
-      </div> */}
-      {/* <div> */}
-      {/* <label htmlFor="lastName">Choose your picture :</label>
-            <input type="file" onChange={handleFileChange} accept="image/*" />
-
-          <div style={{ position: "absolute", top: 150, left: 10 }}>
-            {selectedImageDataUrl && (
-              <div>
-                <img
-                  alt="selected image"
-                  src={selectedImageDataUrl}
-                  style={{
-                    width: 200,
-                    height: 200,
-                    borderRadius: "50%",
-                    objectFit: "cover",
-                  }}
-                />
-                <br />
-                <div style={{ position: "absolute", top: 210, left: 10 }}>
-                  <button onClick={() => setSelectedImageDataUrl("")}>
-                    Remove
-                  </button>
-                  <button onClick={handleSave}>Save image</button>
-                </div>
-              </div>
-            )}
-          </div>
-        {/* </div> */}
-      {/* <div>
-
-        </div>
-        {errorMessage && (
-          <div className="alert alert-danger">{errorMessage}</div>
-        )} */}
-      {/* <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
-          <div style={{ display: "flex", flexDirection: "row", justifyContent: "center" }}>
-            <div style={{ marginRight: "1rem" }}>
-              <h3>Prénom</h3>
-              <p>{coach.firstName}</p>
-            </div>
-            <div style={{ marginLeft: "1rem" }}>
-              <h3>Nom</h3>
-              <p>{coach.lastName}</p>
-            </div>
-          </div>
-        </div> */}
-      {/* <div className="mt-5" style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
-          <button type="button" onClick={() => setIsOpen(true)} class="btn btn-success">Update your profile</button>
-        </div> */}
-      {/* <div style={{ display: "flex", flexDirection: "row", justifyContent: "center" }}></div>
-        {isOpen && <ModalProfile id={tokenPayload.id} firstName={tokenPayload.firstName} lastName={tokenPayload.lastName} updateCoach={updateCoach} setIsOpen={setIsOpen} />} */}
-      {/* </div> */}
-      {/* Affichez un message d'erreur s'il y en a un */}
-      {/* {errorMessage && <p className="error">{errorMessage}</p>} */}
-      {/* Affichez un message de réussite s'il y en a un */}
-      {/* {successMessage && <p className="success">{successMessage}</p>} */}
-      {/* <div className="container w-50">
-        <form onSubmit={handleSubmit}>
-          <label htmlFor="firstName">Prénom :</label>
-          <input
-            type="text"
-            id="firstName"
-            name="firstName"
-            value={coach.firstName}
-            onChange={handleChange}
-          />
-          <br />
-          <label htmlFor="lastName">Nom de famille :</label>
-          <input
-            type="text"
-            id="lastName"
-            name="lastName"
-            value={coach.lastName}
-            onChange={handleChange}
-          />
-          <br />
-          <button type="submit">Mettre à jour</button>
-        </form>
-      </div> */}
-
+      <SaveButtonProfil />
     </>
   );
 };
-
-// const Welcome = (props) => {
-//   return (
-//     <div className="container">
-//       {/* <Logout /> */}
-//       {/* <Quiz userData={userData} /> */}
-//     </div>
-//   );
-// };
-
 export default Welcome;
 

@@ -66,10 +66,12 @@ class AppController extends AbstractController
 
 
 
-        dump($userInfo);
-        //dump($bookings);
+        //dump($member);
+        dump($bookings);
         //dump($bookings);
 
-        return $this->render('app/index.html.twig', []);
+        return $this->render('app/index.html.twig', [
+            'member' => $member,
+        ]);
     }
 }
