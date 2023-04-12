@@ -4,10 +4,12 @@ import { render } from "react-dom";
 import { Route } from "react-router-dom";
 import { toast } from "react-toastify";
 import FacebookLogin from 'react-facebook-login';
+import authAPI from '../services/authAPI';
 
 
 
 const inscriptionMember = ({ history }) => {
+ 
   //   const data = {
   //     pseudo: "",
   //     email: "",
@@ -22,12 +24,48 @@ const inscriptionMember = ({ history }) => {
     password: "",
     confirmPassword: "",
   });
-  // Login Facebook
   const [userData, setUserData] = useState({});
+  // Ajoutez cette fonction dans votre composant
+  const handleFacebookSubmit = async (userData) => {
+    console.log(userData);
+    try {
+      // Adaptez cette requête pour envoyer les données de l'utilisateur à votre serveur
+      await authAPI.authenticateFacebook(userData);
+      console.log("Facebook authentication successful:", userData); // Ajout du console.log
+
+      setError("");
+      // onLogin(true);
+      // history.replace("/login");
+      toast.success("vous êtes maintenant connecté !");
+    } catch (error) {
+      setError(
+        "Une erreur est survenue lors de la connexion avec Facebook"
+      );
+    }
+  };
+  // Modifiez la fonction responseFacebook pour appeler handleFacebookSubmit
   const responseFacebook = (response) => {
-    console.log(response);
-    setUserData(response);
-    toast.success("Bienvenue a toi " + userData.name);
+    console.log('Facebook response: ', response);
+    if (response.name) {
+      const updatedUserData = {
+        firstName: response.name.split(" ")[0],
+        lastName: response.name.split(" ")[1],
+        email: response.email,
+        password:response.id,
+        confirmPassword:response.id
+      };
+      console.log(updatedUserData);
+      setUser(updatedUserData);
+      
+      toast.success("Bienvenue a toi " + response.name);
+      handleSubmit();
+      //handleFacebookSubmit(response);
+  
+      // Appeler authenticateFacebook avec les données utilisateur mises à jour
+      authAPI.authenticateFacebook(updatedUserData);
+    } else {
+      console.error('No name found in the Facebook response');
+    }
   };
 
   const [error, setError] = useState("");
@@ -70,7 +108,7 @@ const inscriptionMember = ({ history }) => {
         setErrors(apiErrors);
       }
     }
-    
+
   };
 
   return (
@@ -154,7 +192,10 @@ const inscriptionMember = ({ history }) => {
         <FacebookLogin
           appId="1231627447751070"
           fields="name,email,picture"
-          onClick={responseFacebook}
+          buttonText="S'inscrire avec Facebok"
+          autoLoad={false}
+          isMobile={false}
+          onClick={() => { }}
           callback={responseFacebook}
           cssClass="btn btn-secondary mt-2"
           icon="fa-facebook"

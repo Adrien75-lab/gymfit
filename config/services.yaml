@@ -20,6 +20,9 @@ services:
             - '../src/DependencyInjection/'
             - '../src/Entity/'
             - '../src/Kernel.php'
+    App\Events\UserSubscriber:
+        tags:
+            - { name: doctrine.event_subscriber }
     App\Events\JwtCreatedSubscriber :
         tags:
            - {

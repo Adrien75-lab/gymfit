@@ -35,6 +35,10 @@ import jwtDecode from "jwt-decode";
 import Booking from "./pages/BookingPage";
 import PlanningCoach from "./components/PlanningCoach";
 import BookingComponent from "./components/coach/BookingComponent";
+import ProfilCoachComponent from "./components/coach/ProfilCoachComponent";
+import TokenVerificationPage from "./pages/TokenVerificationPage";
+import EmailConfirmationPage from "./pages/EmailConfirmationPage";
+
 
 // any CSS you import will output into a single css file (app.css in this case)
 require("../styles/app.css");
@@ -126,7 +130,7 @@ const App = () => {
               path="/planningCoach"
               component={PlanningCoach}
             />
-            
+
             <Route
               exact
               path="/PlanningWorkout/:id"
@@ -158,7 +162,23 @@ const App = () => {
                 />
               )}
             />
+            <Route path="/email-confirmation" component={EmailConfirmationPage} />
+            <Route
+              exact
+              path="/verify-token/:token"
+              component={TokenVerificationPage}
+            />
+            <Route
+              path="/profilCoach"
+              render={(props) => (
+                <ProfilCoachComponent
+                  getUser={getUser}
+                  {...props}
 
+                />
+              )}
+            />
+            <Route path="/profilCoach" component={ProfilCoachComponent} />
             <Route path="/exercise" component={ExercicePage} />
             <Route path="/features" component={FeaturesPage} />
             <Route path="/about" component={About} />

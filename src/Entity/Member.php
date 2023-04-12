@@ -60,6 +60,10 @@ class Member
     {
         return $this->id;
     }
+    public function setId(): ?int
+    {
+        return $this->id;
+    }
 
     public function getFirstName(): ?string
     {

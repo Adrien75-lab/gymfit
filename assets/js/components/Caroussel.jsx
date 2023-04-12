@@ -1,36 +1,35 @@
-import React from 'react'
+import React from 'react';
+import { Carousel } from 'react-bootstrap';
+import image from "../../img/carousel-1.jpg";
+import image1 from "../../img/carousel-2.jpg";
 
 const Caroussel = () => {
   return (
-    <div class="container-fluid p-0">
-        <div id="blog-carousel" class="carousel slide" data-ride="carousel">
-            <div class="carousel-inner">
-                <div class="carousel-item active">
-                    <img class="w-100" src="img/carousel-1.jpg" alt="Image" />
-                    <div class="carousel-caption d-flex flex-column align-items-center justify-content-center">
-                        <h3 class="text-primary text-capitalize m-0">Gym & Fitness Center</h3>
-                        <h2 class="display-2 m-0 mt-2 mt-md-4 text-white font-weight-bold text-capitalize">Best Gym In Town</h2>
-                        <a href="" class="btn btn-lg btn-outline-light mt-3 mt-md-5 py-md-3 px-md-5">Join Us Now</a>
-                    </div>
-                </div>
-                <div class="carousel-item">
-                    <img class="w-100" src="img/carousel-2.jpg" alt="Image" />
-                    <div class="carousel-caption d-flex flex-column align-items-center justify-content-center">
-                        <h3 class="text-primary text-capitalize m-0">Gym & Fitness Center</h3>
-                        <h2 class="display-2 m-0 mt-2 mt-md-4 text-white font-weight-bold text-capitalize">Get Body In Shape</h2>
-                        <a href="" class="btn btn-lg btn-outline-light mt-3 mt-md-5 py-md-3 px-md-5">Join Us Now</a>
-                    </div>
-                </div>
-            </div>
-            <a class="carousel-control-prev" href="#blog-carousel" data-slide="prev">
-                <span class="carousel-control-prev-icon"></span>
-            </a>
-            <a class="carousel-control-next" href="#blog-carousel" data-slide="next">
-                <span class="carousel-control-next-icon"></span>
-            </a>
-        </div>
-    </div>
-  )
-}
+    <Carousel>
+      <Carousel.Item>
+        <img
+          className="d-block w-100 caroussel-img"
+          src={image}
+          alt="Première diapositive"
+        />
+        <Carousel.Caption>
+          <h3>Un accompagnement personnalisé pour chaque adhérent</h3>
+          <p>Nos coachs qualifiés vous aideront à élaborer un programme d'entraînement adapté à vos besoins et à votre niveau de forme physique.</p>
+        </Carousel.Caption>
+      </Carousel.Item>
+      <Carousel.Item>
+        <img
+          className="d-block w-100 caroussel-img"
+          src={image1}
+          alt="Seconde diapositive"
+        />
+        <Carousel.Caption>
+          <h3>Rejoignez la meilleure salle de sport en ville</h3>
+          <p>Profitez d'équipements de qualité, de cours variés et d'un encadrement professionnel pour atteindre vos objectifs de fitness.</p>
+        </Carousel.Caption>
+      </Carousel.Item>
+    </Carousel>
+  );
+};
 
-export default Caroussel
+export default Caroussel;

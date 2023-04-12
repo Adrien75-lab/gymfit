@@ -1,15 +1,28 @@
 controllers:
-    resource: ../src/Controller/
-    type: annotation
+  resource: ../src/Controller/
+  type: annotation
 
 kernel:
-    resource: ../src/Kernel.php
-    type: annotation
+  resource: ../src/Kernel.php
+  type: annotation
 
 api_login_check:
-    path: /api/login_check
+  path: /api/login_check
+
+api_login_check_facebook:
+  path: /api/login_check_facebook
+  methods: ["POST"]
+
+google_login:
+  path: /api/google_login
+  methods: ["POST"]
 
 # config/routes.yaml
 customers:
   path: /customers/{id}
   controller: App\Controller\CustomersController::show
+
+api_verify_token:
+  path: /api/verify-token/{token}
+  controller: App\Controller\UserController::verifyToken
+  methods: POST

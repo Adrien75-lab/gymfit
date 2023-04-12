@@ -48,15 +48,16 @@ const ModalBooking = ({ modalIsOpen, setIsOpen, coachFirstName, coachId, memberI
         fetchAvailableSlots();
     }, [coachId, selectedDate]);
 
-    
+
 
 
 
 
 
     const handleSave = () => {
+        console.log("handleSave called");
         if (selectedSlot) {
-            
+
             const data = {
                 coach: `/api/coaches/${coachId}`,
                 user: `/api/members/${memberId.Id}`,
@@ -65,17 +66,7 @@ const ModalBooking = ({ modalIsOpen, setIsOpen, coachFirstName, coachId, memberI
                 endRDV: selectedSlot.endRDV,
                 duration: "1 hours",
                 createdAt: new Date(),
-            }.then(response => {
-                const bookings = response.data;
-            });
-            
-            
-            //             Axios.post("http://localhost:8000/api/login_check", credentials, {
-            //     headers: {
-            //       Accept: "application/json",
-            //       "Content-Type": "application/json",
-            //     },
-            //   })
+            };
 
             axios.post(`http://localhost:8000/api/bookings/${coachId}/booking`, data, {
                 headers: {
@@ -83,10 +74,9 @@ const ModalBooking = ({ modalIsOpen, setIsOpen, coachFirstName, coachId, memberI
                     "Content-Type": "application/json",
                 },
             })
-
                 .then(response => {
-                    console.log(response)
-                    // handle success response
+                    console.log(response);
+                    const bookings = response.data;
                 })
                 .catch(error => {
                     // handle error
@@ -103,7 +93,7 @@ const ModalBooking = ({ modalIsOpen, setIsOpen, coachFirstName, coachId, memberI
         setSelectedSlot(null);
         setIsOpen(false);
     };
-   
+
     // const availableSlots = [
     //     { start: new Date("2023-03-10T10:00:00Z"), end: new Date("2023-03-10T11:00:00Z"), booked: false },
     //     { start: new Date("2023-03-10T11:00:00Z"), end: new Date("2023-03-10T12:00:00Z"), booked: true },
@@ -111,7 +101,7 @@ const ModalBooking = ({ modalIsOpen, setIsOpen, coachFirstName, coachId, memberI
     //     { start: new Date("2023-03-10T15:00:00Z"), end: new Date("2023-03-10T16:00:00Z"), booked: false },
     //     { start: new Date("2023-03-10T16:00:00Z"), end: new Date("2023-03-10T17:00:00Z"), booked: true },
     // ]
-console.log(selectedSlot);
+    console.log(selectedSlot);
     return (
         <>
             <div className="darkBG" onClick={() => setIsOpen(false)} />
@@ -122,7 +112,7 @@ console.log(selectedSlot);
                         <RiCloseLine style={{ marginBottom: "-3px" }} />
                     </button>
                     <div className="modalContent">
-                        
+
                         {step === 1 && (
                             <>
                                 <h2>Choisissez un créneau horaire avec {coachFirstName}</h2>
@@ -192,7 +182,7 @@ console.log(selectedSlot);
                                 </div>
                             </>
                         )}
-                        
+
 
 
 

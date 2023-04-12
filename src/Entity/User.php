@@ -7,11 +7,14 @@ use ApiPlatform\Metadata\ApiResource;
 use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use Doctrine\ORM\Mapping\InheritanceType;
+use Faker\Provider\Uuid as ProviderUuid;
+use Symfony\Component\Uid\Uuid;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 
@@ -56,12 +59,22 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToOne(targetEntity: Member::class, mappedBy: "user", cascade: ['persist', 'remove'])]
     private ?Member $member = null;
 
-   
+    #[ORM\Column(type: "string", length: 36, unique: true, nullable: true)]
+    private ?string $coachId = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $confirmationToken = null;
+
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    private ?\DateTimeInterface $confirmationTokenExpiresAt = null;
+
+    #[ORM\Column(type: "boolean")]
+    private bool $isVerified = false;
+
+    
     public function __construct()
     {
         $this->coaches = new ArrayCollection();
-        
     }
 
     public function addCoach(User $coach): self
@@ -255,6 +268,52 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-   
-    
+    public function getCoachId(): ?string
+    {
+        return $this->coachId;
+    }
+
+    public function setCoachId(string $coachId): self
+    {
+        $this->coachId = $coachId;
+
+        return $this;
+    }
+
+    public function getConfirmationToken(): ?string
+    {
+        return $this->confirmationToken;
+    }
+
+    public function setConfirmationToken(?string $confirmationToken): self
+    {
+        $this->confirmationToken = $confirmationToken;
+
+        return $this;
+    }
+
+    public function getConfirmationTokenExpiresAt(): ?\DateTimeInterface
+    {
+        return $this->confirmationTokenExpiresAt;
+    }
+
+    public function setConfirmationTokenExpiresAt(?\DateTimeInterface $confirmationTokenExpiresAt): self
+    {
+        $this->confirmationTokenExpiresAt = $confirmationTokenExpiresAt;
+
+        return $this;
+    }
+
+    public function isIsVerified(): ?bool
+    {
+        return $this->isVerified;
+    }
+
+    public function setIsVerified(bool $isVerified): self
+    {
+        $this->isVerified = $isVerified;
+
+        return $this;
+    }
+
 }

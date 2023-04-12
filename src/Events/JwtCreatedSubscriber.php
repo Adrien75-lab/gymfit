@@ -15,7 +15,7 @@ class JwtCreatedSubscriber
         $data['firstName'] = $user->getFirstName();
         $data['lastName'] = $user->getLastName();
         $data['Id'] = $user->getId();
-        $data['userAge'] = $user->getMember()->getUserAge();
+        //$data['userAge'] = $user->getMember()->getUserAge();
         //$data['userAge'] = $member->getUserAge();
         //$data['kilos'] = $user->getKilos();
         //$data['calories'] = $user->getCalories();

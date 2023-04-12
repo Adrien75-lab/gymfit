@@ -7,6 +7,55 @@ function logout() {
   window.localStorage.removeItem("authToken");
   delete Axios.defaults.headers["Authorization"];
 }
+const verifyToken = async (token) => {
+  try {
+    
+    const response = await fetch(`http://localhost:8000/api/verify-token/${token}`, {
+      method: 'POST',
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+      console.log(data);
+      // Handle success, e.g., show a success message or redirect the user
+    } else {
+      const errorData = await response.json();
+      console.error(errorData);
+      // Handle error, e.g., show an error message
+    }
+  } catch (error) {
+    console.error('Error:', error);
+    // Handle network errors, e.g., show an error message
+  }
+};
+const confirmAccount = async (token) => {
+  try {
+    const response = await fetch(`http://localhost:8000/api/confirm-account/${token}`, {
+      method: 'GET',
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+      console.log(data);
+      // Handle success, e.g., show a success message or redirect the user
+    } else {
+      const errorData = await response.json();
+      console.error(errorData);
+      // Handle error, e.g., show an error message
+    }
+  } catch (error) {
+    console.error('Error:', error);
+    // Handle network errors, e.g., show an error message
+  }
+};
 
 function authenticate(credentials) {
   return Axios.post("http://localhost:8000/api/login_check", credentials, {
@@ -15,16 +64,20 @@ function authenticate(credentials) {
       "Content-Type": "application/json",
     },
   })
-    .then((response) => response.data.token)
-    .then((token) => {
+    .then((response) => {
+      const token = response.data.token;
+      const tokenPayload = jwtDecode(token);
+
+      return { token, tokenPayload }; // Renvoyer le token et le payload
+    })
+    .then(({ token, tokenPayload }) => {
       // Je stock le token dans mon localStorage
       window.localStorage.setItem("authToken", token);
 
       // On prévient Axios qu'on a maintenant un header par défaut sur toutes nos futures requetes HTTP
       setAxiosToken(token);
-      console.log(credentials);
-      getInformationUser();
-      return true;
+
+      return tokenPayload; // Renvoyer le payload (contenant les informations utilisateur)
     });
 }
 
@@ -47,6 +100,23 @@ function getInformationUser() {
   const tokenPayload = jwtDecode(token);
   console.log(tokenPayload);
   return tokenPayload;
+}
+function authenticateProfile() {
+  return new Promise((resolve, reject) => {
+    const authToken = window.localStorage.getItem("authToken");
+
+    if (!authToken) {
+      reject("No authentication token found");
+      return;
+    }
+
+    try {
+      const tokenPayload = jwtDecode(authToken);
+      resolve(tokenPayload);
+    } catch (error) {
+      reject(error);
+    }
+  });
 }
 function setAxiosToken(token) {
   Axios.defaults.headers["Authorization"] = "Bearer " + token;
@@ -81,6 +151,27 @@ function setup() {
     }
   }
 }
+
+function authenticateGoogle(credential) {
+  return Axios.post("http://localhost:8000/api/google_login", { credential }, {
+    headers: {
+      "Referrer-Policy": "no-referrer-when-downgrade",
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    }
+  })
+    .then((response) => response.data.token)
+    .then((token) => {
+      // Je stocke le token dans mon localStorage
+      window.localStorage.setItem("authToken", token);
+
+      // On prévient Axios qu'on a maintenant un header par défaut sur toutes nos futures requetes HTTP
+      setAxiosToken(token);
+
+      return true;
+    });
+}
+
 function isAuthenticated() {
   const token = window.localStorage.getItem("authToken");
   if (token) {
@@ -101,5 +192,8 @@ export default {
   setup,
   updateUser,
   getBodyPart,
-  
+  authenticateProfile,
+  authenticateGoogle,
+  verifyToken,
+ 
 };

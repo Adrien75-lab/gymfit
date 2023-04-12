@@ -44,43 +44,6 @@ const BookingComponent = () => {
     };
     console.log(user);
 
-
-    // useEffect(() => {
-    //     Axios.get(`http://localhost:8000/api/bookings/?coach=${id}`)
-    //         .then((response) => {
-    //             const members = response.data["hydra:member"];
-    //             const promises = members.map((booking) => {
-    //                 const user = booking.user;
-    //                 const userId = user.id;
-    //                 const userName = user.lastName;
-    //                 const userFirstName = user.firstName;
-    //                 const userEmail = user.email;
-    //                 return Axios.get(booking.user);
-    //             });
-    //             Promise.all(promises)
-    //                 .then((responses) => {
-    //                     const users = responses.map((response) => response.data);
-    //                     const bookingsWithUsers = members.map((booking, index) => {
-    //                         const user = users[index];
-
-    //                         setUserFirstNames(prevUserFirstNames => [...prevUserFirstNames, user.firstName]);
-
-    //                         return { ...booking, user };
-    //                     });
-    //                     setMembers(bookingsWithUsers);
-    //                 })
-    //                 .catch((error) => {
-    //                     console.log(error);
-    //                 });
-    //         })
-    //         .catch((error) => {
-    //             console.log(error);
-    //         });
-
-    // }, [id]);
-
-
-
     const [events, setEvents] = useState([]);
     const moment = require('moment');
 
@@ -159,46 +122,52 @@ const BookingComponent = () => {
 
     return (
         <>
-            <div className="calendarCoach">
-                <FullCalendar
-                    plugins={[dayGridPlugin, timeGridPlugin]}
-                    headerToolbar={{
-                        left: "prev,next today",
-                        center: "title",
-                        right: "dayGridMonth,timeGridWeek,timeGridDay",
-                    }}
-                    buttonText={{
-                        today: "Aujourd'hui",
-                        month: "Mois",
-                        week: "Semaine",
-                        day: "Jour",
-                        list: "Liste"
-                    }}
-                    dayNamesShort={["Dim", "Lun", "Mar", "Mer", "Jeu", "Ven", "Sam"]}
-                    monthNamesShort={["Jan", "Fév", "Mar", "Avr", "Mai", "Juin", "Juil", "Août", "Sept", "Oct", "Nov", "Déc"]}
-                    initialView="dayGridMonth"
-                    editable={true}
-                    selectable={true}
-                    selectMirror={true}
-                    dayMaxEvents={true}
-                    eventClick={handleEventClick}
-                    // eventClassNames={eventClassNames}
-                    // slotDuration="00:30:00"
+            <div className="containerCalendar">
+                <div className="session-list">
+                    {/* Ici, vous pouvez ajouter le code pour afficher la liste des séances */}
+                    <h5>Liste des séances crées</h5>
+                </div>
+                <div className="calendarCoach">
+                    <FullCalendar
+                        plugins={[dayGridPlugin, timeGridPlugin]}
+                        headerToolbar={{
+                            left: "prev,next today",
+                            center: "title",
+                            right: "dayGridMonth,timeGridWeek,timeGridDay",
+                        }}
+                        buttonText={{
+                            today: "Aujourd'hui",
+                            month: "Mois",
+                            week: "Semaine",
+                            day: "Jour",
+                            list: "Liste"
+                        }}
+                        dayNamesShort={["Dim", "Lun", "Mar", "Mer", "Jeu", "Ven", "Sam"]}
+                        monthNamesShort={["Jan", "Fév", "Mar", "Avr", "Mai", "Juin", "Juil", "Août", "Sept", "Oct", "Nov", "Déc"]}
+                        initialView="dayGridMonth"
+                        editable={true}
+                        selectable={true}
+                        selectMirror={true}
+                        dayMaxEvents={true}
+                        eventClick={handleEventClick}
+                        // eventClassNames={eventClassNames}
+                        // slotDuration="00:30:00"
 
 
-                    events={events} // called after events are initialized/added/changed/removed
-                    /* you can update a remote database when these fire: // called after events are initialized/added/changed/removed
-                    /* you can update a remote database when these fire:
-                  eventAdd={function(){}}
-                  eventChange={function(){}}
-                  eventRemove={function(){}}
-                  */
-                    locale="fr"
+                        events={events} // called after events are initialized/added/changed/removed
+                        /* you can update a remote database when these fire: // called after events are initialized/added/changed/removed
+                        /* you can update a remote database when these fire:
+                      eventAdd={function(){}}
+                      eventChange={function(){}}
+                      eventRemove={function(){}}
+                      */
+                        locale="fr"
 
-                />
-                {modalIsOpen && (
-                    <ModalInformationUsers modalIsOpen={modalIsOpen} setIsOpen={setModalIsOpen} informationUser={booking} />
-                )}
+                    />
+                    {modalIsOpen && (
+                        <ModalInformationUsers modalIsOpen={modalIsOpen} setIsOpen={setModalIsOpen} informationUser={booking} />
+                    )}
+                </div>
             </div>
 
         </>

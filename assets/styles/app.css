@@ -58,6 +58,57 @@ button.btn,
   flex-direction: column;
   align-items: center;
 }
+.pricing-card {
+  border-radius: 10px;
+  transition: transform 0.3s;
+}
+
+.pricing-card:hover {
+  transform: translateY(-10px);
+}
+
+.abonnement-de-base {
+  background-color: #4caf50;
+  color: white;
+}
+
+.abonnement-pro {
+  background-color: #2196f3;
+  color: white;
+}
+.caroussel-img {
+  max-height: 500px;
+  object-fit: cover;
+}
+
+.abonnement-premium {
+  background-color: #f44336;
+  color: white;
+}
+.containerCalendar {
+  display: flex;
+}
+
+.session-list {
+  width: 25%;
+  overflow-y: auto;
+  padding: 1rem;
+  border-right: 1px solid #ccc;
+}
+
+.calendarCoach {
+  width: 75%;
+}
+.btn-outline-light {
+  border-color: white;
+  color: white;
+}
+
+.btn-outline-light:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  border-color: white;
+  color: white;
+}
 
 .image-container {
   position: relative;

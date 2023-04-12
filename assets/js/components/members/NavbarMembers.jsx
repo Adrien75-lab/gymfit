@@ -48,7 +48,7 @@ const NavbarMembers = ({ linkToCustomers, linkText, tokenPayload }) => {
                 role="button"
                 data-bs-toggle="button"
               >
-                Voir ses réservations
+                 Voir ses reservations
               </Link>
             </div>
           </div>

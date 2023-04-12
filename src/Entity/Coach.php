@@ -15,7 +15,7 @@ use Doctrine\Common\Collections\Collection;
 #[ApiResource(paginationEnabled: false)]
 #[ApiFilter(SearchFilter::class, properties: ['availabilities' => 'exact'])]
 
-class Coach 
+class Coach
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -23,7 +23,7 @@ class Coach
     private ?int $id = null;
 
 
-    #[ORM\OneToOne(targetEntity: User::class, inversedBy: "coach",cascade: ['persist', 'remove'])]
+    #[ORM\OneToOne(targetEntity: User::class, inversedBy: "coach", cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(name: "id", referencedColumnName: "id", nullable: false)]
     private ?User $user = null;
 
@@ -32,6 +32,8 @@ class Coach
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $lastName = null;
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $email = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $speciality = null;
@@ -58,17 +60,21 @@ class Coach
 
     // La fonction hydrate est utilisée pour copier les données de 
     //l'objet User vers l'objet Coach, afin d'éviter la duplication de données.
-    
+
     public function hydrate(User $user)
     {
-        
+
         $this->setUser($user);
         $this->setFirstName($user->getFirstName()); // initialisation de la propriété firstName
         $this->setLastName($user->getLastName()); // initialisation de la propriété firstName
-        // hydratation des autres propriétés de l'entité Coach
+        $this->setEmail($user->getEmail());
     }
 
     public function getId(): ?int
+    {
+        return $this->id;
+    }
+    public function setId(): ?int
     {
         return $this->id;
     }
@@ -117,6 +123,17 @@ class Coach
     public function setLastName(?string $lastName): self
     {
         $this->lastName = $lastName;
+
+        return $this;
+    }
+    public function getEmail(): ?string
+    {
+        return $this->email;
+    }
+
+    public function setEmail(?string $email): self
+    {
+        $this->email = $email;
 
         return $this;
     }
@@ -192,5 +209,4 @@ class Coach
 
         return $this;
     }
-    
 }

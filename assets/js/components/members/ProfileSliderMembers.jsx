@@ -3,6 +3,7 @@ import { Button, Slider } from "@mui/material";
 
 const ProfilSliderMembers = ({ title, value, onChange, imageUrl, min, max, step, unit }) => {
   return (
+    
     <div className="tile-container">
       <div className="image-container">
         <img src={imageUrl} className="sc-bqyKva XCdxT sc-dWrNqi kURnQM" draggable="false" />
