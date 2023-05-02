@@ -7,7 +7,7 @@ use Doctrine\Persistence\ObjectManager;
 use PHPUnit\Framework\TestCase;
 use Faker\Factory;
 
-class User extends TestCase
+class UserTest extends TestCase
 {
     
     public function testGetId()

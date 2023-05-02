@@ -24,7 +24,6 @@ class Coach
 
 
     #[ORM\OneToOne(targetEntity: User::class, inversedBy: "coach", cascade: ['persist', 'remove'])]
-    #[ORM\JoinColumn(name: "id", referencedColumnName: "id", nullable: false)]
     private ?User $user = null;
 
     #[ORM\Column(length: 255, nullable: true)]
@@ -65,18 +64,21 @@ class Coach
     {
 
         $this->setUser($user);
-        $this->setFirstName($user->getFirstName()); // initialisation de la propriété firstName
-        $this->setLastName($user->getLastName()); // initialisation de la propriété firstName
+       $this->setFirstName($user->getFirstName()); // initialisation de la propriété firstName
+       $this->setLastName($user->getLastName()); // initialisation de la propriété firstName
         $this->setEmail($user->getEmail());
+        $this->setSpeciality('squat');
     }
 
     public function getId(): ?int
     {
         return $this->id;
     }
-    public function setId(): ?int
+    public function setId(int $id): self
     {
-        return $this->id;
+        $this->id = $id;
+
+        return $this;
     }
 
     public function getUser(): ?User

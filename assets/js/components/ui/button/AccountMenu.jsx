@@ -37,12 +37,15 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function AccountMenu({ isAuthenticated, onLogout, history }) {
+export default function AccountMenu({ isAuthenticated, onLogout, history, getUser }) {
   const handleLogout = () => {
     authAPI.logout();
     onLogout(false);
     history.push("/login");
   };
+
+  const isCoach = getUser() && getUser().includes("ROLE_COACH");
+  console.log(isCoach);
   const handleProfil = () => {
 
     history.push("/profil");
@@ -128,7 +131,7 @@ export default function AccountMenu({ isAuthenticated, onLogout, history }) {
             aria-expanded={open ? 'true' : undefined}
           >
 
-            <Avatar sx={{ marginRight: 5,height: 60, width: 60 }} >
+            <Avatar sx={{ marginRight: 5, height: 60, width: 60 }} >
               {selectedImageDataUrl &&
                 <div >
                   <Avatar sx={{ height: 60, width: 60 }} src={selectedImageDataUrl} alt="selected" />
@@ -175,7 +178,7 @@ export default function AccountMenu({ isAuthenticated, onLogout, history }) {
         anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
       >
 
-        <MenuItem button component={Link} to="/profil">
+        <MenuItem button component={Link} to={isCoach ? "/profilCoach" : "/profil"}>
           <Avatar />
           <Typography>Profil</Typography>
         </MenuItem>

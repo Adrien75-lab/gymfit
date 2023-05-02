@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import ReactDOM from "react-dom";
-import Caroussel from "./components/Caroussel";
 import Navbar from "./components/Navbar";
 import About from "./pages/About";
 import Features from "./pages/Features";
@@ -95,6 +94,7 @@ const App = () => {
         <NavbarWithRouter
           isAuthenticated={isAuthenticated}
           onLogout={setIsAuthenticated}
+          getUser={getUser}
         />
         {/* <button className="primaryBtn" onClick={() => setIsOpen(true)}>
         Open Modal
@@ -119,7 +119,6 @@ const App = () => {
               path="/listbooking/:id"
               component={BookingComponent}
             />
-
             <Route
               exact
               path="/booking"
@@ -178,6 +177,7 @@ const App = () => {
                 />
               )}
             />
+            
             <Route path="/profilCoach" component={ProfilCoachComponent} />
             <Route path="/exercise" component={ExercicePage} />
             <Route path="/features" component={FeaturesPage} />

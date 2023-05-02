@@ -13,7 +13,7 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: MemberRepository::class)]
 #[ORM\Table(name: '`member`')]
 #[ApiResource(paginationEnabled: false)]
-#[ApiFilter(SearchFilter::class, properties: ['user' => 'exact'])]
+#[ApiFilter(SearchFilter::class, properties: ['member' => 'exact'])]
 class Member
 {
     #[ORM\Id]
@@ -21,7 +21,6 @@ class Member
     #[ORM\Column]
     private ?int $id = null;
     #[ORM\OneToOne(targetEntity: User::class, inversedBy: "member", cascade: ['persist', 'remove'])]
-    #[ORM\JoinColumn(name: "id", referencedColumnName: "id", nullable: false)]
     private ?User $user = null;
 
     #[ORM\Column(length: 255, nullable: true)]

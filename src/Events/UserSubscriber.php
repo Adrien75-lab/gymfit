@@ -36,52 +36,52 @@ class UserSubscriber implements EventSubscriberInterface
         // Persistez et enregistrez l'utilisateur
 
 
-        // Vérifiez si l'utilisateur a le rôle ROLE_COACH
-        if (in_array('ROLE_COACH', $entity->getRoles())) {
-            // Générer un UUID pour les coachs
-            // Créez un nouveau coach en utilisant les données de l'utilisateur
-            $entity->setCoachId(Uuid::v4());
-            $coach = new Coach();
-            $coach->setId($entity->getId());
-            $coach->setFirstName($entity->getFirstName());
-            $coach->setLastName($entity->getLastName());
-            $coach->setEmail($entity->getEmail());
-            // Générer un jeton unique
-            $confirmationToken = bin2hex(random_bytes(32));
+        // // Vérifiez si l'utilisateur a le rôle ROLE_COACH
+        // if (in_array('ROLE_COACH', $entity->getRoles())) {
+        //     // Générer un UUID pour les coachs
+        //     // Créez un nouveau coach en utilisant les données de l'utilisateur
+        //     $entity->setCoachId(Uuid::v4());
+        //     $coach = new Coach();
+        //     $coach->setId($entity->getId());
+        //     $coach->setFirstName($entity->getFirstName());
+        //     $coach->setLastName($entity->getLastName());
+        //     $coach->setEmail($entity->getEmail());
+        //     // Générer un jeton unique
+        //     $confirmationToken = bin2hex(random_bytes(32));
 
-            // Définir la date d'expiration du jeton (par exemple, 24 heures après la création)
-            $confirmationTokenExpiresAt = new \DateTime();
-            $confirmationTokenExpiresAt->modify('+24 hours');
+        //     // Définir la date d'expiration du jeton (par exemple, 24 heures après la création)
+        //     $confirmationTokenExpiresAt = new \DateTime();
+        //     $confirmationTokenExpiresAt->modify('+24 hours');
 
-            // Stocker le jeton et la date d'expiration dans l'entité User
-            $entity->setConfirmationToken($confirmationToken);
-            $entity->setConfirmationTokenExpiresAt($confirmationTokenExpiresAt);
+        //     // Stocker le jeton et la date d'expiration dans l'entité User
+        //     $entity->setConfirmationToken($confirmationToken);
+        //     $entity->setConfirmationTokenExpiresAt($confirmationTokenExpiresAt);
 
-            // Persistez et enregistrez l'utilisateur
+        //     // Persistez et enregistrez l'utilisateur
            
 
-            // Ajoutez les autres propriétés nécessaires pour les coachs
+        //     // Ajoutez les autres propriétés nécessaires pour les coachs
 
-            // Persistez et enregistrez le nouveau coach
-            $entityManager->persist($coach);
-            $entityManager->flush();
+        //     // Persistez et enregistrez le nouveau coach
+        //     $entityManager->persist($coach);
+        //     $entityManager->flush();
            
 
-            // Envoyer un e-mail de confirmation avec le token pour les coachs
-            $this->sendConfirmationEmail($entity, $confirmationToken);
-        } else {
-            // Créez un nouveau membre en utilisant les données de l'utilisateur
-            $member = new Member();
-            $member->setId($entity->getId());
-            $member->setFirstName($entity->getFirstName());
-            $member->setLastName($entity->getLastName());
-            $member->setEmail($entity->getEmail());
-            // Ajoutez les autres propriétés nécessaires pour les membres
+        //     // Envoyer un e-mail de confirmation avec le token pour les coachs
+        //     $this->sendConfirmationEmail($entity, $confirmationToken);
+        // } else {
+        //     // Créez un nouveau membre en utilisant les données de l'utilisateur
+        //     $member = new Member();
+        //     $member->setId($entity->getId());
+        //     $member->setFirstName($entity->getFirstName());
+        //     $member->setLastName($entity->getLastName());
+        //     $member->setEmail($entity->getEmail());
+        //     // Ajoutez les autres propriétés nécessaires pour les membres
 
-            // Persistez et enregistrez le nouveau membre
-            $entityManager->persist($member);
-            $entityManager->flush();
-        }
+        //     // Persistez et enregistrez le nouveau membre
+        //     $entityManager->persist($member);
+        //     $entityManager->flush();
+        // }
     }
 
     private function sendConfirmationEmail(User $user, string $confirmationToken)

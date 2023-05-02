@@ -13,7 +13,7 @@ function strUcFirst(a) { return (a + '').charAt(0).toUpperCase() + a.substr(1); 
 
 
 
-const Navbar = ({ isAuthenticated, onLogout, history }) => {
+const Navbar = ({ isAuthenticated, onLogout, history,getUser }) => {
   const [selectedBodyPart, setSelectedBodyPart] = useState("");
   const bodyPart = authAPI.getBodyPart();
   
@@ -184,7 +184,7 @@ const Navbar = ({ isAuthenticated, onLogout, history }) => {
                 //     Déconnexion
                 //   </button>
                 // </li>
-                <AccountMenu onLogout={handleLogout} />
+                <AccountMenu getUser={getUser} onLogout={handleLogout} />
               )}
             <></>
           </ul>
