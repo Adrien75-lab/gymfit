@@ -9,7 +9,7 @@ import authAPI from '../services/authAPI';
 
 
 const inscriptionMember = ({ history }) => {
- 
+
   //   const data = {
   //     pseudo: "",
   //     email: "",
@@ -23,6 +23,7 @@ const inscriptionMember = ({ history }) => {
     email: "",
     password: "",
     confirmPassword: "",
+    roles: ["ROLE_USER"]
   });
   const [userData, setUserData] = useState({});
   // Ajoutez cette fonction dans votre composant
@@ -51,16 +52,18 @@ const inscriptionMember = ({ history }) => {
         firstName: response.name.split(" ")[0],
         lastName: response.name.split(" ")[1],
         email: response.email,
-        password:response.id,
-        confirmPassword:response.id
+        password: response.id,
+        confirmPassword: response.id,
+
       };
       console.log(updatedUserData);
       setUser(updatedUserData);
-      
+      history.push("/email-confirmation");
+
       toast.success("Bienvenue a toi " + response.name);
       handleSubmit();
       //handleFacebookSubmit(response);
-  
+
       // Appeler authenticateFacebook avec les données utilisateur mises à jour
       authAPI.authenticateFacebook(updatedUserData);
     } else {
@@ -96,7 +99,7 @@ const inscriptionMember = ({ history }) => {
       );
       console.log(response);
 
-      history.push("/");
+      history.push("/email-confirmation");
       toast.success("Bienvenue a toi " + user.firstName);
 
     } catch (error) {

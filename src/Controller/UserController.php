@@ -46,6 +46,24 @@ class UserController
 
         return new JsonResponse(['success' => 'Account verified'], JsonResponse::HTTP_OK);
     }
+    /**
+     * @Route("/api/confirm-member/{email}", name="api_confirm_member", methods={"POST"})
+     */
+    public function confirmMember(string $email): JsonResponse
+    {
+        $user = $this->entityManager
+            ->getRepository(User::class)
+            ->findOneBy(['email' => $email]);
 
-   
+        if ($user === null) {
+            $this->logger->error('Invalid email', ['email' => $email]);
+            return new JsonResponse(['error' => 'Invalid email'], JsonResponse::HTTP_BAD_REQUEST);
+        }
+
+        $user->setIsVerified(true);
+        $this->entityManager->persist($user);
+        $this->entityManager->flush();
+
+        return new JsonResponse(['success' => 'Account verified'], JsonResponse::HTTP_OK);
+    }
 }

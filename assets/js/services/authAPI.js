@@ -9,7 +9,7 @@ function logout() {
 }
 const verifyToken = async (token) => {
   try {
-    
+
     const response = await fetch(`http://localhost:8000/api/verify-token/${token}`, {
       method: 'POST',
       headers: {
@@ -139,17 +139,24 @@ function getBodyPart() {
 }
 
 function setup() {
-  // 1 voir si on a un token ?
-
-  const storedToken = localStorage.getItem("token");
-  if (storedToken) {
-    let decodedData = decode(storedToken, { header: true });
-    let expirationDate = decodedData.exp;
-    const currentTime = Date.now().valueOf() / 1000;
-    if (expirationDate < currentTime) {
-      localStorage.removeItem("token");
+  // Vérifiez si le token est valide lors du démarrage de l'application
+  const verifyToken = () => {
+    const storedToken = localStorage.getItem("token");
+    if (storedToken) {
+      let decodedData = decode(storedToken, { header: true });
+      let expirationDate = decodedData.exp;
+      const currentTime = Date.now().valueOf() / 1000;
+      if (expirationDate < currentTime) {
+        localStorage.removeItem("token");
+      }
     }
-  }
+  };
+
+  // Exécute la vérification du token au démarrage de l'application
+  verifyToken();
+
+  // Exécute la vérification du token toutes les 5 minutes (300000 ms)
+  setInterval(verifyToken, 300000);
 }
 
 
@@ -196,5 +203,5 @@ export default {
   authenticateProfile,
   authenticateGoogle,
   verifyToken,
- 
+
 };

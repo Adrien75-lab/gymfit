@@ -37,6 +37,7 @@ import BookingComponent from "./components/coach/BookingComponent";
 import ProfilCoachComponent from "./components/coach/ProfilCoachComponent";
 import TokenVerificationPage from "./pages/TokenVerificationPage";
 import EmailConfirmationPage from "./pages/EmailConfirmationPage";
+import ConfirmMember from "./pages/ConfirmMember";
 
 
 // any CSS you import will output into a single css file (app.css in this case)
@@ -103,6 +104,7 @@ const App = () => {
         <main className="pt-3">
           {/* {isOpen && <Modal setIsOpen={setIsOpen} />} */}
           <Switch>
+            <Route path="/api/confirm-member/:email" component={ConfirmMember} />
             <Route
               path="/exercise/bodyPart/:partie"
               component={ExerciseDetail}
@@ -177,7 +179,7 @@ const App = () => {
                 />
               )}
             />
-            
+
             <Route path="/profilCoach" component={ProfilCoachComponent} />
             <Route path="/exercise" component={ExercicePage} />
             <Route path="/features" component={FeaturesPage} />
