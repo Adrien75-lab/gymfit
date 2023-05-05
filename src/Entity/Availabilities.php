@@ -27,14 +27,14 @@ class Availabilities
     #[ORM\Column]
     private ?\DateTimeImmutable $endRDV = null;
 
-   
-    #[ORM\ManyToOne(inversedBy: 'availabilities',targetEntity: Coach::class,)]
+
+    #[ORM\ManyToOne(inversedBy: 'availabilities', targetEntity: Coach::class,)]
     private ?coach $coach = null;
 
     #[ORM\Column]
     private ?bool $isBooked = null;
 
-    
+
     public function getId(): ?int
     {
         return $this->id;
@@ -64,7 +64,7 @@ class Availabilities
         return $this;
     }
 
-    
+
     public function getCoach(): ?coach
     {
         return $this->coach;
@@ -88,6 +88,4 @@ class Availabilities
 
         return $this;
     }
-
-    
 }

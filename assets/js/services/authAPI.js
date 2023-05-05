@@ -152,6 +152,7 @@ function setup() {
   }
 }
 
+
 function authenticateGoogle(credential) {
   return Axios.post("http://localhost:8000/api/google_login", { credential }, {
     headers: {
