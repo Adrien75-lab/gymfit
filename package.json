@@ -74,8 +74,10 @@
     "react-toastify": "^9.1.1",
     "react-transition-group": "^4.4.5",
     "reactstrap": "^9.1.5",
+    "sanitize-html": "^2.10.0",
     "styled-components": "^5.3.6",
     "styled-jsx": "^5.1.1",
-    "update": "^0.7.4"
+    "update": "^0.7.4",
+    "zxcvbn": "^4.4.2"
   }
 }

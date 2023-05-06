@@ -66,7 +66,7 @@ class UserSubscriber implements EventSubscriberInterface
             // Envoyer un e-mail de confirmation avec le token pour les coachs
             $this->sendConfirmationEmailCoach($entity, $confirmationToken);
         }
-        if (in_array('ROLE_USER', $entity->getRoles())) {
+        else if (in_array('ROLE_USER', $entity->getRoles())) {
             // Créez un nouveau membre en utilisant les données de l'utilisateur
             $member = new Member();
             //$member->setId($entity->getId());

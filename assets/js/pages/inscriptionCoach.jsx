@@ -5,69 +5,68 @@ import { Route } from "react-router-dom";
 import { toast } from "react-toastify";
 import FacebookLogin from 'react-facebook-login';
 import authAPI from '../services/authAPI';
+import zxcvbn from 'zxcvbn';
+import { FaEye, FaEyeSlash } from 'react-icons/fa';
 
 
 
 const inscriptionCoach = ({ history }) => {
+  const [passwordStrength, setPasswordStrength] = useState(0);
+  const checkPasswordStrength = (password) => {
+    // Vérifie que le mot de passe contient au moins 8 caractères, dont au moins une lettre majuscule, une lettre minuscule, un chiffre et un caractère spécial
+    const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+    return regex.test(password);
+  };
 
-  //   const data = {
-  //     pseudo: "",
-  //     email: "",
-  //     password: "",
-  //     confirmPassword: "",
-  //   };
-  //   const [loginData, setLoginData] = useState(data);
   const [user, setUser] = useState({
     firstName: "",
     lastName: "",
     email: "",
     password: "",
     confirmPassword: "",
+    siret: "",
     roles: ["ROLE_COACH"]
   });
   const [userData, setUserData] = useState({});
-  // Ajoutez cette fonction dans votre composant
-  const handleFacebookSubmit = async (userData) => {
-    console.log(userData);
+  const [showPassword, setShowPassword] = useState(false); // État pour masquer / afficher le mot de passe
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+
+
+  const handlePasswordChange = (event) => {
+    const password = event.target.value;
+    const strength = zxcvbn(password).score; // Calculer la force du mot de passe
+    setPasswordStrength(strength); // Stocker la force du mot de passe dans l'état
+    handleChange(event); // Appeler la fonction handleChange pour mettre à jour l'état de l'utilisateur
+  };
+  const checkSiretValidity = async (siret, apiKey) => {
+    const url = `https://entreprise.data.gouv.fr/api/sirene/v3/etablissements/${siret}`;
     try {
-      // Adaptez cette requête pour envoyer les données de l'utilisateur à votre serveur
-      await authAPI.authenticateFacebook(userData);
-      console.log("Facebook authentication successful:", userData); // Ajout du console.log
-
-      setError("");
-      // onLogin(true);
-      // history.replace("/login");
-      toast.success("vous êtes maintenant connecté !");
+      const response = await axios.get(url, {
+        headers: {
+          Authorization: `Bearer ${apiKey}`
+        }
+      });
+      return response.status === 200;
     } catch (error) {
-      setError(
-        "Une erreur est survenue lors de la connexion avec Facebook"
-      );
+      console.error(error);
+      return false;
     }
   };
-  // Modifiez la fonction responseFacebook pour appeler handleFacebookSubmit
-  const responseFacebook = (response) => {
-    console.log('Facebook response: ', response);
-    if (response.name) {
-      const updatedUserData = {
-        firstName: response.name.split(" ")[0],
-        lastName: response.name.split(" ")[1],
-        email: response.email,
-        password: response.id,
-        confirmPassword: response.id
-      };
-      console.log(updatedUserData);
-      setUser(updatedUserData);
-
-      toast.success("Bienvenue a toi " + response.name);
-      handleSubmit();
-      //handleFacebookSubmit(response);
-
-      // Appeler authenticateFacebook avec les données utilisateur mises à jour
-      authAPI.authenticateFacebook(updatedUserData);
-    } else {
-      console.error('No name found in the Facebook response');
-    }
+  const checkSiretValidityTest = async (siret, apiKey) => {
+    // Simule la réponse API pour les tests
+    const mockResponse = {
+      status: 200
+    };
+  
+    // Vérifie si le siret est valide
+    const isValidSiret = siret === "68300704000002";
+  
+    // Retourne le résultat
+    return isValidSiret ? mockResponse.status === 200 : false;
   };
+
 
   const [error, setError] = useState("");
 
@@ -75,16 +74,34 @@ const inscriptionCoach = ({ history }) => {
     const { name, value } = currentTarget;
     setUser({ ...user, [name]: value });
   };
+  const handleSiretChange = (event) => {
+    const siret = event.target.value;
+    setUser({ ...user, siret: siret });
+  };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    const apiKey = 'sv3jqMODZ9c59527Gzu98fcm2F8a'; // Déclaration de la variable apiKey
+    // Vérification du SIRET
+    const isValidSiret = await checkSiretValidityTest(user.siret, apiKey);
+    if (!isValidSiret) {
+      setError("Le numéro de SIRET n'est pas valide.");
+      return;
+    }
     if (user.password !== user.confirmPassword) {
       setError("Les mots de passes ne correspondent pas");
       return;
     }
 
-    if (user.password.length < 6) {
-      setError("Le mot est de passe est trop court ! Minimum 6 caractères");
+    if (!checkPasswordStrength(user.password)) {
+      setError(
+        "Le mot de passe doit contenir au moins 8 caractères, dont au moins une lettre majuscule, une lettre minuscule, un chiffre et un caractère spécial"
+      );
+      return;
+    }
+    const isSiretValid = await checkSiretValidityTest(user.siret);
+    if (!isSiretValid) {
+      setError("Le numéro SIRET est invalide");
       return;
     }
 
@@ -95,10 +112,10 @@ const inscriptionCoach = ({ history }) => {
       console.log(response.data)
       const token = response.data.confirmationToken;
       console.log(token);
-    
+
       history.push("/email-confirmation");
       toast.success("Bienvenue a toi " + user.firstName);
-    
+
     } catch (error) {
       const { violations } = error.response.data;
       if (violations) {
@@ -144,7 +161,7 @@ const inscriptionCoach = ({ history }) => {
             <label htmlFor="exampleInputEmail1 " />
             Adresse mail
             <input
-              onChange={handleChange}
+              onChange={handlePasswordChange}
               value={user.email}
               type="email"
               className="form-control mt-2"
@@ -156,19 +173,47 @@ const inscriptionCoach = ({ history }) => {
             />
           </div>
           <div className="form-group mt-2">
-            <label htmlFor="exampleInputEmail1" />
-            Mot de passe
+            <label htmlFor="siret">Numéro de SIRET</label>
             <input
+              name="siret"
               onChange={handleChange}
-              value={user.password}
-              type="password"
-              className={"form-control mt-2" + (error && " is-invalid")}
-              id="password"
-              name="password"
-              placeholder="Entrez votre mot de passe"
+              value={user.siret}
+              type="text"
+              className="form-control mt-2"
+              placeholder="Entrez votre numéro de SIRET"
               autoComplete="off"
             />
-            {error && <p className="invalid-feedback">{error}</p>}
+          </div>
+          <div className="form-group mt-2">
+            <label htmlFor="exampleInputEmail1">Mot de passe</label>
+            <div className="input-group">
+              <input
+                onChange={handlePasswordChange}
+                value={user.password}
+                type={showPassword ? "text" : "password"}
+                className={"form-control " + (error && "is-invalid")}
+                id="password"
+                name="password"
+                placeholder="Entrez votre mot de passe"
+                autoComplete="off"
+              />
+              <div className="input-group-append">
+                <span className="input-group-text" onClick={togglePasswordVisibility}>
+                  {showPassword ? <FaEyeSlash /> : <FaEye />}
+                </span>
+              </div>
+            </div>
+            {error && <div className="invalid-feedback">{error}</div>}
+            <div className="progress mt-2">
+              <div
+                className={`progress-bar ${checkPasswordStrength(user.password) ? 'bg-success' : passwordStrength >= 2 ? 'bg-warning' : 'bg-danger'}`}
+                role="progressbar"
+                style={{ width: `${(passwordStrength + 1) * 25}%` }}
+                aria-valuenow={passwordStrength + 1}
+                aria-valuemin="0"
+                aria-valuemax="4"
+              />
+            </div>
           </div>
           <div className="form-group mt-2">
             <label htmlFor="confirmPassword" />
@@ -184,35 +229,12 @@ const inscriptionCoach = ({ history }) => {
             />
             {error && <p className="invalid-feedback">{error}</p>}
           </div>
-          {/* <div className="form-group mt-2">
-            <label htmlFor="coachId">Numéro d'identification</label>
-            <input
-              disabled={true}
-              name="coachId"
-              onChange={handleChange}
-              value={user.coachId}
-              type="text"
-              className="form-control mt-2"
-              placeholder="Entrez votre numéro d'identification"
-              autoComplete="off"
-            />
-          </div> */}
+
           <div className="d-flex justify-content-between mt-2"></div>
           <button type="submit" className="btn btn-primary mt-2">
             Inscription
           </button>
         </form>
-        <FacebookLogin
-          appId="1231627447751070"
-          fields="name,email,picture"
-          buttonText="S'inscrire avec Facebok"
-          autoLoad={false}
-          isMobile={false}
-          onClick={() => { }}
-          callback={responseFacebook}
-          cssClass="btn btn-secondary mt-2"
-          icon="fa-facebook"
-        />
 
       </div>
     </>
