@@ -16,7 +16,9 @@ const EmailConfirmationPage = () => {
         Veuillez vérifier votre boîte de réception et cliquer sur le lien pour
         confirmer votre inscription.
       </p>
-      <button onClick={handleGoHome}>Retourner à l'accueil</button>
+      <button className="buttonConfirmationMail" onClick={handleGoHome}>
+        Retourner à l'accueil
+      </button>
     </div>
   );
 };

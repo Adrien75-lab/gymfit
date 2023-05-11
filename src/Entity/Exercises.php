@@ -15,7 +15,9 @@ use App\Entity\PartieCorps;
 
 #[ORM\Entity(repositoryClass: ExercisesRepository::class)]
 #[ApiResource(paginationEnabled: false)]
+
 #[ApiFilter(SearchFilter::class, properties: ['partie' => 'exact'])]
+
 
 class Exercises
 {

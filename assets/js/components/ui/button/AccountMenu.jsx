@@ -18,6 +18,7 @@ import { RiAccountCircleFill } from 'react-icons/ri';
 import { BsFillArchiveFill } from 'react-icons/bs';
 import { makeStyles } from '@mui/styles';
 import { createTheme } from "@mui/styles";
+import { useHistory } from 'react-router-dom';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -37,19 +38,17 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function AccountMenu({ isAuthenticated, onLogout, history, getUser }) {
+export default function AccountMenu({ isAuthenticated, onLogout, getUser }) {
+  const history = useHistory();
   const handleLogout = () => {
-    authAPI.logout();
+  authAPI.logout();
     onLogout(false);
     history.push("/login");
   };
 
   const isCoach = getUser() && getUser().includes("ROLE_COACH");
   console.log(isCoach);
-  const handleProfil = () => {
-
-    history.push("/profil");
-  };
+  
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {

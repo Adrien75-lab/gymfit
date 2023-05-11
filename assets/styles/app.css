@@ -95,6 +95,18 @@ button.btn,
   padding: 1rem;
   border-right: 1px solid #ccc;
 }
+.spin {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
 
 .calendarCoach {
   width: 75%;
@@ -577,6 +589,23 @@ button.btn,
 .abonnes-list-container {
   position: relative;
 }
+.buttonConfirmationMail {
+  background-color: blue;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 5px;
+  text-decoration: none;
+}
+
+.buttonConfirmationMail:hover {
+  background-color: darkblue;
+  cursor: pointer;
+}
+.pricing-card {
+  height: auto; /* Vous pouvez remplacer 'auto' par une valeur fixe ou une valeur relative à l'écran */
+  overflow-y: auto; /* Si le contenu est trop long, cela permettra de faire défiler le contenu à l'intérieur de la carte */
+}
+
 
 .abonnes-list-container .abonnes-list-select {
   font-size: 16px;

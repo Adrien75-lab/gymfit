@@ -60,6 +60,7 @@ class UserSubscriber implements EventSubscriberInterface
 
             // Persistez et enregistrez le nouveau coach
             $entityManager->persist($coach);
+            
             $entityManager->flush();
 
 

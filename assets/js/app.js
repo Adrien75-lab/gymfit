@@ -38,6 +38,7 @@ import ProfilCoachComponent from "./components/coach/ProfilCoachComponent";
 import TokenVerificationPage from "./pages/TokenVerificationPage";
 import EmailConfirmationPage from "./pages/EmailConfirmationPage";
 import ConfirmMember from "./pages/ConfirmMember";
+import AccountMenu from "./components/ui/button/AccountMenu";
 
 
 // any CSS you import will output into a single css file (app.css in this case)
@@ -72,6 +73,8 @@ const App = () => {
     authAPI.isAuthenticated()
   );
   const NavbarWithRouter = withRouter(Navbar);
+ 
+  
   const [isOpen, setIsOpen] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
   const [opacity, setOpacity] = useState(0);
@@ -97,6 +100,7 @@ const App = () => {
           onLogout={setIsAuthenticated}
           getUser={getUser}
         />
+        
         {/* <button className="primaryBtn" onClick={() => setIsOpen(true)}>
         Open Modal
       </button> */}

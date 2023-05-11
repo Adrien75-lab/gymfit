@@ -94,10 +94,7 @@ const Navbar = ({ isAuthenticated, onLogout, history,getUser }) => {
                                     {strUcFirst(item)}
                                   </NavLink>
                                 </Dropdown.Item>
-                                // <Dropdown.Item eventKey="2">Another action</Dropdown.Item>
-                                // <Dropdown.Item id="dropdown-custom-1" eventKey="3">Something else here</Dropdown.Item>
-                                // <Dropdown.Divider />
-                                // <Dropdown.Item eventKey="4">Separated link</Dropdown.Item>
+                                
                               ))}
                             </div>
                           </DropdownButton>
@@ -179,14 +176,10 @@ const Navbar = ({ isAuthenticated, onLogout, history,getUser }) => {
                 </li>
               </>
             )) || (
-                // <li className="nav-item ">
-                //   <button  className="btn btn-secondary">
-                //     Déconnexion
-                //   </button>
-                // </li>
+              
                 <AccountMenu getUser={getUser} onLogout={handleLogout} />
               )}
-            <></>
+            
           </ul>
         </div>
       </div>

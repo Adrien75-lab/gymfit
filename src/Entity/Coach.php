@@ -43,6 +43,12 @@ class Coach
     #[ORM\OneToMany(mappedBy: 'coach', targetEntity: Availabilities::class)]
     private Collection $availabilities;
 
+    #[ORM\Column]
+    private ?int $SiretNumber = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $degrees = null;
+
     public function __construct()
     {
         $this->bookings = new ArrayCollection();
@@ -68,6 +74,7 @@ class Coach
        $this->setLastName($user->getLastName()); // initialisation de la propriété firstName
         $this->setEmail($user->getEmail());
         $this->setSpeciality('squat');
+        $this->setSiretNumber('1234');
     }
 
     public function getId(): ?int
@@ -208,6 +215,30 @@ class Coach
                 $availability->setCoach(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getSiretNumber(): ?int
+    {
+        return $this->SiretNumber;
+    }
+
+    public function setSiretNumber(int $SiretNumber): self
+    {
+        $this->SiretNumber = $SiretNumber;
+
+        return $this;
+    }
+
+    public function getDegrees(): ?string
+    {
+        return $this->degrees;
+    }
+
+    public function setDegrees(?string $degrees): self
+    {
+        $this->degrees = $degrees;
 
         return $this;
     }

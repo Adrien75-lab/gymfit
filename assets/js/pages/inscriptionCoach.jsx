@@ -7,7 +7,8 @@ import FacebookLogin from 'react-facebook-login';
 import authAPI from '../services/authAPI';
 import zxcvbn from 'zxcvbn';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
-
+import sanitizeHtml from 'sanitize-html';
+import { checkSiretValidityTest, createUser } from "../services/api";
 
 
 const inscriptionCoach = ({ history }) => {
@@ -24,7 +25,7 @@ const inscriptionCoach = ({ history }) => {
     email: "",
     password: "",
     confirmPassword: "",
-    siret: "",
+    siret: "68300704000002",
     roles: ["ROLE_COACH"]
   });
   const [userData, setUserData] = useState({});
@@ -32,6 +33,7 @@ const inscriptionCoach = ({ history }) => {
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
+  const [isLoading, setIsLoading] = useState(false); // État pour suivre l'état de chargement
 
 
   const handlePasswordChange = (event) => {
@@ -54,20 +56,6 @@ const inscriptionCoach = ({ history }) => {
       return false;
     }
   };
-  const checkSiretValidityTest = async (siret, apiKey) => {
-    // Simule la réponse API pour les tests
-    const mockResponse = {
-      status: 200
-    };
-  
-    // Vérifie si le siret est valide
-    const isValidSiret = siret === "68300704000002";
-  
-    // Retourne le résultat
-    return isValidSiret ? mockResponse.status === 200 : false;
-  };
-
-
   const [error, setError] = useState("");
 
   const handleChange = ({ currentTarget }) => {
@@ -81,9 +69,9 @@ const inscriptionCoach = ({ history }) => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const apiKey = 'sv3jqMODZ9c59527Gzu98fcm2F8a'; // Déclaration de la variable apiKey
+
     // Vérification du SIRET
-    const isValidSiret = await checkSiretValidityTest(user.siret, apiKey);
+    const isValidSiret = await checkSiretValidityTest(user.siret);
     if (!isValidSiret) {
       setError("Le numéro de SIRET n'est pas valide.");
       return;
@@ -105,16 +93,27 @@ const inscriptionCoach = ({ history }) => {
       return;
     }
 
+    // Nettoyage des données grâce à la fonction sanitizeHtml
 
+    const cleanUserData = {
+      firstName: sanitizeHtml(user.firstName),
+      lastName: sanitizeHtml(user.lastName),
+      email: sanitizeHtml(user.email),
+      password: sanitizeHtml(user.password),
+      confirmPassword: sanitizeHtml(user.confirmPassword),
+      siret: sanitizeHtml(user.siret),
+      roles: ["ROLE_COACH"]
+    };
+
+    setIsLoading(true); // Activer le loader de chargement
 
     try {
-      const response = await Axios.post("http://localhost:8000/api/users", user);
-      console.log(response.data)
-      const token = response.data.confirmationToken;
+      const response = await createUser(cleanUserData);
+      const token = response.confirmationToken;
       console.log(token);
 
       history.push("/email-confirmation");
-      toast.success("Bienvenue a toi " + user.firstName);
+      toast.success("Bienvenue a toi " + cleanUserData.firstName);
 
     } catch (error) {
       const { violations } = error.response.data;
@@ -127,6 +126,8 @@ const inscriptionCoach = ({ history }) => {
     }
 
   };
+
+
 
   return (
     <>
@@ -229,12 +230,20 @@ const inscriptionCoach = ({ history }) => {
             />
             {error && <p className="invalid-feedback">{error}</p>}
           </div>
+          {isLoading && (
+            <div className="text-center mt-3">
+              <div className="spinner-border" role="status">
+                <span className="visually-hidden">Loading...</span>
+              </div>
+            </div>
+          )}
 
           <div className="d-flex justify-content-between mt-2"></div>
           <button type="submit" className="btn btn-primary mt-2">
             Inscription
           </button>
         </form>
+
 
       </div>
     </>

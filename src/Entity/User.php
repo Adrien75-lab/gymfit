@@ -14,11 +14,16 @@ use Symfony\Component\Security\Core\User\UserInterface;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use Doctrine\ORM\Mapping\InheritanceType;
 use Faker\Provider\Uuid as ProviderUuid;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Uid\Uuid;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 
 #[ApiResource(paginationEnabled: false)]
+#[ApiResource(
+    normalizationContext: ['groups' => ['read']],
+    denormalizationContext: ['groups' => ['write']],
+)]
 #[ApiFilter(SearchFilter::class, properties: ['user' => 'exact'])]
 // #[InheritanceType("JOINED")]
 // #[ORM\DiscriminatorColumn(name: "discr", type: "string")]
@@ -31,6 +36,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?int $id = null;
 
     #[ORM\Column(length: 180, unique: true)]
+    #[Groups(['read', 'write'])]
     private ?string $email = null;
 
     #[ORM\Column]
@@ -54,6 +60,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: User::class)]
     private Collection $coaches;
     #[ORM\OneToOne(targetEntity: Coach::class, mappedBy: "user", cascade: ['persist', 'remove'])]
+    
     private ?Coach $coach = null;
 
     #[ORM\OneToOne(targetEntity: Member::class, mappedBy: "user", cascade: ['persist', 'remove'])]
@@ -71,7 +78,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: "boolean")]
     private bool $isVerified = false;
 
-    
+
     public function __construct()
     {
         $this->coaches = new ArrayCollection();
@@ -315,5 +322,4 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
-
 }
