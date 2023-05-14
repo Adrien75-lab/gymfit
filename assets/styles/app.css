@@ -8,6 +8,11 @@ body {
 ::-webkit-scrollbar {
   width: 20px;
 }
+.btn-fixed-width {
+  width: 200px; /* ou la largeur que vous voulez */
+  display: flex;
+  justify-content: center;
+}
 
 
 /* Track */
