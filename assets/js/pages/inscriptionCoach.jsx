@@ -9,6 +9,7 @@ import zxcvbn from 'zxcvbn';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import sanitizeHtml from 'sanitize-html';
 import { checkSiretValidityTest, createUser } from "../services/api";
+import { FaSpinner } from 'react-icons/fa';
 
 
 const inscriptionCoach = ({ history }) => {
@@ -230,18 +231,15 @@ const inscriptionCoach = ({ history }) => {
             />
             {error && <p className="invalid-feedback">{error}</p>}
           </div>
-          {isLoading && (
-            <div className="text-center mt-3">
-              <div className="spinner-border" role="status">
-                <span className="visually-hidden">Loading...</span>
-              </div>
-            </div>
-          )}
-
-          <div className="d-flex justify-content-between mt-2"></div>
-          <button type="submit" className="btn btn-primary mt-2">
-            Inscription
-          </button>
+          <div className="form-group">
+            <button type="submit" className="btn btn-primary mt-2" disabled={isLoading}>
+              {isLoading ? (
+                <FaSpinner className="spin" />
+              ) : (
+                "Connexion"
+              )}
+            </button>
+          </div>
         </form>
 
 

@@ -14,6 +14,7 @@ const ProfilCoachComponent = ({ getUser, props }) => {
   const isCoach = getUser().includes("ROLE_COACH");
   const linkToCustomers = isCoach ? '/customers' : '/booking';
   const linkText = isCoach ? 'Voir ses abonnés' : 'Prendre un rdv';
+  const linkText2 = isCoach ? 'Voir ses disponibilités' : 'Prendre un rdv';
 
   const id = tokenPayloadMember.Id;
 
@@ -22,14 +23,14 @@ const ProfilCoachComponent = ({ getUser, props }) => {
   return (
     <ThemeProvider theme={theme}>
       <Box>
-        <NavbarMembers linkToCustomers={linkToCustomers} linkText={linkText} tokenPayload={tokenPayloadMember} />
+        <NavbarMembers linkToCustomers={linkToCustomers} linkText={linkText} linkText2={linkText2} tokenPayload={tokenPayloadMember} />
         <Grid container spacing={3}>
-          <Grid item xs={12} md={3}>
+          {/* <Grid item xs={12} md={3}>
             <Paper style={{ padding: '1rem' }}>
               <Typography variant="h5">Selectionner un abonné</Typography>
               <AbonnesList />
             </Paper>
-          </Grid>
+          </Grid> */}
           <Grid item xs={12} md={8}>
             <Calendar id={id} /> {/* Incluez le composant Calendar et passez-lui les props nécessaires */}
           </Grid>

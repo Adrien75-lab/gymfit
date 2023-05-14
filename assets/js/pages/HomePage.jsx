@@ -4,25 +4,43 @@ import { Link } from "react-router-dom";
 import { useInView } from 'react-intersection-observer';
 import Pricing from "../components/Pricing";
 import Features from "./Features";
+import ComingSoonBanner from "./ComingSoonBanner";
+
 
 const HomePage = () => {
-  const [isVisible, setIsVisible] = useState(false);
-  const [ref, inView] = useInView({
+  const [ref1, inView1] = useInView({
     triggerOnce: true,
     threshold: 0.2
   });
 
-  useEffect(() => {
-    if (inView) {
-      setIsVisible(true);
-    }
-  }, [inView]);
+  const [ref2, inView2] = useInView({
+    triggerOnce: true,
+    threshold: 0.2
+  });
+
+  const [ref3, inView3] = useInView({
+    triggerOnce: true,
+    threshold: 0.2
+  });
+
+  const [ref4, inView4] = useInView({
+    triggerOnce: true,
+    threshold: 0.2
+  });
 
   return (
-    <Fragment>
+    <>
+
       <div className="container mb-5 mt-3">
         <div className="row">
-          <div className="col-12 col-sm-12 col-md-6 p-0 animate__animated animate__rotateInDownLeft animate__delay-1s">
+        <div className={`col-12 col-sm-12 col-md-12 p-0 animate__animated ${inView1 ? 'animate__bounceInDown' : ''}`} ref={ref1}>
+            <ComingSoonBanner />
+          </div>
+        </div>
+        <div className="row" style={{ marginTop: '20px' }}>
+
+          
+        <div className={`col-12 col-sm-12 col-md-6 p-0 animate__animated animate__delay-1s ${inView2 ? 'animate__rotateInDownLeft' : ''}`} ref={ref2}>
             <div className="card mb-3 d-flex flex-column align-items-end bg-primary justify-content-center text-right text-white py-5 px-5 h-100">
               <h3 className="display-4 mb-2 text-white font-weight-bold">
                 Pour les coachs
@@ -39,7 +57,7 @@ const HomePage = () => {
               </Link>
             </div>
           </div>
-          <div className="col-12 col-sm-12 col-md-6 p-0 animate__animated animate__rotateInDownRight animate__delay-2s">
+          <div className={`col-12 col-sm-12 col-md-6 p-0 animate__animated ${inView3 ? 'animate__rotateInDownRight' : ''}`} ref={ref3}>
             <div className="card mb-3 d-flex flex-column align-items-end bg-secondary justify-content-center text-right text-white py-5 px-5 h-100">
               <h3 className="display-4 mb-2 text-white font-weight-bold">
                 Pour les abonnés
@@ -57,14 +75,16 @@ const HomePage = () => {
             </div>
           </div>
         </div>
-        <div className={`container pt-3 ${isVisible ? 'animate__animated animate__fadeInUp' : ''}`} ref={ref}>
+        <div className={`container pt-3 animate__animated ${inView4 ? 'animate__fadeInUp' : ''}`} ref={ref4}>
           <Pricing />
         </div>
       </div>
       <div className="animate__animated animate__fadeInUp animate__delay-5s">
         <Features />
       </div>
-    </Fragment>
+
+    </>
+
   );
 };
 

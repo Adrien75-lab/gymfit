@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-const NavbarMembers = ({ linkToCustomers, linkText, tokenPayload }) => {
+const NavbarMembers = ({ linkToCustomers, linkText, tokenPayload,linkText2 }) => {
   return (
     <div className="container w-50" style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
 
@@ -15,18 +15,18 @@ const NavbarMembers = ({ linkToCustomers, linkText, tokenPayload }) => {
                 data-bs-toggle="button"
                 aria-pressed="true"
               >
-                Créer une séance
+                Rechercher sa salle
               </Link>
             </div>
             <div class="col-md-3">
               <Link
-                to="/VoirSonPlanning"
-                className="btn btn-primary"
+                to={linkToCustomers}
+                class="btn btn-primary"
+                aria-disabled="true"
                 role="button"
                 data-bs-toggle="button"
-                aria-pressed="true"
               >
-                Voir son planning
+                {linkText2}
               </Link>
             </div>
             <div class="col-md-3">
