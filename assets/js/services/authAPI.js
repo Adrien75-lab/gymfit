@@ -7,6 +7,30 @@ function logout() {
   window.localStorage.removeItem("authToken");
   delete Axios.defaults.headers["Authorization"];
 }
+
+// Générer un CSRF token (on peut l'utiliser à n'importe quelle méthode pour générer un token aléatoire)
+function generateCSRFToken() {
+  return Math.random().toString(36).substring(2);
+}
+
+// Stocker le CSRF token dans un cookie et le retourner
+function setCSRFToken() {
+  const csrfToken = generateCSRFToken();
+  document.cookie = `csrfToken=${csrfToken}; path=/`;
+  return csrfToken;
+}
+// Récupérer le CSRF token du cookie
+function getCSRFToken() {
+  const cookies = document.cookie.split('; ');
+  for (let i = 0; i < cookies.length; i++) {
+    const cookie = cookies[i].split('=');
+    if (cookie[0] === 'csrfToken') {
+      return cookie[1];
+    }
+  }
+  return null;
+}
+
 const verifyToken = async (token) => {
   try {
 
@@ -58,7 +82,9 @@ const confirmAccount = async (token) => {
 };
 
 function authenticate(credentials) {
-  return Axios.post("http://localhost:8000/api/login_check", credentials, {
+
+  const csrfToken = setCSRFToken();
+  return Axios.post("http://localhost:8000/api/login_check", { ...credentials, csrfToken }, {
     headers: {
       Accept: "application/json",
       "Content-Type": "application/json",
@@ -203,5 +229,7 @@ export default {
   authenticateProfile,
   authenticateGoogle,
   verifyToken,
-
+  generateCSRFToken,
+  setCSRFToken,
+  getCSRFToken
 };

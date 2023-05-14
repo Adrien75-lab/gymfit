@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { useInView } from 'react-intersection-observer';
 import Pricing from "../components/Pricing";
 import Features from "./Features";
-import ComingSoonBanner from "./ComingSoonBanner";
+import ComingSoonBanner from "../components/ComingSoonBanner";
 
 
 const HomePage = () => {
