@@ -19,10 +19,12 @@ const PlanningWorkout = () => {
   const [coach, setCoach] = useState({
     firstName: "",
     lastName: "",
+    coach:""
   });
 
   let token = window.localStorage.getItem("authToken");
   let tokenPayload = jwtDecode(token);
+  console.log(tokenPayload);
   const [events, setEvents] = useState([]);
   const [weekendsVisible, setWeekendsVisible] = useState(true);
   const [currentEvents, setCurrentEvents] = useState([]);
@@ -89,14 +91,17 @@ const PlanningWorkout = () => {
       const data = await Axios.get(`http://localhost:8000/api/users/${id}`)
         .then((response) => response.data);
 
-      const { lastName, firstName } = data;
-      setCoach({ firstName, lastName });
+      const { lastName, firstName,coach } = data;
+      // Utilisez 'split' pour diviser la chaîne sur chaque '/' et prendre le dernier élément du tableau résultant.
+      const coachId = coach.split('/').pop();
+      setCoach({ firstName, lastName, coach: coachId });
+
     } catch (error) {
       console.log(error.response);
     }
   };
 
-
+  console.log(coach);
 
   useEffect(() => {
     fetchCoach(id);
@@ -151,20 +156,23 @@ const PlanningWorkout = () => {
     calendarApi.addEvent(newEvent);
     setModalIsOpen(false);
   };
-  const fetchCoachEvents = async (id) => {
+  const fetchCoachEvents = async () => {
     try {
-      const data = await Axios.get(`http://localhost:8000/api/availabilities?coach=${id}`)
-        .then((response) => response.data["hydra:member"]);
+      const data = await Axios.get(`http://localhost:8000/api/availabilities?coach=${coach.coach}`)
+          .then((response) => {
+            console.log(response.data["hydra:member"]);  // Ajout du console.log ici
+            return response.data["hydra:member"];
+          });
+
+
 
       const event = data.filter((event) => event.isBooked === false).map((event) => ({
-
         id: event.id,
         title: "Créneau disponible",
         start: event.startRDV,
         state: event.isBooked,
         end: event.endRDV,
       }));
-
 
       setEvents(event);
     } catch (error) {
@@ -174,9 +182,13 @@ const PlanningWorkout = () => {
 
   useEffect(() => {
     fetchCoach(id);
-    fetchCoachEvents(id);
   }, [id]);
-  console.log(events);
+
+  useEffect(() => {
+    if(coach.coach) {
+      fetchCoachEvents();
+    }
+  }, [coach]);
 
 
   const calendarRef = useRef(null);
@@ -281,7 +293,7 @@ const PlanningWorkout = () => {
       {modalIsOpen && <ModalBooking setIsOpen={setModalIsOpen}
         newEvent={newEvent}
         coachFirstName={coach.firstName}
-        coachId={id}
+        coachId={coach.coach}
         memberId={tokenPayload}
         setNewDate={selectedDate}
 

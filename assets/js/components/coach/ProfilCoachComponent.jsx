@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import jwtDecode from "jwt-decode";
 import NavbarMembers from '../members/NavbarMembers';
-import { Box, Grid, ThemeProvider, Typography, Paper, Card, CardContent } from "@mui/material";
+import { Box, Grid, ThemeProvider } from "@mui/material";
 import theme from "./theme";
 import NewAvailabilityForm from '../coach/NewAvailabilityForm';
 import axios from "axios";
