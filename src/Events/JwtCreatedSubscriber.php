@@ -11,13 +11,14 @@ class JwtCreatedSubscriber
         $user = $event->getUser();
         $member = $user->getMember();
         $data = $event->getData();
-
-        $data['firstName'] = $user->getFirstName();
-        $data['lastName'] = $user->getLastName();
+        $coach = $user->getCoach();
         $data['Id'] = $user->getId();
 
         if ($member) {
             $data['memberId'] = $member->getId();
+        }
+        else if ($coach){
+            $data['coachId'] = $coach->getId();
         }
 
         //$data['userAge'] = $user->getMember()->getUserAge();

@@ -14,7 +14,6 @@ body {
   justify-content: center;
 }
 
-
 /* Track */
 ::-webkit-scrollbar-track {
   box-shadow: inset 0 0 5px grey;
@@ -364,6 +363,9 @@ button.btn,
   transform: translate(-50%, -50%);
   z-index: 10;
 }
+.disabled-date {
+  color: #ccc;
+}
 
 .modal1 {
   width: 800px;
@@ -383,28 +385,25 @@ button.btn,
   color: white;
 }
 
-.demo-app-main {
-  flex-grow: 1;
-  padding: 3em;
-  max-width: 1100px;
-  margin: 0 auto;
-}
 .demo-app {
   display: flex;
-  min-height: 100%;
+  justify-content: space-between; /* Ajout de ceci pour répartir l'espace entre les enfants */
   font-family: Arial, Helvetica Neue, Helvetica, sans-serif;
   font-size: 14px;
 }
 
 .demo-app-sidebar {
-  width: 300px;
-  line-height: 1.5;
+  flex: 0 0 600px; /* Ajout de ceci pour forcer la barre latérale à avoir une largeur de 300px */
   border-right: 1px solid #d3e2e8;
 }
 
-.demo-app-sidebar-section {
-  padding: 2em;
+.demo-app-main {
+  flex-grow: 1; /* Ajout de ceci pour permettre au calendrier de prendre tout l'espace restant */
 }
+
+/* .demo-app-sidebar-section {
+  padding: 2em;
+} */
 
 /* Positionnement des flèches à l'extérieur du titre du mois */
 .fc-header-toolbar .fc-prev-button,
@@ -611,7 +610,6 @@ button.btn,
   height: auto; /* Vous pouvez remplacer 'auto' par une valeur fixe ou une valeur relative à l'écran */
   overflow-y: auto; /* Si le contenu est trop long, cela permettra de faire défiler le contenu à l'intérieur de la carte */
 }
-
 
 .abonnes-list-container .abonnes-list-select {
   font-size: 16px;
