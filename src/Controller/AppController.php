@@ -60,7 +60,7 @@ class AppController extends AbstractController
         $allBookingByCoach = $this->coachRepository->findOneBy(['id' => 1]);
         // Récupérer les réservations associées
         $bookings = $this->bookingCoachRepository->findBy(['coach' => $allBookingByCoach]);
-        $userInfo = $this->bookingCoachRepository->getUserInformationForBooking(35);
+       // $userInfo = $this->bookingCoachRepository->getUserInformationForBooking(35);
         
         
 

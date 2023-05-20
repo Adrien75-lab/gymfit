@@ -23,9 +23,13 @@ class Workout
     #[ORM\OneToMany(mappedBy: 'workout', targetEntity: Exercises::class)]
     private Collection $exercises;
 
+    #[ORM\OneToMany(mappedBy: 'workout', targetEntity: Booking::class)]
+    private Collection $bookings;
+
     public function __construct()
     {
         $this->exercises = new ArrayCollection();
+        $this->bookings = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -69,6 +73,36 @@ class Workout
             // set the owning side to null (unless already changed)
             if ($exercise->getWorkout() === $this) {
                 $exercise->setWorkout(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Booking>
+     */
+    public function getBookings(): Collection
+    {
+        return $this->bookings;
+    }
+
+    public function addBooking(Booking $booking): self
+    {
+        if (!$this->bookings->contains($booking)) {
+            $this->bookings->add($booking);
+            $booking->setWorkout($this);
+        }
+
+        return $this;
+    }
+
+    public function removeBooking(Booking $booking): self
+    {
+        if ($this->bookings->removeElement($booking)) {
+            // set the owning side to null (unless already changed)
+            if ($booking->getWorkout() === $this) {
+                $booking->setWorkout(null);
             }
         }
 

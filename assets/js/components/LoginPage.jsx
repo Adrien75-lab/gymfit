@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { toast } from "react-toastify";
 import authAPI from "../services/authAPI";
+import OpenAi from "./OpenAi";
 
 const LoginPage = ({ onLogin, history }) => {
   const [credentials, setCredentials] = useState({
@@ -36,6 +37,8 @@ const LoginPage = ({ onLogin, history }) => {
   };
   return (
     <>
+
+
       <h2 className="text-center my-3">Connexion</h2>
       <form onSubmit={handleSubmit}>
         <div className="container w-50">

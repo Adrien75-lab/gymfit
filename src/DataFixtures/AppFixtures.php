@@ -34,14 +34,14 @@ class AppFixtures extends Fixture
                 ->setLastName($faker->lastName())
                 ->setEmail($faker->email())
                 ->setPassword($password)
+                ->setIsVerified(true)
                 ->setRoles(['ROLE_COACH']);
             $coachSpeciality = new Coach();
             // Lie la spécialité au coach existant
 
             $coachSpeciality->setSpeciality('squat');
-
-
-            $coachSpeciality->hydrate($coach);
+            $coachSpeciality->setSiretNumber(1234);
+            //$coachSpeciality->hydrate($coach);
 
             $manager->persist($coach);
             $manager->persist($coachSpeciality);
@@ -60,7 +60,7 @@ class AppFixtures extends Fixture
                 $memberNewProperties->setUserAge($faker->numberBetween(18, 60)); // génère un nombre aléatoire entre 18 et 60 pour userAge
                 $memberNewProperties->setSizeUser($faker->numberBetween(150, 200)); // génère un nombre aléatoire entre 150 et 200 pour sizeUser
                 $memberNewProperties->setWeightUser($faker->numberBetween(50, 100)); // génère un nombre aléatoire entre 50 et 100 pour weightUser
-                $memberNewProperties->hydrate($member);
+                //$memberNewProperties->hydrate($member);
 
 
                 $manager->persist($member);

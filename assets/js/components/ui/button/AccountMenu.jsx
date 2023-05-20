@@ -190,7 +190,7 @@ export default function AccountMenu({ isAuthenticated, onLogout, getUser }) {
           Mon compte
         </MenuItem>
 
-        <MenuItem>
+        <MenuItem button component={Link} to={isCoach ? "/parameters" : "/parameters"}>
           <ListItemIcon>
             <Settings fontSize="small" />
           </ListItemIcon>

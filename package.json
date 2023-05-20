@@ -35,6 +35,7 @@
   },
   "dependencies": {
     "@babel/plugin-proposal-class-properties": "^7.18.6",
+    "@chatscope/chat-ui-kit-react": "^1.10.1",
     "@emotion/react": "^11.10.5",
     "@emotion/styled": "^11.10.5",
     "@fullcalendar/core": "^6.1.4",
@@ -49,7 +50,6 @@
     "@mui/material": "^5.11.0",
     "@mui/styled-engine-sc": "^5.11.0",
     "@mui/styles": "^5.11.9",
-    "@react-oauth/google": "^0.9.0",
     "@testing-library/react": "^14.0.0",
     "animate.css": "^4.1.1",
     "axios": "^1.2.1",

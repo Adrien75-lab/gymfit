@@ -15,10 +15,30 @@ import { INITIAL_EVENTS } from "./components/event-utils";
 import axios from "axios";
 
 const ModalBooking = ({ modalIsOpen, setIsOpen, coachFirstName, coachId, memberId, newEvent }) => {
+    const [selectedSession, setSelectedSession] = useState(null);
     const [selectedSlot, setSelectedSlot] = useState(null);
     const [step, setStep] = useState(1);
     const [selectedDate, setSelectedDate] = useState(new Date(newEvent.start));
-    console.log("Selected date: ", newEvent);
+    const selectedWorkoutId = selectedSession ? selectedSession.id : null;
+    const sessions = [
+        {
+            id: 1,
+            name: "Séance 1",
+            description: "Description de la séance 1",
+            image: "chemin/vers/image1.jpg",
+        },
+        {
+            id: 2,
+            name: "Séance 2",
+            description: "Description de la séance 2",
+            image: "chemin/vers/image2.jpg",
+        },
+        // Ajoutez d'autres séances si nécessaire
+    ];
+    const handleSessionSelect = (session) => {
+        setSelectedSession(session);
+        setStep(2);
+    };
     const isSameDay = (date1, date2) =>
         date1.getFullYear() === date2.getFullYear() &&
         date1.getMonth() === date2.getMonth() &&
@@ -48,19 +68,14 @@ const ModalBooking = ({ modalIsOpen, setIsOpen, coachFirstName, coachId, memberI
         fetchAvailableSlots();
     }, [coachId, selectedDate]);
 
-
-
-
-
-
-
     const handleSave = () => {
         console.log("handleSave called");
         if (selectedSlot) {
 
             const data = {
                 coach: `/api/coaches/${coachId}`,
-                user: `/api/members/${memberId.Id}`,
+                user: `/api/members/${memberId.memberId
+                }`,
                 stateRDV: "En attente",
                 startRDV: selectedSlot.startRDV,
                 endRDV: selectedSlot.endRDV,
@@ -87,7 +102,11 @@ const ModalBooking = ({ modalIsOpen, setIsOpen, coachFirstName, coachId, memberI
         }
     };
     const handleNextStep = () => {
-        setStep(step + 1);
+        if (step === 1 && selectedSlot) {
+            setStep(2);
+        } else if (step === 2 && selectedSession) {
+            setStep(3);
+        }
     };
     const handleModalClose = () => {
         setSelectedSlot(null);
@@ -183,19 +202,61 @@ const ModalBooking = ({ modalIsOpen, setIsOpen, coachFirstName, coachId, memberI
                             </>
                         )}
 
-
-
-
                         {step === 2 && (
+                            <>
+                                <h2>Sélectionnez une séance</h2>
+                                <Grid container spacing={2}>
+                                    {sessions.map((session) => (
+                                        <Grid item xs={12} md={6} lg={4} key={session.id}>
+                                            <Card
+                                                sx={{
+                                                    backgroundColor:
+                                                        selectedSession && selectedSession.id === session.id
+                                                            ? "#4caf50"
+                                                            : "#fff",
+                                                    color: selectedSession && selectedSession.id === session.id ? "#fff" : "#000",
+                                                    cursor: "pointer",
+                                                }}
+                                                onClick={() => handleSessionSelect(session)}
+                                            >
+                                                <CardHeader title={session.name} />
+                                                <CardContent>
+                                                    <Typography variant="body2" color="text.secondary">
+                                                        {session.description}
+                                                    </Typography>
+                                                </CardContent>
+                                                <CardActions>
+                                                    <Button>
+                                                        {selectedSession && selectedSession.id === session.id
+                                                            ? "Sélectionnée"
+                                                            : "Sélectionner"}
+                                                    </Button>
+                                                </CardActions>
+                                            </Card>
+                                        </Grid>
+                                    ))}
+                                </Grid>
+                                <div className="buttonContainer mt-2">
+                                    <button
+                                        className="btn btn-primary"
+                                        disabled={!selectedSession}
+                                        onClick={handleNextStep}
+                                    >
+                                        Suivant
+                                    </button>
+                                    <button className="btn btn-danger" onClick={handleModalClose}>
+                                        Annuler
+                                    </button>
+                                </div>
+                            </>
+                        )}
+                        {step === 3 && (
                             <>
                                 <h2>Récapitulatif du rendez-vous</h2>
 
                                 <div className="appointmentSummary">
                                     <p>Coach : {coachFirstName} </p>
-                                    {/* <div>
-                                        <Typography variant="h6">Récapitulatif:</Typography>
-                                        <Typography>Date et heure: {selectedSlot && `${selectedSlot.startRDV.toLocaleString()} - ${selectedSlot.endRDV.toLocaleString()}`}</Typography>
-                                    </div> */}
+                                    <p>Séance : {selectedSession && selectedSession.name}</p>
                                     <p>Date : {formatDate(selectedSlot.startRDV, {
                                         locale: frLocale,
                                         timeZone: "UTC",

@@ -38,11 +38,13 @@ import ProfilCoachComponent from "./components/coach/ProfilCoachComponent";
 import TokenVerificationPage from "./pages/TokenVerificationPage";
 import EmailConfirmationPage from "./pages/EmailConfirmationPage";
 import ConfirmMember from "./pages/ConfirmMember";
+import Parameters from "./components/Parameters";
 import AccountMenu from "./components/ui/button/AccountMenu";
 
 
 // any CSS you import will output into a single css file (app.css in this case)
 require("../styles/app.css");
+
 
 authAPI.setup();
 
@@ -184,6 +186,7 @@ const App = () => {
               )}
             />
 
+            <Route path="/parameters" component={Parameters} />
             <Route path="/profilCoach" component={ProfilCoachComponent} />
             <Route path="/exercise" component={ExercicePage} />
             <Route path="/features" component={FeaturesPage} />

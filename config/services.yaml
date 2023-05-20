@@ -6,6 +6,8 @@
 parameters:
 
 services:
+
+
     # default configuration for services in *this* file
     _defaults:
         public: true
@@ -30,6 +32,9 @@ services:
             event: lexik_jwt_authentication.on_jwt_created,
             method: updateJwtData
             }
+    App\Service\OpenAiService:
+      arguments:
+        $openAiKey: '%env(OPENAI_API_KEY)%'
     
 
     # add more service definitions when explicit configuration is needed

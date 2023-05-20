@@ -49,19 +49,7 @@ class BookingRepository extends ServiceEntityRepository
         return $query->getResult();
     }
 
-    public function getUserInformationForBooking($bookingId)
-    {
-        $booking = $this->findOneBy(['id' => $bookingId]);
-        $user = $booking->getUser();
-        $userInfo = [
-            'id' => $user->getId(),
-            'firstName' => $user->getFirstName(),
-            'lastName' => $user->getLastName(),
-            // ... other user information you want to retrieve
-        ];
-        return $userInfo;
-        
-    }
+
 
 
     //    /**

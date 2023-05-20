@@ -87,8 +87,6 @@ class Booking
     #[SerializedName('user')]
     private ?member $user = null;
 
-    
-
     public function getId(): ?int
     {
         return $this->id;
@@ -177,4 +175,6 @@ class Booking
 
         return $this;
     }
+
+
 }
