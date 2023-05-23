@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-
+import {toast} from "react-toastify";
 import { RiCloseLine } from "react-icons/ri";
 import ExerciseDetail from "./pages/ExerciseDetail";
 import { useParams } from "react-router-dom";
@@ -14,7 +14,7 @@ import frLocale from '@fullcalendar/core/locales/fr'; // import de la bibliothè
 import { INITIAL_EVENTS } from "./components/event-utils";
 import axios from "axios";
 
-const ModalBooking = ({ modalIsOpen, setIsOpen, coachFirstName, coachId, memberId, newEvent }) => {
+const ModalBooking = ({ modalIsOpen, setIsOpen, coachFirstName, coachId, memberId, newEvent,onSave }) => {
     const [selectedSession, setSelectedSession] = useState(null);
     const [selectedSlot, setSelectedSlot] = useState(null);
     const [step, setStep] = useState(1);
@@ -52,7 +52,10 @@ const ModalBooking = ({ modalIsOpen, setIsOpen, coachFirstName, coachId, memberI
         const fetchAvailableSlots = async () => {
             try {
                 const response = await Axios.get(`http://localhost:8000/api/availabilities?coach=${coachId}`);
-                const availableSlots = response.data['hydra:member'];
+                const availableSlots = response.data['hydra:member'].map(slot => ({
+                    ...slot,
+                    isBooked: false
+                }));
 
                 // Filter available slots by selected date
                 const filteredSlots = availableSlots.filter(slot =>
@@ -69,38 +72,55 @@ const ModalBooking = ({ modalIsOpen, setIsOpen, coachFirstName, coachId, memberI
     }, [coachId, selectedDate]);
 
     const handleSave = () => {
-        console.log("handleSave called");
         if (selectedSlot) {
-
             const data = {
                 coach: `/api/coaches/${coachId}`,
-                user: `/api/members/${memberId.memberId
-                }`,
+                user: `/api/members/${memberId.memberId}`,
                 stateRDV: "En attente",
                 startRDV: selectedSlot.startRDV,
                 endRDV: selectedSlot.endRDV,
-                duration: "1 hours",
+                duration: "1 hour",
                 createdAt: new Date(),
             };
 
-            axios.post(`http://localhost:8000/api/bookings/${coachId}/booking`, data, {
-                headers: {
-                    Accept: "application/json",
-                    "Content-Type": "application/json",
-                },
-            })
-                .then(response => {
-                    console.log(response);
-                    const bookings = response.data;
+            axios
+                .post(`http://localhost:8000/api/bookings/${coachId}/booking`, data, {
+                    headers: {
+                        Accept: "application/json",
+                        "Content-Type": "application/json",
+                    },
                 })
-                .catch(error => {
-                    // handle error
+                .then((response) => {
+                    const updatedSlots = availableSlotsCoach.map((slot) =>
+                        slot.id === selectedSlot.id ? { ...slot, isBooked: true } : slot
+                    );
+                    const updatedSlot = updatedSlots.find(
+                        (slot) => slot.id === selectedSlot.id
+                    );
+                    if (updatedSlot && updatedSlot.isBooked) {
+                        console.log("isBooked is updated to true");
+                        console.log(updatedSlot);
+                        setSelectedSlot(updatedSlot); // Met à jour selectedSlot avec les nouvelles données
+                        toast.success("La prise de rendez-vous a été effectuée avec succès !");
+                        setIsOpen(false);
+                        onSave(updatedSlot);
+                    } else {
+                        toast.error("Une erreur s'est produite lors de la mise à jour du créneau horaire.");
+                    }
+                })
+                .catch((error) => {
                     console.error(error);
+                    toast.error("Une erreur s'est produite lors de la prise de rendez-vous.");
                 });
-            setSelectedSlot(selectedSlot);
-            setIsOpen(false);
         }
     };
+
+    useEffect(() => {
+        console.log("Selected Slot Updated:", selectedSlot);
+    }, [selectedSlot]);
+
+
+
     const handleNextStep = () => {
         if (step === 1 && selectedSlot) {
             setStep(2);
@@ -113,14 +133,9 @@ const ModalBooking = ({ modalIsOpen, setIsOpen, coachFirstName, coachId, memberI
         setIsOpen(false);
     };
 
-    // const availableSlots = [
-    //     { start: new Date("2023-03-10T10:00:00Z"), end: new Date("2023-03-10T11:00:00Z"), booked: false },
-    //     { start: new Date("2023-03-10T11:00:00Z"), end: new Date("2023-03-10T12:00:00Z"), booked: true },
-    //     { start: new Date("2023-03-10T14:00:00Z"), end: new Date("2023-03-10T15:00:00Z"), booked: false },
-    //     { start: new Date("2023-03-10T15:00:00Z"), end: new Date("2023-03-10T16:00:00Z"), booked: false },
-    //     { start: new Date("2023-03-10T16:00:00Z"), end: new Date("2023-03-10T17:00:00Z"), booked: true },
-    // ]
-    console.log(selectedSlot);
+    useEffect(() => {
+        console.log("Selected Slot Updated:", selectedSlot);
+    }, [selectedSlot]);
     return (
         <>
             <div className="darkBG" onClick={() => setIsOpen(false)} />

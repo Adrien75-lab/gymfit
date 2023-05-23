@@ -46,7 +46,6 @@ const Welcome = ({ getUser, props }) => {
   );
 
   // Permet de calculer l'imc
-
   const calculateIMC = (weightUser, sizeUser) => {
     const imc = weightUser / Math.pow(sizeUser / 100, 2);
     return imc.toFixed(2);
@@ -55,8 +54,6 @@ const Welcome = ({ getUser, props }) => {
     const newIMC = calculateIMC(weightUser, sizeUser);
     setIMC(newIMC);
   }, [weightUser, sizeUser]);
-
-
   useEffect(() => {
     if (member && memberId) {
       const memberId = memberId;
@@ -103,28 +100,19 @@ const Welcome = ({ getUser, props }) => {
     const imc = calculateIMC(weightUser, sizeUser);
     setImcUser(imc);
   };
-
-
-
   const [isOpen, setIsOpen] = useState(false);
   const { id = "new" } = useParams();
   if (id !== "new") {
   }
-
-
   const [coach, setCoach] = useState({
     firstName: "",
     lastName: "",
   });
-
-
   const updateCoach = (newCoach) => {
     
     setCoach(newCoach);
     localStorage.setItem('coach', JSON.stringify(newCoach));
   };
-
-
   const [editing, setEditing] = useState(false);
 
   const fetchCoach = async (id) => {
@@ -159,23 +147,7 @@ const Welcome = ({ getUser, props }) => {
       }
     }
   }, [id]);
-  // Declare a new state variable called "selectedImageDataUrl" and initialize it to an empty string
-  const [selectedImageDataUrl, setSelectedImageDataUrl] = useState("");
-  // Declare a new state variable called "errorMessage" and initialize it to an empty string
-  const [errorMessage, setErrorMessage] = useState("");
-  // Declare a new state variable called "successMessage" and initialize it to an empty string
-  const [successMessage, setSuccessMessage] = useState("");
-  // Use the useHistory hook to get access to the history object
-  const history = useHistory();
 
-
-  useEffect(() => {
-    const imageData = localStorage.getItem("selectedImage");
-
-    if (imageData) {
-      setSelectedImageDataUrl(imageData);
-    }
-  }, []);
   // Utilisez authenticateProfile ici
   useEffect(() => {
     authenticateProfile().then(profile => {
@@ -185,49 +157,22 @@ const Welcome = ({ getUser, props }) => {
   
   let authToken = window.localStorage.getItem("authToken");
   let tokenPayload = jwtDecode(authToken);
-  const handleSave = () => {
-    if (!selectedImageDataUrl) {
-      // Update the errorMessage state variable with a message indicating that no image was selected
-      setErrorMessage("Please select an image to save.");
-      return;
-    }
 
-    localStorage.setItem("selectedImage", selectedImageDataUrl);
-  };
-  const handleChange = ({ currentTarget }) => {
-    const { name, value } = currentTarget;
-    setCoach({ ...coach, [name]: value });
-  };
-  const handleFileChange = (event) => {
-    // Get the selected file
-    const file = event.target.files[0];
-    // Check the file size and type
-    if (file.size > 1024 * 1024) {
-      // Update the errorMessage state variable with a message indicating that the file is too large
-      setErrorMessage(
-        "The selected file is too large. Please select a file that is 1MB or smaller."
-      );
-      return;
-    }
-    if (!file.type.startsWith("image/")) {
-      // Update the errorMessage state variable with a message indicating that the file is not an image
-      setErrorMessage(
-        "The selected file is not an image. Please select an image file."
-      );
-      return;
-    }
-    // Read the selected file as a data URL
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      const dataUrl = reader.result;
-      // Update the selectedImageDataUrl state variable with the data URL
-      setSelectedImageDataUrl(dataUrl);
-      // Store the data URL in local storage
-      localStorage.setItem("selectedImage", dataUrl);
-    };
-    reader.readAsDataURL(file);
-  };
+   const onSave = (age, sizeUser, weightUser, imc) => {
+    console.log("Enregistrement des données du profil...");
+    console.log(`Age: ${age}, Taille: ${sizeUser}, Poids: ${weightUser}, IMC: ${imc}`);
+    // Ici, mettez le code pour enregistrer les données du profil
+    const profilData = { userAge: age, sizeUser, weightUser, imc };
 
+    return axios.put(`http://localhost:8000/api/members/${memberId2}`, profilData)
+        .then(response => {
+          console.log('Profil enregistré avec succès!', response.data);
+        })
+        .catch(error => {
+          console.error('Erreur lors de l\'enregistrement du profil', error);
+          throw error; // Renvoyer l'erreur pour la traiter ultérieurement
+        });
+  };
   return (
     <>
       <NavbarMembers linkToCustomers={linkToCustomers} linkText={linkText} tokenPayload={tokenPayload} />
@@ -296,7 +241,7 @@ const Welcome = ({ getUser, props }) => {
           </div>
         </div>
       )}
-      <SaveButtonProfil />
+      <SaveButtonProfil onSave={onSave} age={age} sizeUser={sizeUser} weightUser={weightUser} imc={imc} />
     </>
   );
 };

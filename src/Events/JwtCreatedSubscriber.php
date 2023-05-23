@@ -16,6 +16,7 @@ class JwtCreatedSubscriber
 
         if ($member) {
             $data['memberId'] = $member->getId();
+            $data['firstName'] = $member->getFirstName();
         }
         else if ($coach){
             $data['coachId'] = $coach->getId();

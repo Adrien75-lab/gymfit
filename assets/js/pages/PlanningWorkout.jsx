@@ -19,6 +19,21 @@ const PlanningWorkout = () => {
     const [coach, setCoach] = useState({
         firstName: "", lastName: "", coach: ""
     });
+    const handleBookingSave = async (updatedSlot) => {
+        try {
+            const response = await Axios.put(updatedSlot['@id'], {
+                ...updatedSlot,
+                isBooked: true,
+            });
+            console.log("Availability updated:", response.data);
+            // Effectuez d'autres actions si nécessaire
+        } catch (error) {
+            console.error("Error updating availability:", error);
+            // Gérez les erreurs de la requête PUT
+        }
+        // Appel à fetchCoachEvents pour récupérer les données mises à jour
+        await fetchCoachEvents(id);
+    };
 
     let token = window.localStorage.getItem("authToken");
     let tokenPayload = jwtDecode(token);
@@ -96,7 +111,7 @@ const PlanningWorkout = () => {
         if (selectedDate) {
             fetchCoachEvents(id);
         }
-    }, [id, selectedDate]);
+    }, [id, selectedDate,fetchCoachEvents]);
 
 
     const [modalIsOpen, setModalIsOpen] = useState(false);
@@ -256,6 +271,7 @@ const PlanningWorkout = () => {
                                           coachId={coach.coach}
                                           memberId={tokenPayload}
                                           setNewDate={selectedDate}
+                                          onSave={handleBookingSave}
 
             />}
 

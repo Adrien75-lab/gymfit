@@ -8,6 +8,7 @@ import timeGridPlugin from "@fullcalendar/timegrid";
 import moment from 'moment';
 import ModalBooking from '../../ModalBooking';
 import ModalInformationUsers from '../../ModalInformationUsers';
+import jwtDecode from "jwt-decode";
 
 const BookingComponent = () => {
     const { id } = useParams();
@@ -46,10 +47,13 @@ const BookingComponent = () => {
 
     const [events, setEvents] = useState([]);
     const moment = require('moment');
-
+    let token = window.localStorage.getItem("authToken");
+    let tokenPayload = jwtDecode(token);
+    console.log(tokenPayload);
 
     useEffect(() => {
-        Axios.get(`http://localhost:8000/api/bookings/?coach=${id}`)
+
+        Axios.get(`http://localhost:8000/api/bookings/?coach=${tokenPayload.coachId}`)
             .then((response) => {
                 const bookings = response.data["hydra:member"];
 
@@ -78,7 +82,7 @@ const BookingComponent = () => {
                     if (booking.stateRDV === 'CONFIRMED') {
                         color = '#28a745'; // Couleur verte pour les RDV confirmés
 
-                    } else if (booking.stateRDV === 'PENDING') {
+                    } else if (booking.stateRDV === 'En attente') {
                         color = '#ffc107'; // Couleur jaune pour les RDV en attente
 
                     } else if (booking.stateRDV === 'CANCELLED') {
@@ -112,7 +116,7 @@ const BookingComponent = () => {
             .catch((error) => {
                 console.log(error);
             });
-    }, [id]);
+    }, [tokenPayload.coachId]);
 
 
 

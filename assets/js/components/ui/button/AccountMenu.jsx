@@ -66,11 +66,7 @@ export default function AccountMenu({ isAuthenticated, onLogout, getUser }) {
       setSelectedImageDataUrl(imageData);
     }
   }, []);
-  // useEffect(() => {
-  //   console.log("selectedImageDataUrl:", selectedImageDataUrl);
-  // }, [selectedImageDataUrl]);
-
-  const handleSave = () => {
+    const handleSave = () => {
     if (!selectedImageDataUrl) {
       // Update the errorMessage state variable with a message indicating that no image was selected
       setErrorMessage("Please select an image to save.");
