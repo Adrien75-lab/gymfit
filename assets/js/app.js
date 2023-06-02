@@ -209,3 +209,6 @@ const App = () => {
 
 const rootElement = document.querySelector("#app");
 createRoot(rootElement).render(<App />);
+
+export default App;
+
