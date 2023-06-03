@@ -39,6 +39,8 @@ import TokenVerificationPage from "./pages/TokenVerificationPage";
 import EmailConfirmationPage from "./pages/EmailConfirmationPage";
 import ConfirmMember from "./pages/ConfirmMember";
 import Parameters from "./components/Parameters";
+import Form from 'react-bootstrap/Form';
+import 'bootstrap/dist/css/bootstrap.min.css';
 import AccountMenu from "./components/ui/button/AccountMenu";
 
 
@@ -106,10 +108,8 @@ const App = () => {
   return (
     // Le HashRouter permet de faire des routes avec un #
     <HashRouter>
-      
-    <select value={theme} onChange={e => setTheme(e.target.value)}>
-      {themes.map(theme => <option key={theme} value={theme}>{theme}</option>)}
-    </select>
+
+
       <div
         style={{ opacity: opacity }}
         className={`app ${isMounted ? "fade-in" : ""}`}
@@ -119,6 +119,13 @@ const App = () => {
           onLogout={setIsAuthenticated}
           getUser={getUser}
         />
+        <Form.Switch
+            id="theme-switch"
+            label="Changer de thème"
+            checked={theme === 'darkly'}
+            onChange={() => setTheme(theme === 'darkly' ? 'quartz' : 'darkly')}
+        />
+
 
         {/* <button className="primaryBtn" onClick={() => setIsOpen(true)}>
         Open Modal
