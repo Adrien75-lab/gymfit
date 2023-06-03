@@ -71,12 +71,25 @@ const PrivateRoute = ({ path, isAuthenticated, component }) =>
   );
 
 const App = () => {
+  // La liste des thèmes disponibles
+  const themes = ["cerulean", "cosmo", "darkly", "flatly", "journal", "litera", "lumen", "lux", "materia", "minty", "morph", "pulse", "quartz", "sandstone", "simplex", "sketchy", "slate", "solar", "spacelab", "superhero", "united", "vapor", "yeti", "zephyr"];
+
+  // Le thème actuel - nous le récupérons depuis le localStorage
+  const [theme, setTheme] = useState(localStorage.getItem('theme') || 'quartz');
+
+  useEffect(() => {
+    const themeLink = document.querySelector("#theme-link");
+    if (themeLink) {
+      themeLink.href = `https://bootswatch.com/5/${theme}/bootstrap.min.css`;
+      localStorage.setItem('theme', theme);
+    }
+  }, [theme]);
   const [isAuthenticated, setIsAuthenticated, history] = useState(
     authAPI.isAuthenticated()
   );
   const NavbarWithRouter = withRouter(Navbar);
- 
-  
+
+
   const [isOpen, setIsOpen] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
   const [opacity, setOpacity] = useState(0);
@@ -93,6 +106,10 @@ const App = () => {
   return (
     // Le HashRouter permet de faire des routes avec un #
     <HashRouter>
+      
+    <select value={theme} onChange={e => setTheme(e.target.value)}>
+      {themes.map(theme => <option key={theme} value={theme}>{theme}</option>)}
+    </select>
       <div
         style={{ opacity: opacity }}
         className={`app ${isMounted ? "fade-in" : ""}`}
@@ -102,7 +119,7 @@ const App = () => {
           onLogout={setIsAuthenticated}
           getUser={getUser}
         />
-        
+
         {/* <button className="primaryBtn" onClick={() => setIsOpen(true)}>
         Open Modal
       </button> */}
