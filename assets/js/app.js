@@ -40,7 +40,6 @@ import EmailConfirmationPage from "./pages/EmailConfirmationPage";
 import ConfirmMember from "./pages/ConfirmMember";
 import Parameters from "./components/Parameters";
 import Form from 'react-bootstrap/Form';
-import 'bootstrap/dist/css/bootstrap.min.css';
 import AccountMenu from "./components/ui/button/AccountMenu";
 
 

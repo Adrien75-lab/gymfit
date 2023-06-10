@@ -48,7 +48,7 @@ const LoginPage = ({onLogin, history}) => {
 
     return (
         <>
-            <Chatbot/>
+
             <h2 className="text-center my-3">Connexion</h2>
             <form onSubmit={handleSubmit}>
                 <div className="container w-50">
